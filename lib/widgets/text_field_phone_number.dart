@@ -1,5 +1,10 @@
-class TextFieldInput extends StatelessWidget {
-  const TextFieldInput({
+import 'package:flutter/material.dart';
+import 'package:flutter_multi_formatter/formatters/masked_input_formatter.dart';
+
+import '../resources/app_colors.dart';
+
+class TextFieldPhoneNumber extends StatelessWidget {
+  const TextFieldPhoneNumber({
     Key? key,
     this.onChanged,
     this.controller,
@@ -9,46 +14,33 @@ class TextFieldInput extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 50.0,
-      width: 275.0,
-      decoration: BoxDecoration(
-        borderRadius: const BorderRadius.all(
-          Radius.circular(30.0),
-        ),
-        boxShadow: <BoxShadow>[
-          BoxShadow(
-            color: Colors.grey.shade300,
-            offset: const Offset(0.0, 5.0),
-            blurRadius: 5.0,
-          )
-        ],
+    return TextField(
+      controller: controller,
+      inputFormatters: [
+        MaskedInputFormatter('+##(###) ## ## ###'),
+      ],
+      keyboardType: TextInputType.phone,
+      style: const TextStyle(
+        color: Colors.black,
       ),
-      child: TextField(
-        controller: controller,
-        inputFormatters: [
-          MaskedInputFormatter('+##(###) ## ## ###'),
-        ],
-        keyboardType: TextInputType.phone,
-        textAlign: TextAlign.center,
-        style: const TextStyle(
-          color: Colors.black,
+      decoration: const InputDecoration(
+        hintText: 'Ваш Номер телефона*',
+        hintTextDirection: TextDirection.ltr,
+        filled: true,
+        fillColor: Colors.white,
+        hintStyle: TextStyle(
+          color: AppColors.noActive,
+          fontSize: 14.0,
+          fontWeight: FontWeight.w400,
         ),
-        decoration: const InputDecoration(
-          filled: true,
-          fillColor: Colors.white,
-          hintStyle: TextStyle(
-            color: Colors.black,
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.all(
+            Radius.circular(20.0),
           ),
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.all(
-              Radius.circular(30.0),
-            ),
-            borderSide: BorderSide.none,
-          ),
+          borderSide: BorderSide.none,
         ),
-        onChanged: onChanged,
       ),
+      onChanged: onChanged,
     );
   }
 }
