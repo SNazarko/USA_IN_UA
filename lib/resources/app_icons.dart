@@ -3,4 +3,5 @@ class AppIcons {
   static const String _path = 'assets/icons';
 
   static const String addUser = '$_path/add_user.svg';
+  static const String password = '$_path/password.svg';
 }

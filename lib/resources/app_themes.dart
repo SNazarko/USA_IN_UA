@@ -1,16 +1,21 @@
 import 'package:flutter/material.dart';
 
+import 'app_colors.dart';
+
 class AppThemes {
   const AppThemes._();
 
   static ThemeData light() {
     return ThemeData.light().copyWith(
-      // Define the default colors.
-      colorScheme: const ColorScheme.light().copyWith(
-        primary: Colors.green,
-        secondary: Colors.green,
+      textTheme: const TextTheme(
+        bodyText2: TextStyle(
+          color: AppColors.text,
+          fontWeight: FontWeight.w700,
+        ),
+        bodyText1: TextStyle(
+            color: AppColors.text, fontWeight: FontWeight.w400, fontSize: 14.0),
       ),
-      scaffoldBackgroundColor: Colors.green,
+      scaffoldBackgroundColor: Colors.white,
     );
   }
 }

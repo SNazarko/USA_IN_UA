@@ -10,29 +10,25 @@ class ButtonEnter extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final double screenWidth = MediaQuery.of(context).size.width;
-    return ElevatedButton(
-      onPressed: onPressed,
-      child: Text(
-        text,
-        style: const TextStyle(
-          fontSize: 14.0,
-          color: AppColors.brown,
-        ),
-      ),
-      style: ButtonStyle(
-        minimumSize: MaterialStateProperty.all(
-          Size(
-            screenWidth,
-            56.0,
+    return InkWell(
+      onTap: onPressed,
+      child: Container(
+        height: 56.0,
+        width: screenWidth,
+        decoration: const BoxDecoration(
+          color: AppColors.green,
+          borderRadius: BorderRadius.all(
+            Radius.circular(20.0),
           ),
         ),
-        shape: MaterialStateProperty.all(
-          RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(20.0),
+        child: Center(
+          child: Text(
+            text,
+            style: const TextStyle(
+              fontSize: 14.0,
+              color: AppColors.brown,
+            ),
           ),
-        ),
-        backgroundColor: MaterialStateProperty.all(
-          AppColors.green,
         ),
       ),
     );
