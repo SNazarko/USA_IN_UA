@@ -36,9 +36,9 @@ class LoginPage extends StatelessWidget {
                       SizedBox(
                         height: 60.0,
                       ),
-                      // TextFieldPhoneNumber(
-                      //   textInputType: TextInputTypeStatus.number,
-                      // ),
+                      TextFieldPhoneNumber(
+                        textInputType: TextInputTypeStatus.number,
+                      ),
                       SizedBox(
                         height: 40.0,
                       ),
