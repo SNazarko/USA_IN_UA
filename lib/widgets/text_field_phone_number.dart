@@ -42,7 +42,6 @@ class TextFieldPhoneNumber extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextField(
-      autofocus: true,
       onEditingComplete: onEditingComplete,
       controller: controller,
       inputFormatters: textInputType == TextInputTypeStatus.number

@@ -7,14 +7,19 @@ import '../../../resources/app_icons.dart';
 import '../../../widgets/button_enter.dart';
 
 class SmsPage extends StatefulWidget {
-  const SmsPage({Key? key}) : super(key: key);
-
+  const SmsPage({
+    Key? key,
+    required this.controller,
+    required this.phoneController,
+  }) : super(key: key);
+  final TextEditingController phoneController;
+  final PageController controller;
   @override
   State<SmsPage> createState() => _SmsPageState();
 }
 
 class _SmsPageState extends State<SmsPage> {
-  TextEditingController controller = TextEditingController();
+  TextEditingController smsController = TextEditingController();
   int counter = 30;
 
   void startCounter() {
@@ -69,9 +74,9 @@ class _SmsPageState extends State<SmsPage> {
                           fontWeight: FontWeight.w700,
                         ),
                       ),
-                      const Text(
-                        '+38 063 058 8512',
-                        style: TextStyle(
+                      Text(
+                        widget.phoneController.text,
+                        style: const TextStyle(
                           color: AppColors.blue,
                           fontSize: 16.0,
                           fontWeight: FontWeight.w700,
@@ -81,7 +86,7 @@ class _SmsPageState extends State<SmsPage> {
                         height: 20.0,
                       ),
                       PinFieldAutoFill(
-                          controller: controller,
+                          controller: smsController,
                           decoration: const UnderlineDecoration(
                             colorBuilder: FixedColorBuilder(AppColors.text),
                           ),
@@ -103,7 +108,15 @@ class _SmsPageState extends State<SmsPage> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const ButtonEnter(
+                      ButtonEnter(
+                        onPressed: () {
+                          widget.controller.animateToPage(
+                            2,
+                            duration: const Duration(milliseconds: 400),
+                            curve: Curves.easeIn,
+                          );
+                          FocusScope.of(context).unfocus();
+                        },
                         text: 'ЗАРЕГИСТРИРОВАТЬСЯ',
                       ),
                       const SizedBox(

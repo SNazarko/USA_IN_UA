@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:usa_in_ua/pages/authorisations_pages/login_page/login_page.dart';
-import 'package:usa_in_ua/pages/authorisations_pages/registration_page/registration_page.dart';
-import 'package:usa_in_ua/pages/authorisations_pages/sms_page/sms_page.dart';
+import 'package:usa_in_ua/pages/authorisations_pages/authorisations_page.dart';
 import 'package:usa_in_ua/resources/app_themes.dart';
 
 void main() {
@@ -15,7 +13,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: AppThemes.light(),
-      home: SmsPage(),
+      home: AuthorisationsPages(),
     );
   }
 }

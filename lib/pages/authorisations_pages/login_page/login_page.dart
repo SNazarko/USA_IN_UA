@@ -8,7 +8,13 @@ import '../../../widgets/button_enter.dart';
 import '../../../widgets/text_field_phone_number.dart';
 
 class LoginPage extends StatelessWidget {
-  const LoginPage({Key? key}) : super(key: key);
+  const LoginPage({
+    Key? key,
+    required this.controller,
+    required this.phoneController,
+  }) : super(key: key);
+  final PageController controller;
+  final TextEditingController phoneController;
 
   @override
   Widget build(BuildContext context) {
@@ -26,20 +32,21 @@ class LoginPage extends StatelessWidget {
                 SizedBox(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    children: const [
-                      Text(
+                    children: [
+                      const Text(
                         'Вход',
                         style: TextStyle(
                           fontSize: 40.0,
                         ),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 60.0,
                       ),
                       TextFieldPhoneNumber(
+                        controller: phoneController,
                         textInputType: TextInputTypeStatus.number,
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 40.0,
                       ),
                     ],
@@ -48,7 +55,15 @@ class LoginPage extends StatelessWidget {
                 SizedBox(
                   child: Column(
                     children: [
-                      const ButtonEnter(
+                      ButtonEnter(
+                        onPressed: () {
+                          controller.animateToPage(
+                            1,
+                            duration: const Duration(milliseconds: 400),
+                            curve: Curves.easeIn,
+                          );
+                          FocusScope.of(context).unfocus();
+                        },
                         text: 'ВОЙТИ',
                       ),
                       const SizedBox(
