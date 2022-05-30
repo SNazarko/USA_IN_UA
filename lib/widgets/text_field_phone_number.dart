@@ -50,9 +50,8 @@ class TextFieldPhoneNumber extends StatelessWidget {
             ]
           : null,
       keyboardType: _textInputType(textInputType),
-      style: const TextStyle(
-        color: AppColors.text,
-      ),
+      style:
+          const TextStyle(color: AppColors.text, fontWeight: FontWeight.w400),
       decoration: InputDecoration(
         hintText: _hintText(textInputType),
         hintTextDirection: TextDirection.ltr,
@@ -61,7 +60,7 @@ class TextFieldPhoneNumber extends StatelessWidget {
         hintStyle: const TextStyle(
           color: AppColors.noActive,
           fontSize: 14.0,
-          fontWeight: FontWeight.w400,
+          fontWeight: FontWeight.w100,
         ),
         border: const OutlineInputBorder(
           borderRadius: BorderRadius.all(

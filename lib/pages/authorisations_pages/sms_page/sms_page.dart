@@ -3,7 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:sms_autofill/sms_autofill.dart';
+import 'package:pin_code_fields/pin_code_fields.dart';
 import '../../../resources/app_colors.dart';
 import '../../../resources/app_icons.dart';
 import '../../../widgets/button_enter.dart';
@@ -115,22 +115,32 @@ class _SmsPageState extends State<SmsPage> {
                           const SizedBox(
                             height: 20.0,
                           ),
-                          PinFieldAutoFill(
+                          Padding(
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 20.0),
+                            child: PinCodeTextField(
+                              keyboardType: TextInputType.number,
                               controller: smsController,
-                              decoration: const UnderlineDecoration(
-                                textStyle: TextStyle(
-                                    color: AppColors.text, fontSize: 30.0),
-                                colorBuilder: FixedColorBuilder(AppColors.text),
+                              textStyle: const TextStyle(
+                                fontSize: 45.0,
+                                color: AppColors.text,
                               ),
-                              currentCode: '',
-                              onCodeSubmitted: (text) {},
-                              onCodeChanged: (text) {
-                                // if (text?.length == 6) {
-                                //   FocusScope.of(context)
-                                //       .requestFocus(FocusNode());
-                                // }
+                              appContext: context,
+                              length: 6,
+                              onChanged: (text) {
+                                if (text.length == 6) {
+                                  FocusScope.of(context)
+                                      .requestFocus(FocusNode());
+                                }
                               },
-                              codeLength: 6),
+                              pinTheme: PinTheme(
+                                shape: PinCodeFieldShape.underline,
+                                inactiveColor: AppColors.text,
+                                activeColor: Colors.green,
+                                selectedColor: Colors.brown,
+                              ),
+                            ),
+                          ),
                           const SizedBox(
                             height: 60.0,
                           ),

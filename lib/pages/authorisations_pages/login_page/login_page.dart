@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:usa_in_ua/resources/app_colors.dart';
 
+import '../../../repositories/auth_repositories.dart';
 import '../../../resources/app_icons.dart';
 import '../../../resources/app_images.dart';
 import '../../../widgets/button_enter.dart';
@@ -34,25 +35,6 @@ class LoginPage extends StatelessWidget {
         duration: const Duration(milliseconds: 400),
         curve: Curves.easeIn,
       );
-      // } else if (state.status == AuthStatus.codeSent) {
-      //   FocusScope.of(context).unfocus();
-      //   BlocProvider.of<AuthBloc>(context).add(
-      //     PhoneAuthCodeVerificationIdEvent(
-      //         phone: phoneController.text,
-      //         smsCode: otpController.text,
-      //         verificationId: state.verificationId),
-      //   );
-      //   FirebaseAuth.instance.authStateChanges().listen((User? user) {
-      //     if (user != null) {
-      //       Timer(
-      //         const Duration(milliseconds: 1),
-      //             () => Navigator.pushNamed(
-      //           context,
-      //           LastAuthorizationPage.routeName,
-      //         ),
-      //       );
-      //     }
-      //   });
     } else if (state.status == AuthStatus.failed) {
       BlocProvider.of<AuthBloc>(context).add(
         PhoneNumberVerificationIdEvent(
@@ -65,21 +47,11 @@ class LoginPage extends StatelessWidget {
         curve: Curves.easeIn,
       );
     }
-    // else if (state.status == AuthStatus.failedCodeSent) {
-    //   BlocProvider.of<AuthBloc>(context).add(
-    //     PhoneNumberVerificationIdEvent(
-    //       phone: phoneController.text,
-    //     ),
-    //   );
-    // }
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<AuthBloc, AuthState>(
-      listener: (context, state) {
-        // TODO: implement listener
-      },
+    return BlocBuilder<AuthBloc, AuthState>(
       builder: (context, state) {
         return Scaffold(
           body: SafeArea(

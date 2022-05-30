@@ -4,6 +4,7 @@ import 'package:usa_in_ua/pages/authorisations_pages/registration_page/registrat
 import 'package:usa_in_ua/pages/authorisations_pages/sms_page/sms_page.dart';
 import 'package:usa_in_ua/pages/authorisations_pages/welcome_page/welcome_page.dart';
 
+import '../../repositories/auth_repositories.dart';
 import 'bloc/authorisation_bloc.dart';
 import 'login_page/login_page.dart';
 
@@ -21,21 +22,22 @@ class AuthorisationsPages extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider<AuthBloc>(
       create: (context) => AuthBloc(),
-      child: PageView(
-        controller: controller,
-        children: [
-          LoginPage(
-            controller: controller,
-            phoneController: phoneController,
-          ),
-          SmsPage(
-            controller: controller,
-            phoneController: phoneController,
-          ),
-          WelcomePage(),
-          RegistrationPage(),
-        ],
-      ),
+      child: AuthRepositories.instance.user != null
+          ? const WelcomePage()
+          : PageView(
+              controller: controller,
+              children: [
+                LoginPage(
+                  controller: controller,
+                  phoneController: phoneController,
+                ),
+                SmsPage(
+                  controller: controller,
+                  phoneController: phoneController,
+                ),
+                const WelcomePage(),
+              ],
+            ),
     );
   }
 }
