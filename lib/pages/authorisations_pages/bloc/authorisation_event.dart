@@ -20,15 +20,21 @@ class PhoneAuthCodeVerificationIdEvent extends AuthEvent {
     this.phone,
     this.smsCode,
     this.verificationId,
+    this.userName,
+    this.userEmail,
   });
   final String? phone;
   final String? smsCode;
   final String? verificationId;
+  final String? userName;
+  final String? userEmail;
   @override
   List<Object?> get props => [
         phone,
         smsCode,
         verificationId,
+        userName,
+        userEmail,
       ];
 }
 

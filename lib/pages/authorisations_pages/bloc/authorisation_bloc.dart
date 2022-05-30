@@ -90,10 +90,11 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
             Emitter<AuthState> emit) async {
       try {
         await AuthRepositories.instance.verifyAndLogin(
-          event.verificationId!,
-          event.smsCode!,
-          event.phone!,
-        );
+            event.verificationId!,
+            event.smsCode!,
+            event.phone!,
+            event.userName ?? 'Имя',
+            event.userEmail ?? 'Mail');
       } on Exception {
         add(
           ErrorCodeSendEvent(),

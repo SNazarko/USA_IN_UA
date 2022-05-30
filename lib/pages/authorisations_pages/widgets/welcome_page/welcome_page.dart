@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import '../../../resources/app_images.dart';
-import '../../../widgets/button_enter.dart';
+
+import '../../../../resources/app_images.dart';
+import '../../../../widgets/button_enter.dart';
 
 class WelcomePage extends StatelessWidget {
   const WelcomePage({Key? key}) : super(key: key);

@@ -4,10 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
-import '../../../resources/app_colors.dart';
-import '../../../resources/app_icons.dart';
-import '../../../widgets/button_enter.dart';
-import '../bloc/authorisation_bloc.dart';
+
+import '../../../../resources/app_colors.dart';
+import '../../../../resources/app_icons.dart';
+import '../../../../widgets/button_enter.dart';
+import '../../bloc/authorisation_bloc.dart';
 
 class SmsPage extends StatefulWidget {
   const SmsPage({
@@ -52,14 +53,15 @@ class _SmsPageState extends State<SmsPage> {
 
   void startCounter() {
     Timer.periodic(const Duration(seconds: 1), (timer) {
-      if (timer.tick > 30) {
-        timer.cancel();
-      } else {
-        setState(() {
-          --counter;
-        });
-      }
+      print(timer.tick);
     });
+    //   if (timer.tick == 0) {
+    //     timer.cancel();
+    //   } if(timer.tick){}else {
+    //     setState(() {
+    //       --counter;
+    //     });
+    //   }
   }
 
   @override

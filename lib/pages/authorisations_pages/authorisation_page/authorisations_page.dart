@@ -1,20 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:usa_in_ua/pages/authorisations_pages/registration_page/registration_page.dart';
-import 'package:usa_in_ua/pages/authorisations_pages/sms_page/sms_page.dart';
-import 'package:usa_in_ua/pages/authorisations_pages/welcome_page/welcome_page.dart';
+import '../../../repositories/auth_repositories.dart';
+import '../bloc/authorisation_bloc.dart';
+import '../widgets/login_page/login_page.dart';
+import '../widgets/sms_page/sms_page.dart';
+import '../widgets/welcome_page/welcome_page.dart';
 
-import '../../repositories/auth_repositories.dart';
-import 'bloc/authorisation_bloc.dart';
-import 'login_page/login_page.dart';
-
-//     controller.animateToPage(
-//         1,
-//         duration: const Duration(milliseconds: 400),
-//         curve: Curves.easeIn,
-//       );
 class AuthorisationsPages extends StatelessWidget {
   AuthorisationsPages({Key? key}) : super(key: key);
+  static const routeName = '/';
   final TextEditingController phoneController = TextEditingController();
   PageController controller = PageController();
 

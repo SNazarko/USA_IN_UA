@@ -35,6 +35,8 @@ class AuthRepositories {
     String verificationId,
     String smsCode,
     String phone,
+    String userName,
+    String userEmail,
   ) async {
     PhoneAuthCredential credential = PhoneAuthProvider.credential(
       verificationId: verificationId,
@@ -50,9 +52,9 @@ class AuthRepositories {
           await FirebaseFirestore.instance.collection(uid!).doc('user').get();
       if (!userSnap.exists) {
         await FirebaseFirestore.instance.collection(uid).doc('user').set({
-          'userName': 'Имя',
-          'userPhoneNumb': '+00(000)0000000',
-          'userEmail': '',
+          'userName': userName,
+          'userPhoneNumb': phone,
+          'userEmail': userEmail,
           'userSex': null,
           'userDate': null,
         });

@@ -3,12 +3,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:usa_in_ua/resources/app_colors.dart';
 
-import '../../../repositories/auth_repositories.dart';
-import '../../../resources/app_icons.dart';
-import '../../../resources/app_images.dart';
-import '../../../widgets/button_enter.dart';
-import '../../../widgets/text_field_phone_number.dart';
-import '../bloc/authorisation_bloc.dart';
+import '../../../../resources/app_icons.dart';
+import '../../../../resources/app_images.dart';
+import '../../../../widgets/button_enter.dart';
+import '../../../../widgets/text_field_phone_number.dart';
+import '../../bloc/authorisation_bloc.dart';
 
 class LoginPage extends StatelessWidget {
   const LoginPage({

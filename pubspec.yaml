@@ -23,6 +23,7 @@ dependencies:
   flutter_multi_formatter: ^2.5.7
   flutter_svg: ^1.1.0
   pin_code_fields: ^7.4.0
+  fluttertoast: ^8.0.9
 
 
 
