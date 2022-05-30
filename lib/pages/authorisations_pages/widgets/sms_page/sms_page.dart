@@ -2,11 +2,8 @@ import 'dart:async';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
-
 import '../../../../resources/app_colors.dart';
-import '../../../../resources/app_icons.dart';
 import '../../../../widgets/button_enter.dart';
 import '../../bloc/authorisation_bloc.dart';
 
@@ -51,22 +48,32 @@ class _SmsPageState extends State<SmsPage> {
     }
   }
 
-  void startCounter() {
+  void startCounter(BuildContext context) {
     Timer.periodic(const Duration(seconds: 1), (timer) {
-      print(timer.tick);
+      if (timer.tick > 30) {
+        timer.cancel();
+      }
+      if (timer.tick == 29) {
+        BlocProvider.of<AuthBloc>(context).add(
+          PhoneNumberVerificationIdEvent(
+            phone: widget.phoneController.text,
+          ),
+        );
+      } else {
+        try {
+          setState(() {
+            --counter;
+          });
+        } on Exception {
+          timer.cancel();
+        }
+      }
     });
-    //   if (timer.tick == 0) {
-    //     timer.cancel();
-    //   } if(timer.tick){}else {
-    //     setState(() {
-    //       --counter;
-    //     });
-    //   }
   }
 
   @override
   void initState() {
-    startCounter();
+    startCounter(context);
     super.initState();
   }
 
@@ -168,23 +175,6 @@ class _SmsPageState extends State<SmsPage> {
                           ),
                           const SizedBox(
                             height: 25.0,
-                          ),
-                          Row(
-                            children: [
-                              SvgPicture.asset(
-                                AppIcons.password,
-                                color: AppColors.blue,
-                              ),
-                              const SizedBox(
-                                width: 15.0,
-                              ),
-                              const Text(
-                                'Я уже зарегистрирован',
-                                style: TextStyle(
-                                  fontSize: 14.0,
-                                ),
-                              ),
-                            ],
                           ),
                         ],
                       ),

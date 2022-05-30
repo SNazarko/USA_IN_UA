@@ -8,6 +8,7 @@ import '../../../../resources/app_images.dart';
 import '../../../../widgets/button_enter.dart';
 import '../../../../widgets/text_field_phone_number.dart';
 import '../../bloc/authorisation_bloc.dart';
+import '../../registration_pages/registration_pages.dart';
 
 class LoginPage extends StatelessWidget {
   const LoginPage({
@@ -76,7 +77,7 @@ class LoginPage extends StatelessWidget {
                           const SizedBox(
                             height: 60.0,
                           ),
-                          TextFieldPhoneNumber(
+                          TextFieldInput(
                             controller: phoneController,
                             textInputType: TextInputTypeStatus.number,
                           ),
@@ -96,22 +97,26 @@ class LoginPage extends StatelessWidget {
                           const SizedBox(
                             height: 20.0,
                           ),
-                          Row(
-                            children: [
-                              SvgPicture.asset(
-                                AppIcons.addUser,
-                                color: AppColors.blue,
-                              ),
-                              const SizedBox(
-                                width: 15.0,
-                              ),
-                              const Text(
-                                'Зарегистрироваться',
-                                style: TextStyle(
-                                  fontSize: 14.0,
+                          GestureDetector(
+                            onTap: () => Navigator.pushNamed(
+                                context, RegistrationPages.routeName),
+                            child: Row(
+                              children: [
+                                SvgPicture.asset(
+                                  AppIcons.addUser,
+                                  color: AppColors.blue,
                                 ),
-                              ),
-                            ],
+                                const SizedBox(
+                                  width: 15.0,
+                                ),
+                                const Text(
+                                  'Зарегистрироваться',
+                                  style: TextStyle(
+                                    fontSize: 14.0,
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
                         ],
                       ),

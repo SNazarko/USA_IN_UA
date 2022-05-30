@@ -129,7 +129,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
                           const SizedBox(
                             height: 40.0,
                           ),
-                          TextFieldPhoneNumber(
+                          TextFieldInput(
                             controller: widget.nameController,
                             onEditingComplete: () {
                               FocusScope.of(context).nextFocus();
@@ -139,7 +139,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
                           const SizedBox(
                             height: 10.0,
                           ),
-                          TextFieldPhoneNumber(
+                          TextFieldInput(
                             controller: widget.emailController,
                             onEditingComplete: () {
                               FocusScope.of(context).nextFocus();
@@ -149,7 +149,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
                           const SizedBox(
                             height: 10.0,
                           ),
-                          TextFieldPhoneNumber(
+                          TextFieldInput(
                             controller: widget.phoneController,
                             onEditingComplete: () {
                               FocusScope.of(context).nextFocus();
@@ -194,22 +194,25 @@ class _RegistrationPageState extends State<RegistrationPage> {
                           const SizedBox(
                             height: 20.0,
                           ),
-                          Row(
-                            children: [
-                              SvgPicture.asset(
-                                AppIcons.password,
-                                color: AppColors.blue,
-                              ),
-                              const SizedBox(
-                                width: 15.0,
-                              ),
-                              const Text(
-                                'Я уже зарегистрирован',
-                                style: TextStyle(
-                                  fontSize: 14.0,
+                          GestureDetector(
+                            onTap: () => Navigator.pop(context),
+                            child: Row(
+                              children: [
+                                SvgPicture.asset(
+                                  AppIcons.password,
+                                  color: AppColors.blue,
                                 ),
-                              ),
-                            ],
+                                const SizedBox(
+                                  width: 15.0,
+                                ),
+                                const Text(
+                                  'Я уже зарегистрирован',
+                                  style: TextStyle(
+                                    fontSize: 14.0,
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
                         ],
                       ),

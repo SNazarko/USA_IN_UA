@@ -9,8 +9,8 @@ enum TextInputTypeStatus {
   emailAddress,
 }
 
-class TextFieldPhoneNumber extends StatelessWidget {
-  const TextFieldPhoneNumber({
+class TextFieldInput extends StatelessWidget {
+  const TextFieldInput({
     Key? key,
     this.onChanged,
     this.controller,
