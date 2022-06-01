@@ -1,5 +1,14 @@
-part of 'navigation_bloc.dart';
+import 'package:flutter/cupertino.dart';
 
-abstract class NavigationEvent extends Equatable {
-  const NavigationEvent();
+@immutable
+abstract class NavigationEvent {}
+
+class NavigateTab extends NavigationEvent {
+  NavigateTab({
+    required this.tabIndex,
+    required this.route,
+  });
+
+  final int tabIndex;
+  final String route;
 }

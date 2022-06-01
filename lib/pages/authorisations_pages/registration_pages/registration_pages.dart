@@ -7,12 +7,11 @@ import '../widgets/welcome_page/welcome_page.dart';
 
 class RegistrationPages extends StatelessWidget {
   RegistrationPages({Key? key}) : super(key: key);
-
+  static const routeName = '/authorisations_pages/registration_pages.dart';
   final TextEditingController phoneController = TextEditingController();
   final PageController controller = PageController();
   final TextEditingController nameController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
-  static const routeName = '/authorisations_pages/registration_pages.dart';
 
   @override
   Widget build(BuildContext context) {
@@ -30,6 +29,8 @@ class RegistrationPages extends StatelessWidget {
           SmsPage(
             controller: controller,
             phoneController: phoneController,
+            emailController: emailController,
+            nameController: nameController,
           ),
           const WelcomePage(),
         ],

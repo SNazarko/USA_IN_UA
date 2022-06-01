@@ -6,4 +6,6 @@ class AppImages {
   static const String google = '$_path/google.png';
   static const String facebook = '$_path/facebook.png';
   static const String welcome = '$_path/welcome.png';
+  static const String tabAdd = '$_path/tab_add.png';
+  static const String tabDel = '$_path/tab_del.png';
 }

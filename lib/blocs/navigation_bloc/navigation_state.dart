@@ -1,10 +1,33 @@
-part of 'navigation_bloc.dart';
+import 'package:flutter/cupertino.dart';
 
-abstract class NavigationState extends Equatable {
-  const NavigationState();
+import '../../pages/home_page/home_page.dart';
+
+enum NavigationStateStatus {
+  initial,
+  tab,
 }
 
-class NavigationInitial extends NavigationState {
-  @override
-  List<Object> get props => [];
+@immutable
+class NavigationState {
+  const NavigationState({
+    this.status = NavigationStateStatus.initial,
+    this.currentIndex = 0,
+    this.route = HomePage.routeName,
+  });
+
+  final NavigationStateStatus status;
+  final int currentIndex;
+  final String route;
+
+  NavigationState copyWith({
+    NavigationStateStatus? status,
+    int? currentIndex,
+    String? route,
+  }) {
+    return NavigationState(
+      status: status ?? this.status,
+      currentIndex: currentIndex ?? this.currentIndex,
+      route: route ?? this.route,
+    );
+  }
 }

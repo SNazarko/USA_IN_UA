@@ -63,6 +63,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         }
       }
     });
+
     on<ErrorCodeSendEvent>((
       ErrorCodeSendEvent event,
       Emitter<AuthState> emit,
@@ -90,11 +91,12 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
             Emitter<AuthState> emit) async {
       try {
         await AuthRepositories.instance.verifyAndLogin(
-            event.verificationId!,
-            event.smsCode!,
-            event.phone!,
-            event.userName ?? 'Имя',
-            event.userEmail ?? 'Mail');
+          event.verificationId!,
+          event.smsCode!,
+          event.phone!,
+          event.userName!,
+          event.userEmail!,
+        );
       } on Exception {
         add(
           ErrorCodeSendEvent(),

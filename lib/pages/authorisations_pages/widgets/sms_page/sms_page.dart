@@ -6,13 +6,18 @@ import 'package:pin_code_fields/pin_code_fields.dart';
 import '../../../../resources/app_colors.dart';
 import '../../../../widgets/button_enter.dart';
 import '../../bloc/authorisation_bloc.dart';
+import '../../registration_pages/registration_pages.dart';
 
 class SmsPage extends StatefulWidget {
   const SmsPage({
     Key? key,
     required this.controller,
     required this.phoneController,
+    this.nameController,
+    this.emailController,
   }) : super(key: key);
+  final TextEditingController? nameController;
+  final TextEditingController? emailController;
   final TextEditingController phoneController;
   final PageController controller;
 
@@ -22,7 +27,8 @@ class SmsPage extends StatefulWidget {
 
 class _SmsPageState extends State<SmsPage> {
   TextEditingController smsController = TextEditingController();
-  int counter = 30;
+  int _counter = 60;
+  Timer? _timer;
 
   void _buttonContinue(
     BuildContext context,
@@ -32,41 +38,47 @@ class _SmsPageState extends State<SmsPage> {
       FocusScope.of(context).unfocus();
       BlocProvider.of<AuthBloc>(context).add(
         PhoneAuthCodeVerificationIdEvent(
-            phone: widget.phoneController.text,
-            smsCode: smsController.text,
-            verificationId: state.verificationId),
+          phone: widget.phoneController.text,
+          smsCode: smsController.text,
+          verificationId: state.verificationId,
+          userName: widget.nameController?.text ?? '',
+          userEmail: widget.emailController?.text ?? '',
+        ),
       );
       FirebaseAuth.instance.authStateChanges().listen((User? user) {
-        if (user != null) {
+        if (user?.displayName != null && user?.email != null) {
           widget.controller.animateToPage(
             3,
             duration: const Duration(milliseconds: 400),
             curve: Curves.easeIn,
           );
+        } else {
+          Timer(const Duration(seconds: 1), () {
+            Navigator.pushNamed(
+              context,
+              RegistrationPages.routeName,
+            );
+          });
         }
       });
     }
   }
 
   void startCounter(BuildContext context) {
-    Timer.periodic(const Duration(seconds: 1), (timer) {
-      if (timer.tick > 30) {
+    _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
+      if (timer.tick > 60) {
         timer.cancel();
       }
-      if (timer.tick == 29) {
+      if (timer.tick == 59) {
         BlocProvider.of<AuthBloc>(context).add(
           PhoneNumberVerificationIdEvent(
             phone: widget.phoneController.text,
           ),
         );
       } else {
-        try {
-          setState(() {
-            --counter;
-          });
-        } on Exception {
-          timer.cancel();
-        }
+        setState(() {
+          --_counter;
+        });
       }
     });
   }
@@ -75,6 +87,12 @@ class _SmsPageState extends State<SmsPage> {
   void initState() {
     startCounter(context);
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    _timer?.cancel();
+    super.dispose();
   }
 
   @override
@@ -168,7 +186,7 @@ class _SmsPageState extends State<SmsPage> {
                             height: 30.0,
                           ),
                           Text(
-                            'Отправить код повторно через: $counter',
+                            'Отправить код повторно через: $_counter',
                             style: const TextStyle(
                               fontWeight: FontWeight.w700,
                             ),

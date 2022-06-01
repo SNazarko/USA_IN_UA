@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../../../resources/app_images.dart';
 import '../../../../widgets/button_enter.dart';
+import '../../../main_page.dart';
 
 class WelcomePage extends StatelessWidget {
   const WelcomePage({Key? key}) : super(key: key);
@@ -27,11 +28,13 @@ class WelcomePage extends StatelessWidget {
                 )),
                 SizedBox(
                   child: Column(
-                    children: const [
-                      SizedBox(
+                    children: [
+                      const SizedBox(
                         height: 60.0,
                       ),
                       ButtonEnter(
+                        onPressed: () =>
+                            Navigator.pushNamed(context, MainPage.routeName),
                         text: 'ПРОДОЛЖЫТЬ',
                       ),
                     ],

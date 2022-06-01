@@ -13,7 +13,10 @@ class AppThemes {
           fontWeight: FontWeight.w700,
         ),
         bodyText1: TextStyle(
-            color: AppColors.text, fontWeight: FontWeight.w400, fontSize: 14.0),
+          color: AppColors.text,
+          fontWeight: FontWeight.w400,
+          fontSize: 14.0,
+        ),
       ),
       scaffoldBackgroundColor: Colors.white,
     );

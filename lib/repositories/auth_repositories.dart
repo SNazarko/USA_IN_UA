@@ -31,7 +31,7 @@ class AuthRepositories {
     );
   }
 
-  Future<String> verifyAndLogin(
+  Future<void> verifyAndLogin(
     String verificationId,
     String smsCode,
     String phone,
@@ -44,24 +44,29 @@ class AuthRepositories {
     );
 
     final authCredential = await _auth!.signInWithCredential(credential);
-
+    authCredential.user?.updateDisplayName(userName);
+    authCredential.user?.updateEmail(userEmail);
+    final name = authCredential.user?.displayName;
+    final email = authCredential.user?.email;
     if (authCredential.user != null) {
       user = authCredential.user!;
-      final uid = authCredential.user?.uid;
-      final userSnap =
-          await FirebaseFirestore.instance.collection(uid!).doc('user').get();
+      final phoneNumber = authCredential.user?.phoneNumber;
+      final userSnap = await FirebaseFirestore.instance
+          .collection(phoneNumber!)
+          .doc('user')
+          .get();
       if (!userSnap.exists) {
-        await FirebaseFirestore.instance.collection(uid).doc('user').set({
-          'userName': userName,
+        await FirebaseFirestore.instance
+            .collection(phoneNumber)
+            .doc('user')
+            .set({
+          'userName': name,
           'userPhoneNumb': phone,
-          'userEmail': userEmail,
+          'userEmail': email,
           'userSex': null,
           'userDate': null,
         });
       }
-      return uid;
-    } else {
-      return '';
     }
   }
 
