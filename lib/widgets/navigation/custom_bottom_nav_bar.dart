@@ -32,53 +32,52 @@ class CustomBottomNavBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      constraints: const BoxConstraints(
-        minHeight: kBottomNavigationBarHeight,
-      ),
-      padding: EdgeInsets.only(
-        bottom: MediaQuery.of(context).viewPadding.bottom / 2,
-      ),
-      decoration: BoxDecoration(
-        border: Border(
-          top: BorderSide(
-            width: 1.0,
-            color: AppColors.text.withOpacity(0.1),
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 10.0),
+      child: ClipRRect(
+        borderRadius: const BorderRadius.all(Radius.circular(10.0)),
+        child: Container(
+          color: Colors.grey,
+          width: double.infinity,
+          constraints: const BoxConstraints(
+            minHeight: kBottomNavigationBarHeight,
           ),
-        ),
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: _items.map((e) {
-          final int i = _items.indexOf(e);
+          padding: EdgeInsets.only(
+            bottom: MediaQuery.of(context).viewPadding.bottom / 2,
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: _items.map((e) {
+              final int i = _items.indexOf(e);
 
-          return Flexible(
-            child: SizedBox(
-              width: double.infinity,
-              height: kBottomNavigationBarHeight,
-              child: Material(
-                color: Colors.white,
-                child: InkWell(
-                  onTap: () => onSelect(i),
-                  highlightColor: Colors.transparent,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      SvgPicture.asset(
-                        e.iconPath,
-                        color: i == currentTab
-                            ? AppColors.text
-                            : AppColors.noActive,
+              return Flexible(
+                child: SizedBox(
+                  width: double.infinity,
+                  height: kBottomNavigationBarHeight,
+                  child: Material(
+                    color: Colors.grey,
+                    child: InkWell(
+                      onTap: () => onSelect(i),
+                      highlightColor: Colors.transparent,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          SvgPicture.asset(
+                            e.iconPath,
+                            color: i == currentTab
+                                ? AppColors.text
+                                : AppColors.noActive,
+                          ),
+                        ],
                       ),
-                    ],
+                    ),
                   ),
                 ),
-              ),
-            ),
-          );
-        }).toList(),
+              );
+            }).toList(),
+          ),
+        ),
       ),
     );
   }
