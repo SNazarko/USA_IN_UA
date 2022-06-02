@@ -32,54 +32,87 @@ class CustomBottomNavBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final Size size = MediaQuery.of(context).size;
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 10.0),
       child: ClipRRect(
         borderRadius: const BorderRadius.all(Radius.circular(10.0)),
         child: Container(
-          color: Colors.grey,
-          width: double.infinity,
-          constraints: const BoxConstraints(
-            minHeight: kBottomNavigationBarHeight,
-          ),
-          padding: EdgeInsets.only(
-            bottom: MediaQuery.of(context).viewPadding.bottom / 2,
-          ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: _items.map((e) {
-              final int i = _items.indexOf(e);
+          color: Colors.transparent,
+          width: size.width,
+          height: 80,
+          child: Stack(
+            children: [
+              CustomPaint(
+                size: Size(size.width, 80),
+                painter: PainterNavBar(),
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: _items.map((e) {
+                  final int i = _items.indexOf(e);
 
-              return Flexible(
-                child: SizedBox(
-                  width: double.infinity,
-                  height: kBottomNavigationBarHeight,
-                  child: Material(
-                    color: Colors.grey,
-                    child: InkWell(
-                      onTap: () => onSelect(i),
-                      highlightColor: Colors.transparent,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          SvgPicture.asset(
-                            e.iconPath,
-                            color: i == currentTab
-                                ? AppColors.text
-                                : AppColors.noActive,
+                  return Flexible(
+                    child: SizedBox(
+                      width: double.infinity,
+                      height: kBottomNavigationBarHeight,
+                      child: Material(
+                        color: Colors.transparent,
+                        child: InkWell(
+                          onTap: () => onSelect(i),
+                          highlightColor: Colors.transparent,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              SvgPicture.asset(
+                                e.iconPath,
+                                color: i == currentTab
+                                    ? AppColors.text
+                                    : AppColors.noActive,
+                              ),
+                            ],
                           ),
-                        ],
+                        ),
                       ),
                     ),
-                  ),
-                ),
-              );
-            }).toList(),
+                  );
+                }).toList(),
+              ),
+            ],
           ),
         ),
       ),
     );
+  }
+}
+
+class PainterNavBar extends CustomPainter {
+  @override
+  void paint(Canvas canvas, Size size) {
+    Paint paint = Paint()
+      ..color = Colors.grey
+      ..style = PaintingStyle.fill;
+    Path path = Path()..moveTo(0, 0);
+    path.quadraticBezierTo(size.width * 0.20, 0, size.width * 0.35, 0);
+    path.quadraticBezierTo(size.width * 0.40, 0, size.width * 0.40, 20);
+
+    path.arcToPoint(Offset(size.width * 0.60, 20),
+        radius: const Radius.circular(10.0), clockwise: false);
+
+    path.quadraticBezierTo(size.width * 0.60, 0, size.width * 0.65, 0);
+    path.quadraticBezierTo(size.width * 0.80, 0, size.width, 0);
+    path.lineTo(size.width, size.height);
+    path.lineTo(0, size.height);
+    path.close();
+
+    // canvas.drawShadow(path, Colors.grey, 2, true);
+    canvas.drawPath(path, paint);
+  }
+
+  @override
+  bool shouldRepaint(covariant CustomPainter oldDelegate) {
+    return false;
   }
 }
 
