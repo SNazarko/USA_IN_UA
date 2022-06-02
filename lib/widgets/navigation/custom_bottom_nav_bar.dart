@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:usa_in_ua/resources/app_images.dart';
 
 import '../../resources/app_colors.dart';
 import '../../resources/app_icons.dart';
@@ -20,7 +21,7 @@ class CustomBottomNavBar extends StatelessWidget {
       iconPath: AppIcons.purchase,
     ),
     _BottomNavigationBarItem(
-      iconPath: AppIcons.addUser,
+      iconPath: AppImages.tabAdd,
     ),
     _BottomNavigationBarItem(
       iconPath: AppIcons.delivery,
@@ -35,19 +36,36 @@ class CustomBottomNavBar extends StatelessWidget {
     final Size size = MediaQuery.of(context).size;
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 10.0),
-      child: ClipRRect(
-        borderRadius: const BorderRadius.all(Radius.circular(10.0)),
-        child: Container(
-          color: Colors.transparent,
-          width: size.width,
-          height: 80,
-          child: Stack(
-            children: [
-              CustomPaint(
-                size: Size(size.width, 80),
-                painter: PainterNavBar(),
+      child: Container(
+        color: Colors.transparent,
+        width: size.width,
+        height: 70,
+        child: Stack(
+          children: [
+            Align(
+              alignment: Alignment.bottomCenter,
+              child: ClipRRect(
+                borderRadius: const BorderRadius.all(
+                  Radius.circular(10.0),
+                ),
+                child: CustomPaint(
+                  size: Size(size.width - 10, kBottomNavigationBarHeight),
+                  painter: PainterNavBar(),
+                ),
               ),
-              Row(
+            ),
+            Align(
+              alignment: Alignment.topCenter,
+              child: Image.asset(
+                AppImages.tabAdd,
+                width: 60.0,
+                height: 60.0,
+                fit: BoxFit.fill,
+              ),
+            ),
+            Align(
+              alignment: Alignment.bottomCenter,
+              child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: _items.map((e) {
                   final int i = _items.indexOf(e);
@@ -79,8 +97,8 @@ class CustomBottomNavBar extends StatelessWidget {
                   );
                 }).toList(),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
@@ -91,7 +109,7 @@ class PainterNavBar extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     Paint paint = Paint()
-      ..color = Colors.grey
+      ..color = Colors.white60
       ..style = PaintingStyle.fill;
     Path path = Path()..moveTo(0, 0);
     path.quadraticBezierTo(size.width * 0.20, 0, size.width * 0.35, 0);
@@ -106,7 +124,7 @@ class PainterNavBar extends CustomPainter {
     path.lineTo(0, size.height);
     path.close();
 
-    // canvas.drawShadow(path, Colors.grey, 2, true);
+    canvas.drawShadow(path, Colors.black, 1, true);
     canvas.drawPath(path, paint);
   }
 
