@@ -8,4 +8,5 @@ class AppIcons {
   static const String home = '$_path/home.svg';
   static const String profile = '$_path/profile.svg';
   static const String purchase = '$_path/purchase.svg';
+  static const String plus = '$_path/plus.svg';
 }

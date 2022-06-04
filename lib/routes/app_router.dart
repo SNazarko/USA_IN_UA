@@ -26,7 +26,12 @@ class AppRouter {
 
       // registration_pages
       case RegistrationPages.routeName:
-        builder = (_) => RegistrationPages();
+        final RegistrationPagesArguments args =
+            arguments as RegistrationPagesArguments;
+        builder = (_) => RegistrationPages(
+              nameController: args.nameController,
+              emailController: args.emailController,
+            );
         break;
 
       // delivery_page

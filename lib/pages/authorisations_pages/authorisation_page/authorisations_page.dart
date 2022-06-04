@@ -10,6 +10,8 @@ class AuthorisationsPages extends StatelessWidget {
   AuthorisationsPages({Key? key}) : super(key: key);
   static const routeName = '/';
   final TextEditingController phoneController = TextEditingController();
+  final TextEditingController nameController = TextEditingController();
+  final TextEditingController emailController = TextEditingController();
   PageController controller = PageController();
 
   @override
@@ -24,6 +26,8 @@ class AuthorisationsPages extends StatelessWidget {
                 LoginPage(
                   controller: controller,
                   phoneController: phoneController,
+                  emailController: emailController,
+                  nameController: nameController,
                 ),
                 SmsPage(
                   controller: controller,

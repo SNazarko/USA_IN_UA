@@ -42,27 +42,44 @@ class AuthRepositories {
       verificationId: verificationId,
       smsCode: smsCode,
     );
-
     final authCredential = await _auth!.signInWithCredential(credential);
-    authCredential.user?.updateDisplayName(userName);
-    authCredential.user?.updateEmail(userEmail);
-    final name = authCredential.user?.displayName;
-    final email = authCredential.user?.email;
+
     if (authCredential.user != null) {
       user = authCredential.user!;
       final phoneNumber = authCredential.user?.phoneNumber;
-      final userSnap = await FirebaseFirestore.instance
+      final docSnap = await FirebaseFirestore.instance
           .collection(phoneNumber!)
           .doc('user')
           .get();
-      if (!userSnap.exists) {
-        await FirebaseFirestore.instance
+      if (docSnap.exists) {
+        FirebaseFirestore.instance
             .collection(phoneNumber)
             .doc('user')
-            .set({
-          'userName': name,
+            .get()
+            .then((DocumentSnapshot doc) {
+          if (doc.data() != null) {
+            final data = doc.data() as Map<String, dynamic>;
+            final name = data['userName'];
+            final email = data['userEmail'];
+            if (name == '' && email == '') {
+              FirebaseFirestore.instance
+                  .collection(phoneNumber)
+                  .doc('user')
+                  .set({
+                'userName': userName,
+                'userPhoneNumb': phone,
+                'userEmail': userEmail,
+                'userSex': null,
+                'userDate': null,
+              });
+            }
+          }
+        });
+      } else {
+        FirebaseFirestore.instance.collection(phoneNumber).doc('user').set({
+          'userName': userName,
           'userPhoneNumb': phone,
-          'userEmail': email,
+          'userEmail': userEmail,
           'userSex': null,
           'userDate': null,
         });

@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -27,8 +28,9 @@ class SmsPage extends StatefulWidget {
 
 class _SmsPageState extends State<SmsPage> {
   TextEditingController smsController = TextEditingController();
-  int _counter = 60;
+  int _counter = 30;
   Timer? _timer;
+  bool getSms = true;
 
   void _buttonContinue(
     BuildContext context,
@@ -45,36 +47,60 @@ class _SmsPageState extends State<SmsPage> {
           userEmail: widget.emailController?.text ?? '',
         ),
       );
-      FirebaseAuth.instance.authStateChanges().listen((User? user) {
-        if (user?.displayName != null && user?.email != null) {
-          widget.controller.animateToPage(
-            3,
-            duration: const Duration(milliseconds: 400),
-            curve: Curves.easeIn,
-          );
-        } else {
-          Timer(const Duration(seconds: 1), () {
-            Navigator.pushNamed(
-              context,
-              RegistrationPages.routeName,
-            );
-          });
-        }
+      Timer(const Duration(seconds: 3), () {
+        FirebaseAuth.instance.authStateChanges().listen((User? user) {
+          if (user?.uid != null) {
+            print('1');
+            final phoneNumber = user?.phoneNumber;
+            FirebaseFirestore.instance
+                .collection(phoneNumber!)
+                .doc('user')
+                .get()
+                .then((DocumentSnapshot doc) {
+              if (doc.data() != null) {
+                print('2');
+                final data = doc.data() as Map<String, dynamic>;
+                final name = data['userName'];
+                final email = data['userEmail'];
+                if (name != '' && email != '') {
+                  print('3');
+                  widget.controller.animateToPage(
+                    3,
+                    duration: const Duration(milliseconds: 400),
+                    curve: Curves.easeIn,
+                  );
+                } else {
+                  print('4');
+                  Timer(const Duration(seconds: 1), () {
+                    Navigator.pushNamed(
+                      context,
+                      RegistrationPages.routeName,
+                    );
+                  });
+                }
+              } else {
+                print('5');
+                Timer(const Duration(seconds: 1), () {
+                  Navigator.pushNamed(
+                    context,
+                    RegistrationPages.routeName,
+                  );
+                });
+              }
+            });
+          }
+        });
       });
     }
   }
 
   void startCounter(BuildContext context) {
     _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
-      if (timer.tick > 60) {
+      if (timer.tick > 30) {
         timer.cancel();
       }
-      if (timer.tick == 59) {
-        BlocProvider.of<AuthBloc>(context).add(
-          PhoneNumberVerificationIdEvent(
-            phone: widget.phoneController.text,
-          ),
-        );
+      if (timer.tick == 29) {
+        getSms = false;
       } else {
         setState(() {
           --_counter;
@@ -90,9 +116,9 @@ class _SmsPageState extends State<SmsPage> {
   }
 
   @override
-  void dispose() {
+  void deactivate() {
     _timer?.cancel();
-    super.dispose();
+    super.deactivate();
   }
 
   @override
@@ -185,12 +211,29 @@ class _SmsPageState extends State<SmsPage> {
                           const SizedBox(
                             height: 30.0,
                           ),
-                          Text(
-                            'Отправить код повторно через: $_counter',
-                            style: const TextStyle(
-                              fontWeight: FontWeight.w700,
-                            ),
-                          ),
+                          getSms
+                              ? Text(
+                                  'Отправить код повторно через: $_counter',
+                                  style: const TextStyle(
+                                    fontWeight: FontWeight.w700,
+                                  ),
+                                )
+                              : TextButton(
+                                  onPressed: () {
+                                    BlocProvider.of<AuthBloc>(context).add(
+                                      PhoneNumberVerificationIdEvent(
+                                        phone: widget.phoneController.text,
+                                      ),
+                                    );
+                                  },
+                                  child: const Text(
+                                    'Отправить код повторно',
+                                    style: TextStyle(
+                                      decoration: TextDecoration.underline,
+                                      fontWeight: FontWeight.w700,
+                                    ),
+                                  ),
+                                ),
                           const SizedBox(
                             height: 25.0,
                           ),

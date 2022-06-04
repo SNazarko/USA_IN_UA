@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 import '../../../../resources/app_colors.dart';
 import '../../../../resources/app_icons.dart';
@@ -30,6 +31,10 @@ class RegistrationPage extends StatefulWidget {
 }
 
 class _RegistrationPageState extends State<RegistrationPage> {
+  GoogleSignInAccount? _userObj;
+  TextEditingController nameController = TextEditingController();
+  TextEditingController emailController = TextEditingController();
+  final GoogleSignIn _googleSignIn = GoogleSignIn();
   Widget toast(String text) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 12.0),
@@ -39,6 +44,17 @@ class _RegistrationPageState extends State<RegistrationPage> {
       ),
       child: Text(text),
     );
+  }
+
+  TextEditingController _isController(
+    TextEditingController controller,
+    TextEditingController controllerSuper,
+  ) {
+    if (controller.text.isNotEmpty) {
+      return controller;
+    } else {
+      return controllerSuper;
+    }
   }
 
   void _buttonContinue(
@@ -130,7 +146,8 @@ class _RegistrationPageState extends State<RegistrationPage> {
                             height: 40.0,
                           ),
                           TextFieldInput(
-                            controller: widget.nameController,
+                            controller: _isController(
+                                widget.nameController, nameController),
                             onEditingComplete: () {
                               FocusScope.of(context).nextFocus();
                             },
@@ -140,7 +157,8 @@ class _RegistrationPageState extends State<RegistrationPage> {
                             height: 10.0,
                           ),
                           TextFieldInput(
-                            controller: widget.emailController,
+                            controller: _isController(
+                                widget.emailController, emailController),
                             onEditingComplete: () {
                               FocusScope.of(context).nextFocus();
                             },
@@ -227,21 +245,41 @@ class _RegistrationPageState extends State<RegistrationPage> {
                             const SizedBox(
                               height: 40.0,
                             ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                const Text(
-                                  'Войти как пользователь',
-                                  style: TextStyle(
-                                    fontSize: 14.0,
+                            GestureDetector(
+                              onTap: () {
+                                _googleSignIn.signIn().then((userData) {
+                                  _userObj = userData;
+                                  final TextEditingController name =
+                                      TextEditingController(
+                                          text:
+                                              _userObj!.displayName.toString());
+                                  final TextEditingController email =
+                                      TextEditingController(
+                                          text: _userObj!.email);
+                                  if (userData != null) {
+                                    nameController = name;
+                                    emailController = email;
+                                    setState(() {});
+                                  }
+                                });
+                              },
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  const Text(
+                                    'Войти как пользователь',
+                                    style: TextStyle(
+                                      fontSize: 14.0,
+                                    ),
                                   ),
-                                ),
-                                Image.asset(
-                                  AppImages.google,
-                                  width: 25.0,
-                                  height: 25.0,
-                                ),
-                              ],
+                                  Image.asset(
+                                    AppImages.google,
+                                    width: 25.0,
+                                    height: 25.0,
+                                  ),
+                                ],
+                              ),
                             ),
                             const SizedBox(
                               height: 20.0,

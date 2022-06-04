@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:usa_in_ua/resources/app_colors.dart';
 
 import '../../../../resources/app_icons.dart';
@@ -9,15 +10,22 @@ import '../../../../widgets/button_enter.dart';
 import '../../../../widgets/text_field_phone_number.dart';
 import '../../bloc/authorisation_bloc.dart';
 import '../../registration_pages/registration_pages.dart';
+import '../registration_page/registration_page.dart';
 
 class LoginPage extends StatelessWidget {
-  const LoginPage({
+  LoginPage({
     Key? key,
     required this.controller,
     required this.phoneController,
+    required this.nameController,
+    required this.emailController,
   }) : super(key: key);
+  final TextEditingController nameController;
+  final TextEditingController emailController;
   final PageController controller;
   final TextEditingController phoneController;
+  GoogleSignInAccount? _userObj;
+  final GoogleSignIn _googleSignIn = GoogleSignIn();
 
   void _buttonContinue(
     BuildContext context,
@@ -98,8 +106,15 @@ class LoginPage extends StatelessWidget {
                             height: 20.0,
                           ),
                           GestureDetector(
-                            onTap: () => Navigator.pushNamed(
-                                context, RegistrationPages.routeName),
+                            onTap: () => Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) {
+                                return RegistrationPages(
+                                  emailController: emailController,
+                                  nameController: nameController,
+                                );
+                              }),
+                            ),
                             child: Row(
                               children: [
                                 SvgPicture.asset(
@@ -131,21 +146,47 @@ class LoginPage extends StatelessWidget {
                             const SizedBox(
                               height: 60.0,
                             ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                const Text(
-                                  'Войти как пользователь',
-                                  style: TextStyle(
-                                    fontSize: 14.0,
+                            GestureDetector(
+                              onTap: () {
+                                _googleSignIn.signIn().then((userData) {
+                                  _userObj = userData;
+                                  final TextEditingController name =
+                                      TextEditingController(
+                                          text:
+                                              _userObj!.displayName.toString());
+                                  final TextEditingController email =
+                                      TextEditingController(
+                                          text: _userObj!.email);
+                                  if (userData != null) {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(builder: (context) {
+                                        return RegistrationPages(
+                                          emailController: email,
+                                          nameController: name,
+                                        );
+                                      }),
+                                    );
+                                  }
+                                });
+                              },
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  const Text(
+                                    'Войти как пользователь',
+                                    style: TextStyle(
+                                      fontSize: 14.0,
+                                    ),
                                   ),
-                                ),
-                                Image.asset(
-                                  AppImages.google,
-                                  width: 25.0,
-                                  height: 25.0,
-                                ),
-                              ],
+                                  Image.asset(
+                                    AppImages.google,
+                                    width: 25.0,
+                                    height: 25.0,
+                                  ),
+                                ],
+                              ),
                             ),
                             const SizedBox(
                               height: 20.0,
