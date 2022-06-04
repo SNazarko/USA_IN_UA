@@ -46,16 +46,17 @@ class _RegistrationPageState extends State<RegistrationPage> {
     );
   }
 
-  TextEditingController _isController(
-    TextEditingController controller,
-    TextEditingController controllerSuper,
-  ) {
-    if (controller.text.isNotEmpty) {
-      return controller;
-    } else {
-      return controllerSuper;
-    }
-  }
+  // TextEditingController _isController(
+  //   TextEditingController controller,
+  //   TextEditingController controllerSuper,
+  // ) {
+  //   if (controller.text.isNotEmpty) {
+  //     return controller;
+  //   } else {
+  //     controller = controllerSuper;
+  //     return controller;
+  //   }
+  // }
 
   void _buttonContinue(
     BuildContext context,
@@ -146,8 +147,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
                             height: 40.0,
                           ),
                           TextFieldInput(
-                            controller: _isController(
-                                widget.nameController, nameController),
+                            controller: widget.nameController,
                             onEditingComplete: () {
                               FocusScope.of(context).nextFocus();
                             },
@@ -157,8 +157,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
                             height: 10.0,
                           ),
                           TextFieldInput(
-                            controller: _isController(
-                                widget.emailController, emailController),
+                            controller: widget.emailController,
                             onEditingComplete: () {
                               FocusScope.of(context).nextFocus();
                             },
@@ -257,8 +256,8 @@ class _RegistrationPageState extends State<RegistrationPage> {
                                       TextEditingController(
                                           text: _userObj!.email);
                                   if (userData != null) {
-                                    nameController = name;
-                                    emailController = email;
+                                    widget.nameController.text = name.text;
+                                    widget.emailController.text = email.text;
                                     setState(() {});
                                   }
                                 });
