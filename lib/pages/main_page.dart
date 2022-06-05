@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -9,6 +11,7 @@ import '../blocs/navigation_bloc/navigation_bloc.dart';
 import '../blocs/navigation_bloc/navigation_event.dart';
 import '../blocs/navigation_bloc/navigation_state.dart';
 import '../routes/app_router.dart';
+import '../widgets/navigation/bloc/anim_bloc.dart';
 import '../widgets/navigation/custom_bottom_nav_bar.dart';
 import 'delivery_page/delivery_page.dart';
 import 'home_page/home_page.dart';
@@ -21,7 +24,7 @@ class MainPage extends StatefulWidget {
   State<MainPage> createState() => _MainPageState();
 }
 
-class _MainPageState extends State<MainPage> {
+class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
   static const List<String> _pages = [
     HomePage.routeName,
     DeliveryPage.routeName,
@@ -29,6 +32,44 @@ class _MainPageState extends State<MainPage> {
     PurchasePage.routeName,
     ProfilePage.routeName,
   ];
+  bool playPause = true;
+  late AnimationController controller;
+  late Animation animation;
+  Timer? _timerAmplitude;
+
+  void animPlus() {
+    controller = AnimationController(
+      duration: const Duration(seconds: 1),
+      vsync: this,
+    );
+    animation = CurvedAnimation(
+      parent: controller,
+      curve: Curves.decelerate,
+    );
+    controller.forward();
+    controller.addStatusListener((status) {
+      if (status == AnimationStatus.completed) {
+        _timerAmplitude!.cancel();
+      }
+    });
+  }
+
+  void animMinus() {
+    controller = AnimationController(
+      duration: const Duration(seconds: 1),
+      vsync: this,
+    );
+    animation = CurvedAnimation(
+      parent: controller,
+      curve: Curves.easeInQuart,
+    );
+    controller.reverse(from: 1);
+    controller.addStatusListener((status) {
+      if (status == AnimationStatus.dismissed) {
+        _timerAmplitude!.cancel();
+      }
+    });
+  }
 
   static final GlobalKey<NavigatorState> _navigatorKey =
       GlobalKey<NavigatorState>();
@@ -63,6 +104,9 @@ class _MainPageState extends State<MainPage> {
         BlocProvider<NavigationBloc>(
           create: (_) => NavigationBloc(),
         ),
+        BlocProvider<AnimBloc>(
+          create: (_) => AnimBloc(),
+        ),
       ],
       child: BlocConsumer<NavigationBloc, NavigationState>(
         listener: (_, state) {
@@ -81,18 +125,37 @@ class _MainPageState extends State<MainPage> {
               ),
               drawerEnableOpenDragGesture: false,
               bottomNavigationBar: CustomBottomNavBar(
-                currentTab: state.currentIndex,
-                onSelect: (int index) {
-                  if (state.currentIndex != index) {
+                  currentTab: state.currentIndex,
+                  onSelect: (int index) {
+                    if (state.currentIndex != index) {
+                      if (_pages[index] == Test.routeName) {
+                        playPause = !playPause;
+                        if (!playPause) {
+                          animPlus();
+                        }
+                      } else {
+                        if (playPause) {
+                          animMinus();
+                        }
+                      }
+                      print('1212121212121212121212121121212');
+                      _timerAmplitude = Timer.periodic(
+                          const Duration(milliseconds: 1), (_) async {
+                        context.read<AnimBloc>().add(
+                              AnimEvent(
+                                anim: animation.value,
+                              ),
+                            );
+                      });
+                      setState(() {});
+                    }
                     context.read<NavigationBloc>().add(
                           NavigateTab(
                             tabIndex: index,
                             route: _pages[index],
                           ),
                         );
-                  }
-                },
-              ),
+                  }),
             ),
           );
         },

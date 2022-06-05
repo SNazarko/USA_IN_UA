@@ -1,10 +1,14 @@
+import 'dart:math';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:usa_in_ua/resources/app_images.dart';
 
 import '../../resources/app_colors.dart';
 import '../../resources/app_icons.dart';
+import 'bloc/anim_bloc.dart';
 
 class CustomBottomNavBar extends StatelessWidget {
   const CustomBottomNavBar(
@@ -34,73 +38,104 @@ class CustomBottomNavBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 10.0),
-      child: Container(
-        color: Colors.transparent,
-        width: size.width,
-        height: 70,
-        child: Stack(
-          children: [
-            Align(
-              alignment: Alignment.bottomCenter,
-              child: ClipRRect(
-                borderRadius: const BorderRadius.all(
-                  Radius.circular(10.0),
+    return BlocBuilder<AnimBloc, AnimState>(
+      builder: (context, state) {
+        return Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 10.0),
+          child: Container(
+            color: Colors.transparent,
+            width: size.width,
+            height: 70,
+            child: Stack(
+              children: [
+                Align(
+                  alignment: Alignment.bottomCenter,
+                  child: ClipRRect(
+                    borderRadius: const BorderRadius.all(
+                      Radius.circular(10.0),
+                    ),
+                    child: CustomPaint(
+                      size: Size(size.width - 10, kBottomNavigationBarHeight),
+                      painter: PainterNavBar(),
+                    ),
+                  ),
                 ),
-                child: CustomPaint(
-                  size: Size(size.width - 10, kBottomNavigationBarHeight),
-                  painter: PainterNavBar(),
-                ),
-              ),
-            ),
-            Align(
-              alignment: Alignment.topCenter,
-              child: Image.asset(
-                AppImages.tabAdd,
-                width: 60.0,
-                height: 60.0,
-                fit: BoxFit.fill,
-              ),
-            ),
-            Align(
-              alignment: Alignment.bottomCenter,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: _items.map((e) {
-                  final int i = _items.indexOf(e);
-
-                  return Flexible(
-                    child: SizedBox(
-                      width: double.infinity,
-                      height: kBottomNavigationBarHeight,
-                      child: Material(
-                        color: Colors.transparent,
-                        child: InkWell(
-                          onTap: () => onSelect(i),
-                          highlightColor: Colors.transparent,
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              SvgPicture.asset(
-                                e.iconPath,
-                                color: i == currentTab
-                                    ? AppColors.text
-                                    : AppColors.noActive,
-                              ),
-                            ],
+                Align(
+                  alignment: Alignment.topCenter,
+                  child: Stack(
+                    children: [
+                      Container(
+                        width: 60.0,
+                        height: 60.0,
+                        decoration: BoxDecoration(
+                          color: state.anim > 0.5
+                              ? AppColors.text
+                              : AppColors.green,
+                          borderRadius: const BorderRadius.all(
+                            Radius.circular(30.0),
                           ),
                         ),
                       ),
-                    ),
-                  );
-                }).toList(),
-              ),
+                      Positioned(
+                        top: 13,
+                        left: 13,
+                        child: SizedBox(
+                          width: 35.0,
+                          height: 35.0,
+                          child: Transform.rotate(
+                            angle: (45 * pi / 180) * state.anim,
+                            child: SvgPicture.asset(
+                              AppIcons.plus,
+                              color: state.anim > 0.5
+                                  ? Colors.white
+                                  : AppColors.text,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Align(
+                  alignment: Alignment.bottomCenter,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: _items.map((e) {
+                      final int i = _items.indexOf(e);
+
+                      return Flexible(
+                        child: SizedBox(
+                          width: double.infinity,
+                          height: kBottomNavigationBarHeight,
+                          child: Material(
+                            color: Colors.transparent,
+                            child: InkWell(
+                              onTap: () => onSelect(i),
+                              highlightColor: Colors.transparent,
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  SvgPicture.asset(
+                                    e.iconPath,
+                                    color: i == currentTab
+                                        ? AppColors.text
+                                        : AppColors.noActive,
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                      );
+                    }).toList(),
+                  ),
+                ),
+              ],
             ),
-          ],
-        ),
-      ),
+          ),
+        );
+      },
     );
   }
 }
@@ -109,7 +144,7 @@ class PainterNavBar extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     Paint paint = Paint()
-      ..color = Colors.white60
+      ..color = Colors.white70
       ..style = PaintingStyle.fill;
     Path path = Path()..moveTo(0, 0);
     path.quadraticBezierTo(size.width * 0.20, 0, size.width * 0.35, 0);
