@@ -1,9 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../bloc/authorisation_bloc.dart';
-import '../widgets/registration_page/registration_page.dart';
-import '../widgets/sms_page/sms_page.dart';
-import '../widgets/welcome_page/welcome_page.dart';
+import '../widgets/registration/registration.dart';
+import '../widgets/sms/sms.dart';
+import '../widgets/welcome/welcome.dart';
 
 class RegistrationPagesArguments {
   RegistrationPagesArguments(
@@ -14,13 +14,13 @@ class RegistrationPagesArguments {
   TextEditingController emailController;
 }
 
-class RegistrationPages extends StatelessWidget {
-  RegistrationPages({
+class RegistrationPage extends StatelessWidget {
+  RegistrationPage({
     Key? key,
     required this.nameController,
     required this.emailController,
   }) : super(key: key);
-  static const routeName = '/authorisations_pages/registration_pages.dart';
+  static const routeName = '/authorisations_pages/registration.dart';
   final TextEditingController phoneController = TextEditingController();
   final PageController controller = PageController();
   final TextEditingController nameController;
@@ -33,19 +33,19 @@ class RegistrationPages extends StatelessWidget {
       child: PageView(
         controller: controller,
         children: [
-          RegistrationPage(
+          Registration(
             nameController: nameController,
             emailController: emailController,
             phoneController: phoneController,
             controller: controller,
           ),
-          SmsPage(
+          Sms(
             controller: controller,
             phoneController: phoneController,
             emailController: emailController,
             nameController: nameController,
           ),
-          const WelcomePage(),
+          const Welcome(),
         ],
       ),
     );

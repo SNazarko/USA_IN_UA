@@ -7,10 +7,10 @@ import 'package:pin_code_fields/pin_code_fields.dart';
 import '../../../../resources/app_colors.dart';
 import '../../../../widgets/button_enter.dart';
 import '../../bloc/authorisation_bloc.dart';
-import '../../registration_pages/registration_pages.dart';
+import '../../registration_page/registration_page.dart';
 
-class SmsPage extends StatefulWidget {
-  const SmsPage({
+class Sms extends StatefulWidget {
+  const Sms({
     Key? key,
     required this.controller,
     required this.phoneController,
@@ -23,10 +23,10 @@ class SmsPage extends StatefulWidget {
   final PageController controller;
 
   @override
-  State<SmsPage> createState() => _SmsPageState();
+  State<Sms> createState() => _SmsState();
 }
 
-class _SmsPageState extends State<SmsPage> {
+class _SmsState extends State<Sms> {
   TextEditingController smsController = TextEditingController();
   int _counter = 30;
   Timer? _timer;
@@ -74,7 +74,7 @@ class _SmsPageState extends State<SmsPage> {
                   Timer(const Duration(seconds: 1), () {
                     Navigator.pushNamed(
                       context,
-                      RegistrationPages.routeName,
+                      RegistrationPage.routeName,
                     );
                   });
                 }
@@ -83,7 +83,7 @@ class _SmsPageState extends State<SmsPage> {
                 Timer(const Duration(seconds: 1), () {
                   Navigator.pushNamed(
                     context,
-                    RegistrationPages.routeName,
+                    RegistrationPage.routeName,
                   );
                 });
               }

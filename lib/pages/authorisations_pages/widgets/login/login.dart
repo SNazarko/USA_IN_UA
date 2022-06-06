@@ -1,4 +1,3 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
@@ -11,11 +10,10 @@ import '../../../../resources/app_images.dart';
 import '../../../../widgets/button_enter.dart';
 import '../../../../widgets/text_field_phone_number.dart';
 import '../../bloc/authorisation_bloc.dart';
-import '../../registration_pages/registration_pages.dart';
-import '../registration_page/registration_page.dart';
+import '../../registration_page/registration_page.dart';
 
-class LoginPage extends StatelessWidget {
-  LoginPage({
+class Login extends StatelessWidget {
+  Login({
     Key? key,
     required this.controller,
     required this.phoneController,
@@ -26,8 +24,8 @@ class LoginPage extends StatelessWidget {
   final TextEditingController emailController;
   final PageController controller;
   final TextEditingController phoneController;
-  GoogleSignInAccount? _userObj;
   final GoogleSignIn _googleSignIn = GoogleSignIn();
+  GoogleSignInAccount? _userObj;
 
   void _buttonContinue(
     BuildContext context,
@@ -55,6 +53,50 @@ class LoginPage extends StatelessWidget {
         1,
         duration: const Duration(milliseconds: 400),
         curve: Curves.easeIn,
+      );
+    }
+  }
+
+  void _googleSignInTab(BuildContext context) {
+    _googleSignIn.signIn().then((userData) {
+      _userObj = userData;
+      final TextEditingController name =
+          TextEditingController(text: _userObj!.displayName.toString());
+      final TextEditingController email =
+          TextEditingController(text: _userObj!.email);
+      if (userData != null) {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) {
+            return RegistrationPage(
+              emailController: email,
+              nameController: name,
+            );
+          }),
+        );
+      }
+    });
+  }
+
+  Future<void> _facebookSignInTab(BuildContext context) async {
+    final userData = await FacebookAuth.instance.getUserData();
+    // final facebookAuthCredential =
+    //     FacebookAuthProvider.credential(
+    //         facebookLogin.accessToken!.token);
+    // await FirebaseAuth.instance
+    //     .signInWithCredential(
+    //         facebookAuthCredential);
+    final TextEditingController name =
+        TextEditingController(text: userData['email']);
+    final TextEditingController email =
+        TextEditingController(text: userData['name']);
+
+    if (userData.isNotEmpty) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) {
+          return RegistrationPage(emailController: name, nameController: email);
+        }),
       );
     }
   }
@@ -111,7 +153,7 @@ class LoginPage extends StatelessWidget {
                             onTap: () => Navigator.push(
                               context,
                               MaterialPageRoute(builder: (context) {
-                                return RegistrationPages(
+                                return RegistrationPage(
                                   emailController: emailController,
                                   nameController: nameController,
                                 );
@@ -149,29 +191,7 @@ class LoginPage extends StatelessWidget {
                               height: 60.0,
                             ),
                             GestureDetector(
-                              onTap: () {
-                                _googleSignIn.signIn().then((userData) {
-                                  _userObj = userData;
-                                  final TextEditingController name =
-                                      TextEditingController(
-                                          text:
-                                              _userObj!.displayName.toString());
-                                  final TextEditingController email =
-                                      TextEditingController(
-                                          text: _userObj!.email);
-                                  if (userData != null) {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(builder: (context) {
-                                        return RegistrationPages(
-                                          emailController: email,
-                                          nameController: name,
-                                        );
-                                      }),
-                                    );
-                                  }
-                                });
-                              },
+                              onTap: () => _googleSignInTab(context),
                               child: Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
@@ -194,33 +214,7 @@ class LoginPage extends StatelessWidget {
                               height: 20.0,
                             ),
                             GestureDetector(
-                              onTap: () async {
-                                final userData =
-                                    await FacebookAuth.instance.getUserData();
-                                // final facebookAuthCredential =
-                                //     FacebookAuthProvider.credential(
-                                //         facebookLogin.accessToken!.token);
-                                // await FirebaseAuth.instance
-                                //     .signInWithCredential(
-                                //         facebookAuthCredential);
-                                final TextEditingController name =
-                                    TextEditingController(
-                                        text: userData['email']);
-                                final TextEditingController email =
-                                    TextEditingController(
-                                        text: userData['name']);
-
-                                if (userData.isNotEmpty) {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(builder: (context) {
-                                      return RegistrationPages(
-                                          emailController: name,
-                                          nameController: email);
-                                    }),
-                                  );
-                                }
-                              },
+                              onTap: () => _facebookSignInTab(context),
                               child: Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,

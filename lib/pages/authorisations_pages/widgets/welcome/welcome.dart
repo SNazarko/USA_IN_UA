@@ -4,8 +4,8 @@ import '../../../../resources/app_images.dart';
 import '../../../../widgets/button_enter.dart';
 import '../../../main_page.dart';
 
-class WelcomePage extends StatelessWidget {
-  const WelcomePage({Key? key}) : super(key: key);
+class Welcome extends StatelessWidget {
+  const Welcome({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

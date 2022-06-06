@@ -13,8 +13,8 @@ import '../../../../widgets/button_enter.dart';
 import '../../../../widgets/text_field_phone_number.dart';
 import '../../bloc/authorisation_bloc.dart';
 
-class RegistrationPage extends StatefulWidget {
-  const RegistrationPage(
+class Registration extends StatefulWidget {
+  const Registration(
       {Key? key,
       required this.controller,
       required this.phoneController,
@@ -22,21 +22,20 @@ class RegistrationPage extends StatefulWidget {
       required this.emailController})
       : super(key: key);
   final PageController controller;
-
   final TextEditingController phoneController;
-
   final TextEditingController nameController;
-
   final TextEditingController emailController;
   @override
-  State<RegistrationPage> createState() => _RegistrationPageState();
+  State<Registration> createState() => _RegistrationState();
 }
 
-class _RegistrationPageState extends State<RegistrationPage> {
+class _RegistrationState extends State<Registration> {
   GoogleSignInAccount? _userObj;
   TextEditingController nameController = TextEditingController();
   TextEditingController emailController = TextEditingController();
   final GoogleSignIn _googleSignIn = GoogleSignIn();
+  late FToast fToast;
+
   Widget toast(String text) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 12.0),
@@ -99,7 +98,34 @@ class _RegistrationPageState extends State<RegistrationPage> {
     }
   }
 
-  late FToast fToast;
+  Future<void> _facebookSignInTab() async {
+    final userData = await FacebookAuth.instance.getUserData();
+    final TextEditingController name =
+        TextEditingController(text: userData['email']);
+    final TextEditingController email =
+        TextEditingController(text: userData['name']);
+
+    if (userData.isNotEmpty) {
+      widget.nameController.text = name.text;
+      widget.emailController.text = email.text;
+      setState(() {});
+    }
+  }
+
+  void _googleSignInTab() {
+    _googleSignIn.signIn().then((userData) {
+      _userObj = userData;
+      final TextEditingController name =
+          TextEditingController(text: _userObj!.displayName.toString());
+      final TextEditingController email =
+          TextEditingController(text: _userObj!.email);
+      if (userData != null) {
+        widget.nameController.text = name.text;
+        widget.emailController.text = email.text;
+        setState(() {});
+      }
+    });
+  }
 
   @override
   void initState() {
@@ -235,40 +261,9 @@ class _RegistrationPageState extends State<RegistrationPage> {
                               height: 40.0,
                             ),
                             GestureDetector(
-                              onTap: () {
-                                _googleSignIn.signIn().then((userData) {
-                                  _userObj = userData;
-                                  final TextEditingController name =
-                                      TextEditingController(
-                                          text:
-                                              _userObj!.displayName.toString());
-                                  final TextEditingController email =
-                                      TextEditingController(
-                                          text: _userObj!.email);
-                                  if (userData != null) {
-                                    widget.nameController.text = name.text;
-                                    widget.emailController.text = email.text;
-                                    setState(() {});
-                                  }
-                                });
-                              },
+                              onTap: () => _googleSignInTab(),
                               child: GestureDetector(
-                                onTap: () async {
-                                  final userData =
-                                      await FacebookAuth.instance.getUserData();
-                                  final TextEditingController name =
-                                      TextEditingController(
-                                          text: userData['email']);
-                                  final TextEditingController email =
-                                      TextEditingController(
-                                          text: userData['name']);
-
-                                  if (userData.isNotEmpty) {
-                                    widget.nameController.text = name.text;
-                                    widget.emailController.text = email.text;
-                                    setState(() {});
-                                  }
-                                },
+                                onTap: () => _facebookSignInTab(),
                                 child: Row(
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,

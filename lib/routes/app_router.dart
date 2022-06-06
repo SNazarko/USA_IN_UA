@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../pages/authorisations_pages/authorisation_page/authorisations_page.dart';
-import '../pages/authorisations_pages/registration_pages/registration_pages.dart';
+import '../pages/authorisations_pages/registration_page/registration_page.dart';
 import '../pages/delivery_page/delivery_page.dart';
 import '../pages/home_page/home_page.dart';
 import '../pages/main_page.dart';
@@ -24,11 +24,11 @@ class AppRouter {
         builder = (_) => AuthorisationsPages();
         break;
 
-      // registration_pages
-      case RegistrationPages.routeName:
+      // registration
+      case RegistrationPage.routeName:
         final RegistrationPagesArguments args =
             arguments as RegistrationPagesArguments;
-        builder = (_) => RegistrationPages(
+        builder = (_) => RegistrationPage(
               nameController: args.nameController,
               emailController: args.emailController,
             );

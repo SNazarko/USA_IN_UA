@@ -1,6 +1,4 @@
 import 'dart:async';
-
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:usa_in_ua/pages/profile_page/profile_page.dart';
@@ -37,7 +35,7 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
   late Animation animation;
   Timer? _timerAmplitude;
 
-  void animPlus() {
+  void _animPlus() {
     controller = AnimationController(
       duration: const Duration(seconds: 1),
       vsync: this,
@@ -54,7 +52,7 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
     });
   }
 
-  void animMinus() {
+  void _animMinus() {
     controller = AnimationController(
       duration: const Duration(seconds: 1),
       vsync: this,
@@ -73,14 +71,6 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
 
   static final GlobalKey<NavigatorState> _navigatorKey =
       GlobalKey<NavigatorState>();
-  void _onSelectMenu(String route) {
-    if (_navigatorKey.currentState != null) {
-      _navigatorKey.currentState!.pushNamedAndRemoveUntil(
-        route,
-        (_) => false,
-      );
-    }
-  }
 
   void _onSelectTab(String route) {
     if (_navigatorKey.currentState != null) {
@@ -129,11 +119,10 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
                   onSelect: (int index) {
                     if (state.currentIndex != index) {
                       if (_pages[index] == Test.routeName) {
-                        animPlus();
+                        _animPlus();
                       } else {
-                        animMinus();
+                        _animMinus();
                       }
-                      print('1212121212121212121212121121212');
                       _timerAmplitude = Timer.periodic(
                           const Duration(milliseconds: 1), (_) async {
                         context.read<AnimBloc>().add(
