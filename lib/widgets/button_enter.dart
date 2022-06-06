@@ -10,23 +10,25 @@ class ButtonEnter extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final double screenWidth = MediaQuery.of(context).size.width;
-    return InkWell(
-      onTap: onPressed,
-      child: Container(
-        height: 56.0,
-        width: screenWidth,
-        decoration: const BoxDecoration(
-          color: AppColors.green,
-          borderRadius: BorderRadius.all(
-            Radius.circular(20.0),
+    return Material(
+      child: InkWell(
+        onTap: onPressed,
+        child: Container(
+          height: 56.0,
+          width: screenWidth,
+          decoration: const BoxDecoration(
+            color: AppColors.green,
+            borderRadius: BorderRadius.all(
+              Radius.circular(20.0),
+            ),
           ),
-        ),
-        child: Center(
-          child: Text(
-            text,
-            style: const TextStyle(
-              fontSize: 14.0,
-              color: AppColors.brown,
+          child: Center(
+            child: Text(
+              text,
+              style: const TextStyle(
+                fontSize: 14.0,
+                color: AppColors.brown,
+              ),
             ),
           ),
         ),

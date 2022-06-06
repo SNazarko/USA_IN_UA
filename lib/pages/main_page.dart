@@ -129,14 +129,9 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
                   onSelect: (int index) {
                     if (state.currentIndex != index) {
                       if (_pages[index] == Test.routeName) {
-                        playPause = !playPause;
-                        if (!playPause) {
-                          animPlus();
-                        }
+                        animPlus();
                       } else {
-                        if (playPause) {
-                          animMinus();
-                        }
+                        animMinus();
                       }
                       print('1212121212121212121212121121212');
                       _timerAmplitude = Timer.periodic(

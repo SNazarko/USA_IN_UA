@@ -1,5 +1,7 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -45,18 +47,6 @@ class _RegistrationPageState extends State<RegistrationPage> {
       child: Text(text),
     );
   }
-
-  // TextEditingController _isController(
-  //   TextEditingController controller,
-  //   TextEditingController controllerSuper,
-  // ) {
-  //   if (controller.text.isNotEmpty) {
-  //     return controller;
-  //   } else {
-  //     controller = controllerSuper;
-  //     return controller;
-  //   }
-  // }
 
   void _buttonContinue(
     BuildContext context,
@@ -262,22 +252,40 @@ class _RegistrationPageState extends State<RegistrationPage> {
                                   }
                                 });
                               },
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  const Text(
-                                    'Войти как пользователь',
-                                    style: TextStyle(
-                                      fontSize: 14.0,
+                              child: GestureDetector(
+                                onTap: () async {
+                                  final userData =
+                                      await FacebookAuth.instance.getUserData();
+                                  final TextEditingController name =
+                                      TextEditingController(
+                                          text: userData['email']);
+                                  final TextEditingController email =
+                                      TextEditingController(
+                                          text: userData['name']);
+
+                                  if (userData.isNotEmpty) {
+                                    widget.nameController.text = name.text;
+                                    widget.emailController.text = email.text;
+                                    setState(() {});
+                                  }
+                                },
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    const Text(
+                                      'Войти как пользователь',
+                                      style: TextStyle(
+                                        fontSize: 14.0,
+                                      ),
                                     ),
-                                  ),
-                                  Image.asset(
-                                    AppImages.google,
-                                    width: 25.0,
-                                    height: 25.0,
-                                  ),
-                                ],
+                                    Image.asset(
+                                      AppImages.google,
+                                      width: 25.0,
+                                      height: 25.0,
+                                    ),
+                                  ],
+                                ),
                               ),
                             ),
                             const SizedBox(
