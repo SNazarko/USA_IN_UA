@@ -47,7 +47,7 @@ class _SmsState extends State<Sms> {
           userEmail: widget.emailController?.text ?? '',
         ),
       );
-      Timer(const Duration(seconds: 3), () {
+      Timer(const Duration(seconds: 5), () {
         FirebaseAuth.instance.authStateChanges().listen((User? user) {
           if (user?.uid != null) {
             print('1');
@@ -71,19 +71,39 @@ class _SmsState extends State<Sms> {
                   );
                 } else {
                   print('4');
-                  Timer(const Duration(seconds: 1), () {
-                    Navigator.pushNamed(
+                  Timer(const Duration(milliseconds: 10), () {
+                    final TextEditingController name =
+                        TextEditingController(text: '');
+                    final TextEditingController email =
+                        TextEditingController(text: '');
+                    Navigator.push(
                       context,
-                      RegistrationPage.routeName,
+                      MaterialPageRoute(builder: (context) {
+                        return RegistrationPage(
+                          emailController: email,
+                          nameController: name,
+                          phoneController: widget.phoneController,
+                        );
+                      }),
                     );
                   });
                 }
               } else {
                 print('5');
-                Timer(const Duration(seconds: 1), () {
-                  Navigator.pushNamed(
+                Timer(const Duration(milliseconds: 10), () {
+                  final TextEditingController name =
+                      TextEditingController(text: '');
+                  final TextEditingController email =
+                      TextEditingController(text: '');
+                  Navigator.push(
                     context,
-                    RegistrationPage.routeName,
+                    MaterialPageRoute(builder: (context) {
+                      return RegistrationPage(
+                        emailController: email,
+                        nameController: name,
+                        phoneController: widget.phoneController,
+                      );
+                    }),
                   );
                 });
               }
@@ -204,10 +224,13 @@ class _SmsState extends State<Sms> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          ButtonEnter(
-                            onPressed: () => _buttonContinue(context, state),
-                            text: 'ЗАРЕГИСТРИРОВАТЬСЯ',
-                          ),
+                          state.status == AuthStatus.initial
+                              ? const Center(child: CircularProgressIndicator())
+                              : ButtonEnter(
+                                  onPressed: () =>
+                                      _buttonContinue(context, state),
+                                  text: 'ЗАРЕГИСТРИРОВАТЬСЯ',
+                                ),
                           const SizedBox(
                             height: 30.0,
                           ),

@@ -9,9 +9,11 @@ class RegistrationPagesArguments {
   RegistrationPagesArguments(
     this.nameController,
     this.emailController,
+    this.phoneController,
   );
   TextEditingController nameController;
   TextEditingController emailController;
+  TextEditingController phoneController;
 }
 
 class RegistrationPage extends StatelessWidget {
@@ -19,9 +21,10 @@ class RegistrationPage extends StatelessWidget {
     Key? key,
     required this.nameController,
     required this.emailController,
+    required this.phoneController,
   }) : super(key: key);
   static const routeName = '/authorisations_pages/registration.dart';
-  final TextEditingController phoneController = TextEditingController();
+  final TextEditingController phoneController;
   final PageController controller = PageController();
   final TextEditingController nameController;
   final TextEditingController emailController;

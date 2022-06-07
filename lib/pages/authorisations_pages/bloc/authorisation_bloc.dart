@@ -97,6 +97,11 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           event.userName!,
           event.userEmail!,
         );
+        emit(
+          state.copyWith(
+            status: AuthStatus.initial,
+          ),
+        );
       } on Exception {
         add(
           ErrorCodeSendEvent(),

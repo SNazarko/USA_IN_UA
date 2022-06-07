@@ -31,6 +31,7 @@ class AppRouter {
         builder = (_) => RegistrationPage(
               nameController: args.nameController,
               emailController: args.emailController,
+              phoneController: args.phoneController,
             );
         break;
 

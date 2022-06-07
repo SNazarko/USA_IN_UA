@@ -60,10 +60,12 @@ class Login extends StatelessWidget {
   void _googleSignInTab(BuildContext context) {
     _googleSignIn.signIn().then((userData) {
       _userObj = userData;
-      final TextEditingController name =
-          TextEditingController(text: _userObj!.displayName.toString());
-      final TextEditingController email =
-          TextEditingController(text: _userObj!.email);
+      final TextEditingController name = TextEditingController(
+        text: _userObj!.displayName.toString(),
+      );
+      final TextEditingController email = TextEditingController(
+        text: _userObj!.email,
+      );
       if (userData != null) {
         Navigator.push(
           context,
@@ -71,6 +73,7 @@ class Login extends StatelessWidget {
             return RegistrationPage(
               emailController: email,
               nameController: name,
+              phoneController: phoneController,
             );
           }),
         );
@@ -79,6 +82,7 @@ class Login extends StatelessWidget {
   }
 
   Future<void> _facebookSignInTab(BuildContext context) async {
+    await FacebookAuth.instance.login();
     final userData = await FacebookAuth.instance.getUserData();
     // final facebookAuthCredential =
     //     FacebookAuthProvider.credential(
@@ -86,16 +90,22 @@ class Login extends StatelessWidget {
     // await FirebaseAuth.instance
     //     .signInWithCredential(
     //         facebookAuthCredential);
-    final TextEditingController name =
-        TextEditingController(text: userData['email']);
-    final TextEditingController email =
-        TextEditingController(text: userData['name']);
+    final TextEditingController email = TextEditingController(
+      text: userData['email'],
+    );
+    final TextEditingController name = TextEditingController(
+      text: userData['name'],
+    );
 
     if (userData.isNotEmpty) {
       Navigator.push(
         context,
         MaterialPageRoute(builder: (context) {
-          return RegistrationPage(emailController: name, nameController: email);
+          return RegistrationPage(
+            emailController: email,
+            nameController: name,
+            phoneController: phoneController,
+          );
         }),
       );
     }
@@ -156,6 +166,7 @@ class Login extends StatelessWidget {
                                 return RegistrationPage(
                                   emailController: emailController,
                                   nameController: nameController,
+                                  phoneController: phoneController,
                                 );
                               }),
                             ),

@@ -99,10 +99,11 @@ class _RegistrationState extends State<Registration> {
   }
 
   Future<void> _facebookSignInTab() async {
+    await FacebookAuth.instance.login();
     final userData = await FacebookAuth.instance.getUserData();
-    final TextEditingController name =
-        TextEditingController(text: userData['email']);
     final TextEditingController email =
+        TextEditingController(text: userData['email']);
+    final TextEditingController name =
         TextEditingController(text: userData['name']);
 
     if (userData.isNotEmpty) {
@@ -262,45 +263,46 @@ class _RegistrationState extends State<Registration> {
                             ),
                             GestureDetector(
                               onTap: () => _googleSignInTab(),
-                              child: GestureDetector(
-                                onTap: () => _facebookSignInTab(),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    const Text(
-                                      'Войти как пользователь',
-                                      style: TextStyle(
-                                        fontSize: 14.0,
-                                      ),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  const Text(
+                                    'Войти как пользователь',
+                                    style: TextStyle(
+                                      fontSize: 14.0,
                                     ),
-                                    Image.asset(
-                                      AppImages.google,
-                                      width: 25.0,
-                                      height: 25.0,
-                                    ),
-                                  ],
-                                ),
+                                  ),
+                                  Image.asset(
+                                    AppImages.google,
+                                    width: 25.0,
+                                    height: 25.0,
+                                  ),
+                                ],
                               ),
                             ),
                             const SizedBox(
                               height: 20.0,
                             ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                const Text(
-                                  'Войти как пользователь',
-                                  style: TextStyle(
-                                    fontSize: 14.0,
+                            GestureDetector(
+                              onTap: () => _facebookSignInTab(),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  const Text(
+                                    'Войти как пользователь',
+                                    style: TextStyle(
+                                      fontSize: 14.0,
+                                    ),
                                   ),
-                                ),
-                                Image.asset(
-                                  AppImages.facebook,
-                                  width: 25.0,
-                                  height: 25.0,
-                                ),
-                              ],
+                                  Image.asset(
+                                    AppImages.facebook,
+                                    width: 25.0,
+                                    height: 25.0,
+                                  ),
+                                ],
+                              ),
                             ),
                           ],
                         ),
