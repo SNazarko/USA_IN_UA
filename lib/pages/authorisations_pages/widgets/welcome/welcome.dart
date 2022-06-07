@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../../../../resources/app_images.dart';
 import '../../../../widgets/button_enter.dart';
 import '../../../main_page.dart';
+import '../../../presentation_page/presentation_page.dart';
 
 class Welcome extends StatelessWidget {
   const Welcome({Key? key}) : super(key: key);
@@ -33,8 +34,8 @@ class Welcome extends StatelessWidget {
                         height: 60.0,
                       ),
                       ButtonEnter(
-                        onPressed: () =>
-                            Navigator.pushNamed(context, MainPage.routeName),
+                        onPressed: () => Navigator.pushNamed(
+                            context, PresentationPage.routeName),
                         text: 'ПРОДОЛЖЫТЬ',
                       ),
                     ],

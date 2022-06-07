@@ -5,6 +5,7 @@ import '../pages/authorisations_pages/registration_page/registration_page.dart';
 import '../pages/delivery_page/delivery_page.dart';
 import '../pages/home_page/home_page.dart';
 import '../pages/main_page.dart';
+import '../pages/presentation_page/presentation_page.dart';
 import '../pages/profile_page/profile_page.dart';
 import '../pages/purchase_page/purchase_page.dart';
 import '../pages/test.dart';
@@ -43,6 +44,11 @@ class AppRouter {
       // home_page
       case HomePage.routeName:
         builder = (_) => HomePage();
+        break;
+
+      // PresentationPage
+      case PresentationPage.routeName:
+        builder = (_) => PresentationPage();
         break;
 
       // purchase_page

@@ -9,4 +9,6 @@ class AppIcons {
   static const String profile = '$_path/profile.svg';
   static const String purchase = '$_path/purchase.svg';
   static const String plus = '$_path/plus.svg';
+  static const String arrowLeft = '$_path/arrow_left.svg';
+  static const String arrowRight = '$_path/arrow_right.svg';
 }
