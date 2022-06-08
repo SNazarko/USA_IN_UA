@@ -18,6 +18,12 @@ class PresentationPage extends StatelessWidget {
     DeliveryScreen(),
     PurchaseAndDeliveryScreen(),
   ];
+  final List<Widget> screen2 = [
+    _Screen(),
+    _Screen(),
+    _Screen(),
+    _Screen(),
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -41,14 +47,34 @@ class PresentationPage extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     TextButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        controller.previousPage(
+                            duration: const Duration(milliseconds: 400),
+                            curve: Curves.easeIn);
+                        print(controller.page);
+                      },
                       child: Text('Назад'),
                     ),
-                    Row(
-                      children: [],
-                    ),
+                    Row(children: [
+                      _Screen(),
+                      _Screen(),
+                      _Screen(),
+                      _Screen(),
+                    ]),
                     TextButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        controller.nextPage(
+                            duration: const Duration(milliseconds: 400),
+                            curve: Curves.easeIn);
+                        // controller.animateToPage(
+                        // 1,
+                        //     duration: Duration(milliseconds: 400),
+                        //     curve: Curves.easeIn,
+                        //
+                        // );
+                        print(controller.offset);
+                        print(controller.page);
+                      },
                       child: Text('Далее'),
                     ),
                   ],
@@ -57,6 +83,24 @@ class PresentationPage extends StatelessWidget {
             ),
           )
         ],
+      ),
+    );
+  }
+}
+
+class _Screen extends StatelessWidget {
+  const _Screen({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: 20.0,
+      height: 5,
+      decoration: const BoxDecoration(
+        color: AppColors.blue,
+        borderRadius: BorderRadius.all(
+          Radius.circular(10.0),
+        ),
       ),
     );
   }

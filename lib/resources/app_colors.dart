@@ -7,4 +7,5 @@ class AppColors {
   static const Color green = Color(0xFF0FC494);
   static const Color brown = Color(0xFF056249);
   static const Color blue = Color(0xFF0066FF);
+  static const Color contour = Color(0xFFEEF1F5);
 }
