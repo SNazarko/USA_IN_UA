@@ -17,4 +17,6 @@ class AppIcons {
   static const String edit = '$_path/edit.svg';
   static const String location = '$_path/location.svg';
   static const String moneyBag = '$_path/money-bag.svg';
+  static const String carbonDioxide_1 = '$_path/carbon_dioxide_1.svg';
+  static const String carbonDioxide_2 = '$_path/carbon_dioxide_2.svg';
 }

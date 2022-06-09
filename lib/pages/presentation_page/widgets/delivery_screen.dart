@@ -3,15 +3,21 @@ import 'package:flutter/material.dart';
 import 'package:usa_in_ua/resources/app_colors.dart';
 
 import '../../../resources/app_images.dart';
+import 'back_and_forth_button.dart';
 
 class DeliveryScreen extends StatelessWidget {
-  const DeliveryScreen({Key? key}) : super(key: key);
+  const DeliveryScreen({
+    Key? key,
+    required this.controller,
+  }) : super(key: key);
+  final PageController controller;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Flexible(
               flex: 5,
@@ -50,6 +56,13 @@ class DeliveryScreen extends StatelessWidget {
                     ),
                   ],
                 ),
+              ),
+            ),
+            Flexible(
+              flex: 1,
+              child: BackAndForthButton(
+                screen3: true,
+                controller: controller,
               ),
             ),
           ],

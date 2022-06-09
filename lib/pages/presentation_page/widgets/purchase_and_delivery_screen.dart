@@ -4,9 +4,15 @@ import 'package:flutter_svg/svg.dart';
 import 'package:usa_in_ua/resources/app_colors.dart';
 
 import '../../../resources/app_icons.dart';
+import '../../../widgets/icon_link.dart';
+import 'back_and_forth_button.dart';
 
 class PurchaseAndDeliveryScreen extends StatefulWidget {
-  PurchaseAndDeliveryScreen({Key? key}) : super(key: key);
+  const PurchaseAndDeliveryScreen({
+    Key? key,
+    required this.controller,
+  }) : super(key: key);
+  final PageController controller;
 
   @override
   State<PurchaseAndDeliveryScreen> createState() =>
@@ -19,6 +25,7 @@ class _PurchaseAndDeliveryScreenState extends State<PurchaseAndDeliveryScreen> {
   @override
   Widget build(BuildContext context) {
     return Column(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Flexible(
           flex: 5,
@@ -56,28 +63,28 @@ class _PurchaseAndDeliveryScreenState extends State<PurchaseAndDeliveryScreen> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                _Link(
+                IconLink(
                   text: isSwish
                       ? 'Выберите желаемые товары в интернет-магазинах США/Европы.'
                       : 'Скопируйте адреса складов, на которые Вы сможете доставлять самостоятельно купленные заказы',
                   color: isSwish ? AppColors.green : AppColors.blue,
                   icon: isSwish ? AppIcons.buy : AppIcons.copyLocation,
                 ),
-                _Link(
+                IconLink(
                   text: isSwish
                       ? 'Скопируйте ссылки на выбранные товары в форму заказа.'
                       : 'Введите трекинг-номер, полученный от магазина.',
                   color: isSwish ? AppColors.green : AppColors.blue,
                   icon: isSwish ? AppIcons.copyLink : AppIcons.edit,
                 ),
-                _Link(
+                IconLink(
                   text: isSwish
                       ? 'В течение 30 минут в кабинете появится расчёт стоимости покупки товаров с доставкой.'
                       : 'Выберите способ доставки и оплатите заказ.',
                   color: isSwish ? AppColors.green : AppColors.blue,
                   icon: isSwish ? AppIcons.moneyBag : AppIcons.moneyBag,
                 ),
-                _Link(
+                IconLink(
                   text: isSwish
                       ? 'Мы выкупим Ваш заказ, и привезем его к Вам. Вы сможете отслеживать его в личном кабинете.'
                       : 'Теперь остается всего немного подождать, и посылка у Вас! PS.... можете отслеживать ее в своем кабинете',
@@ -86,6 +93,13 @@ class _PurchaseAndDeliveryScreenState extends State<PurchaseAndDeliveryScreen> {
                 ),
               ],
             ),
+          ),
+        ),
+        Flexible(
+          flex: 1,
+          child: BackAndForthButton(
+            screen4: true,
+            controller: widget.controller,
           ),
         ),
       ],
@@ -156,54 +170,6 @@ class _Swish extends StatelessWidget {
             ),
           ],
         ),
-      ),
-    );
-  }
-}
-
-class _Link extends StatelessWidget {
-  const _Link({
-    Key? key,
-    required this.text,
-    required this.color,
-    required this.icon,
-  }) : super(key: key);
-  final String text;
-  final String icon;
-  final Color color;
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(
-        horizontal: 25.0,
-      ),
-      child: Row(
-        // mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Flexible(
-            flex: 1,
-            child: SvgPicture.asset(
-              icon,
-              width: 30.0,
-              height: 30.0,
-              color: color,
-            ),
-          ),
-          const SizedBox(
-            width: 20.0,
-          ),
-          Flexible(
-            flex: 5,
-            child: Text(
-              text,
-              style: const TextStyle(
-                fontWeight: FontWeight.w400,
-              ),
-            ),
-          ),
-        ],
       ),
     );
   }
