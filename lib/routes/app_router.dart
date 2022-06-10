@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import '../pages/authorisations_pages/authorisation_page/authorisations_page.dart';
 import '../pages/authorisations_pages/registration_page/registration_page.dart';
 import '../pages/delivery_page/delivery_page.dart';
-import '../pages/home_page/home_page.dart';
+import '../pages/home_pages/home_page.dart';
 import '../pages/main_page.dart';
 import '../pages/presentation_page/presentation_page.dart';
 import '../pages/profile_page/profile_page.dart';
@@ -41,7 +41,7 @@ class AppRouter {
         builder = (_) => DeliveryPage();
         break;
 
-      // home_page
+      // home_pages
       case HomePage.routeName:
         builder = (_) => HomePage();
         break;

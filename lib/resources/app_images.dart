@@ -12,4 +12,6 @@ class AppImages {
   static const String nike = '$_path/nike.png';
   static const String manWithABox = '$_path/man_with_a_box.png';
   static const String tree = '$_path/tree.png';
+  static const String air = '$_path/air.png';
+  static const String car = '$_path/car.png';
 }

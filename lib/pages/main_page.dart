@@ -12,7 +12,7 @@ import '../routes/app_router.dart';
 import '../widgets/navigation/bloc/anim_bloc.dart';
 import '../widgets/navigation/custom_bottom_nav_bar.dart';
 import 'delivery_page/delivery_page.dart';
-import 'home_page/home_page.dart';
+import 'home_pages/home_page.dart';
 
 class MainPage extends StatefulWidget {
   const MainPage({Key? key}) : super(key: key);

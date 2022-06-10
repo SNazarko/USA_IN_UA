@@ -5,7 +5,6 @@ import 'package:flutter/cupertino.dart';
 
 enum ListItemStatus {
   initial,
-  emptyList,
   success,
   failed,
 }

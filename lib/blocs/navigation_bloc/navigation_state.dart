@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 
-import '../../pages/home_page/home_page.dart';
+import '../../pages/home_pages/home_page.dart';
 
 enum NavigationStateStatus {
   initial,

@@ -36,18 +36,12 @@ class ListItemBloc extends Bloc<ListItemEvent, ListItemState> {
       UpdateListItemEvent event,
       Emitter<ListItemState> emit,
     ) {
-      if (event.list.isNotEmpty) {
-        emit(
-          state.copyWith(
-            status: ListItemStatus.success,
-            list: event.list,
-          ),
-        );
-      } else {
-        emit(state.copyWith(
-          status: ListItemStatus.emptyList,
-        ));
-      }
+      emit(
+        state.copyWith(
+          status: ListItemStatus.success,
+          list: event.list,
+        ),
+      );
     });
   }
   StreamSubscription? _audioSubscription;

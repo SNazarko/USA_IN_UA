@@ -6,7 +6,6 @@ import '../../../blocs/goods_list_bloc/goods_list_bloc.dart';
 import '../../../blocs/goods_list_bloc/goods_list_state.dart';
 import '../../../resources/app_colors.dart';
 import '../../../resources/app_icons.dart';
-import '../../../resources/app_images.dart';
 import 'back_and_forth_button.dart';
 
 class SecondScreen extends StatelessWidget {

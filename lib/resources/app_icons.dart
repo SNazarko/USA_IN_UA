@@ -19,4 +19,7 @@ class AppIcons {
   static const String moneyBag = '$_path/money-bag.svg';
   static const String carbonDioxide_1 = '$_path/carbon_dioxide_1.svg';
   static const String carbonDioxide_2 = '$_path/carbon_dioxide_2.svg';
+  static const String menu = '$_path/menu.svg';
+  static const String notification = '$_path/notification.svg';
+  static const String serviceTariffs = '$_path/service_tariffs.svg';
 }
