@@ -36,6 +36,8 @@ class SecondScreen extends StatelessWidget {
                       priceUA: audio.priceUA,
                       priceUSA: audio.priceUSA,
                       goodsImage: audio.goodsImage,
+                      state: state,
+                      index: index,
                     );
                   },
                 ),
@@ -76,45 +78,12 @@ class SecondScreen extends StatelessWidget {
           );
         }
         if (state.status == ListItemStatus.failed) {
-          return Center(
+          return const Center(
             child: Text('Ошыбка'),
           );
         } else {
-          return Text('data');
+          return const Text('data');
         }
-        // return Column(
-        //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        //   children: [
-        //     Flexible(flex: 7, child: _ListGoods()),
-        //     const Flexible(
-        //       flex: 2,
-        //       child: Padding(
-        //         padding: EdgeInsets.only(
-        //           top: 40.0,
-        //         ),
-        //         child: SizedBox(
-        //           child: Center(
-        //             child: Text(
-        //               'Срок доставки примерно 10 дней',
-        //               textAlign: TextAlign.center,
-        //               style: TextStyle(
-        //                 fontSize: 14.0,
-        //                 fontWeight: FontWeight.w600,
-        //               ),
-        //             ),
-        //           ),
-        //         ),
-        //       ),
-        //     ),
-        //     Flexible(
-        //       flex: 1,
-        //       child: BackAndForthButton(
-        //         screen2: true,
-        //         controller: controller,
-        //       ),
-        //     ),
-        //   ],
-        // );
       },
     );
   }
@@ -127,21 +96,15 @@ class _ListGoods extends StatelessWidget {
     this.priceUA,
     this.priceUSA,
     this.goodsImage,
+    required this.state,
+    required this.index,
   }) : super(key: key);
   final String? goodsName;
   final String? priceUA;
   final String? priceUSA;
   final String? goodsImage;
-
-  String saving() {
-    final int priceUAInt = priceUA as int;
-    final int priceUSAInt = priceUSA as int;
-    final int sum = priceUAInt + priceUSAInt;
-    print(priceUSAInt);
-    print(priceUAInt);
-    print(sum);
-    return sum.toString();
-  }
+  final ListItemState state;
+  final int index;
 
   @override
   Widget build(BuildContext context) {
@@ -187,12 +150,14 @@ class _ListGoods extends StatelessWidget {
                       children: [
                         Flexible(
                           flex: 1,
-                          child: SvgPicture.asset(
-                            AppIcons.arrowLeft,
-                            color: AppColors.text,
-                            width: 30.0,
-                            height: 30.0,
-                          ),
+                          child: state.list[index] == state.list.first
+                              ? const SizedBox.shrink()
+                              : SvgPicture.asset(
+                                  AppIcons.arrowLeft,
+                                  color: AppColors.text,
+                                  width: 30.0,
+                                  height: 30.0,
+                                ),
                         ),
                         Flexible(
                           flex: 5,
@@ -208,12 +173,14 @@ class _ListGoods extends StatelessWidget {
                         ),
                         Flexible(
                           flex: 1,
-                          child: SvgPicture.asset(
-                            AppIcons.arrowRight,
-                            color: AppColors.text,
-                            width: 30.0,
-                            height: 30.0,
-                          ),
+                          child: state.list[index] == state.list.last
+                              ? const SizedBox.shrink()
+                              : SvgPicture.asset(
+                                  AppIcons.arrowRight,
+                                  color: AppColors.text,
+                                  width: 30.0,
+                                  height: 30.0,
+                                ),
                         ),
                       ],
                     ),
@@ -309,7 +276,7 @@ class _ListGoods extends StatelessWidget {
                       Row(
                         children: [
                           Text(
-                            ' $saving()',
+                            '${int.parse(priceUA!) - int.parse(priceUSA!)}',
                             textAlign: TextAlign.center,
                             style: const TextStyle(
                               color: AppColors.green,
