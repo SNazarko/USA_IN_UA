@@ -69,6 +69,7 @@ class _PurchaseAndDeliveryScreenState extends State<PurchaseAndDeliveryScreen> {
                       : 'Скопируйте адреса складов, на которые Вы сможете доставлять самостоятельно купленные заказы',
                   color: isSwish ? AppColors.green : AppColors.blue,
                   icon: isSwish ? AppIcons.buy : AppIcons.copyLocation,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                 ),
                 IconLink(
                   text: isSwish
@@ -76,6 +77,7 @@ class _PurchaseAndDeliveryScreenState extends State<PurchaseAndDeliveryScreen> {
                       : 'Введите трекинг-номер, полученный от магазина.',
                   color: isSwish ? AppColors.green : AppColors.blue,
                   icon: isSwish ? AppIcons.copyLink : AppIcons.edit,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                 ),
                 IconLink(
                   text: isSwish
@@ -83,6 +85,7 @@ class _PurchaseAndDeliveryScreenState extends State<PurchaseAndDeliveryScreen> {
                       : 'Выберите способ доставки и оплатите заказ.',
                   color: isSwish ? AppColors.green : AppColors.blue,
                   icon: isSwish ? AppIcons.moneyBag : AppIcons.moneyBag,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                 ),
                 IconLink(
                   text: isSwish
@@ -90,6 +93,7 @@ class _PurchaseAndDeliveryScreenState extends State<PurchaseAndDeliveryScreen> {
                       : 'Теперь остается всего немного подождать, и посылка у Вас! PS.... можете отслеживать ее в своем кабинете',
                   color: isSwish ? AppColors.green : AppColors.blue,
                   icon: isSwish ? AppIcons.location : AppIcons.location,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                 ),
               ],
             ),

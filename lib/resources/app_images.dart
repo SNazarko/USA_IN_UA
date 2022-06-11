@@ -14,4 +14,11 @@ class AppImages {
   static const String tree = '$_path/tree.png';
   static const String air = '$_path/air.png';
   static const String car = '$_path/car.png';
+  static const String link1 = '$_path/link1.png';
+  static const String link2 = '$_path/link2.png';
+  static const String link3 = '$_path/link3.png';
+  static const String link4 = '$_path/link4.png';
+  static const String link5 = '$_path/link5.png';
+  static const String link6 = '$_path/link6.png';
+  static const String link7 = '$_path/link7.png';
 }

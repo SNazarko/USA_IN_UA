@@ -11,6 +11,7 @@ class ButtonEnter extends StatelessWidget {
   Widget build(BuildContext context) {
     final double screenWidth = MediaQuery.of(context).size.width;
     return Material(
+      color: Colors.transparent,
       child: InkWell(
         onTap: onPressed,
         child: Container(
