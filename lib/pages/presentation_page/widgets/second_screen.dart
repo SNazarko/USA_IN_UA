@@ -9,11 +9,12 @@ import '../../../resources/app_icons.dart';
 import 'back_and_forth_button.dart';
 
 class SecondScreen extends StatelessWidget {
-  const SecondScreen({
+  SecondScreen({
     Key? key,
     required this.controller,
   }) : super(key: key);
   final PageController controller;
+  final ScrollController _controller = ScrollController();
 
   @override
   Widget build(BuildContext context) {
@@ -26,6 +27,7 @@ class SecondScreen extends StatelessWidget {
               Flexible(
                 flex: 7,
                 child: ListView.builder(
+                  controller: _controller,
                   scrollDirection: Axis.horizontal,
                   itemCount: state.list.length,
                   itemBuilder: (BuildContext context, int index) {
@@ -37,6 +39,7 @@ class SecondScreen extends StatelessWidget {
                       goodsImage: audio.goodsImage,
                       state: state,
                       index: index,
+                      controller: _controller,
                     );
                   },
                 ),
@@ -97,6 +100,7 @@ class _ListGoods extends StatelessWidget {
     this.goodsImage,
     required this.state,
     required this.index,
+    required this.controller,
   }) : super(key: key);
   final String? goodsName;
   final String? priceUA;
@@ -104,6 +108,7 @@ class _ListGoods extends StatelessWidget {
   final String? goodsImage;
   final ListItemState state;
   final int index;
+  final ScrollController controller;
 
   @override
   Widget build(BuildContext context) {
@@ -151,11 +156,15 @@ class _ListGoods extends StatelessWidget {
                           flex: 1,
                           child: state.list[index] == state.list.first
                               ? const SizedBox.shrink()
-                              : SvgPicture.asset(
-                                  AppIcons.arrowLeft,
-                                  color: AppColors.text,
-                                  width: 30.0,
-                                  height: 30.0,
+                              : InkWell(
+                                  onTap: () => controller
+                                      .jumpTo(controller.offset - 360.0),
+                                  child: SvgPicture.asset(
+                                    AppIcons.arrowLeft,
+                                    color: AppColors.text,
+                                    width: 30.0,
+                                    height: 30.0,
+                                  ),
                                 ),
                         ),
                         Flexible(
@@ -174,11 +183,15 @@ class _ListGoods extends StatelessWidget {
                           flex: 1,
                           child: state.list[index] == state.list.last
                               ? const SizedBox.shrink()
-                              : SvgPicture.asset(
-                                  AppIcons.arrowRight,
-                                  color: AppColors.text,
-                                  width: 30.0,
-                                  height: 30.0,
+                              : InkWell(
+                                  onTap: () => controller
+                                      .jumpTo(controller.offset + 360.0),
+                                  child: SvgPicture.asset(
+                                    AppIcons.arrowRight,
+                                    color: AppColors.text,
+                                    width: 30.0,
+                                    height: 30.0,
+                                  ),
                                 ),
                         ),
                       ],
