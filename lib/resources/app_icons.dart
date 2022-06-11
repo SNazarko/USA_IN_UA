@@ -22,4 +22,9 @@ class AppIcons {
   static const String menu = '$_path/menu.svg';
   static const String notification = '$_path/notification.svg';
   static const String serviceTariffs = '$_path/service_tariffs.svg';
+  static const String bagActive = '$_path/bag_active.svg';
+  static const String boxActive = '$_path/box_active.svg';
+  static const String homeActive = '$_path/home_active.svg';
+  static const String profileActive = '$_path/profile_active.svg';
+  static const String empty = '$_path/empty.svg';
 }

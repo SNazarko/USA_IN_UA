@@ -165,7 +165,10 @@ class HomePage extends StatelessWidget {
                         ),
                       ),
                     ),
-                    Flexible(flex: 5, child: _GoodsList()),
+                    const Flexible(
+                      flex: 5,
+                      child: _GoodsList(),
+                    ),
                   ],
                 ),
               ),
@@ -409,7 +412,7 @@ class _LinkInBrowser extends StatelessWidget {
   final String link;
   final String image;
 
-  void _launchUrl(String link) async {
+  Future<void> _launchUrl(String link) async {
     final Uri _url = Uri.parse(link);
     if (await launchUrl(_url)) throw 'Could not launch $_url';
   }

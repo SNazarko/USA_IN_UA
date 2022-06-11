@@ -25,7 +25,7 @@ class CustomBottomNavBar extends StatelessWidget {
       iconPath: AppIcons.purchase,
     ),
     _BottomNavigationBarItem(
-      iconPath: AppImages.tabAdd,
+      iconPath: AppIcons.empty,
     ),
     _BottomNavigationBarItem(
       iconPath: AppIcons.delivery,
@@ -34,6 +34,38 @@ class CustomBottomNavBar extends StatelessWidget {
       iconPath: AppIcons.profile,
     ),
   ];
+
+  String path(String path, int i) {
+    if (path == AppIcons.home) {
+      if (i == currentTab) {
+        return AppIcons.homeActive;
+      } else {
+        return AppIcons.home;
+      }
+    }
+    if (path == AppIcons.purchase) {
+      if (i == currentTab) {
+        return AppIcons.bagActive;
+      } else {
+        return AppIcons.purchase;
+      }
+    }
+    if (path == AppIcons.delivery) {
+      if (i == currentTab) {
+        return AppIcons.boxActive;
+      } else {
+        return AppIcons.delivery;
+      }
+    }
+    if (path == AppIcons.profile) {
+      if (i == currentTab) {
+        return AppIcons.profileActive;
+      } else {
+        return AppIcons.profile;
+      }
+    }
+    return AppIcons.empty;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -117,10 +149,11 @@ class CustomBottomNavBar extends StatelessWidget {
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
                                   SvgPicture.asset(
-                                    e.iconPath,
-                                    color: i == currentTab
-                                        ? AppColors.text
-                                        : AppColors.noActive,
+                                    path(
+                                      e.iconPath,
+                                      i,
+                                    ),
+                                    color: AppColors.text,
                                   ),
                                 ],
                               ),
@@ -144,7 +177,7 @@ class PainterNavBar extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     Paint paint = Paint()
-      ..color = Colors.white70
+      ..color = Colors.grey.shade100
       ..style = PaintingStyle.fill;
     Path path = Path()..moveTo(0, 0);
     path.quadraticBezierTo(size.width * 0.20, 0, size.width * 0.35, 0);
@@ -159,7 +192,7 @@ class PainterNavBar extends CustomPainter {
     path.lineTo(0, size.height);
     path.close();
 
-    canvas.drawShadow(path, Colors.black, 1, true);
+    canvas.drawShadow(path, Colors.grey, 2, true);
     canvas.drawPath(path, paint);
   }
 
