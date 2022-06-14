@@ -6,6 +6,7 @@ import '../pages/delivery_page/delivery_page.dart';
 import '../pages/home_pages/home_delivery_page/home_delivery_page.dart';
 import '../pages/home_pages/home_page.dart';
 import '../pages/home_pages/home_pur_del_page/home_pur_del_page.dart';
+import '../pages/home_pages/home_tariff/home_tariff.dart';
 import '../pages/main_page.dart';
 import '../pages/presentation_page/presentation_page.dart';
 import '../pages/profile_page/profile_page.dart';
@@ -52,6 +53,11 @@ class AppRouter {
       // home_pur_del_page
       case HomePurDelPage.routeName:
         builder = (_) => HomePurDelPage();
+        break;
+
+      // home_tariff
+      case HomeTariff.routeName:
+        builder = (_) => HomeTariff();
         break;
 
       // home_page

@@ -7,6 +7,7 @@ import '../../../resources/app_icons.dart';
 import '../../../resources/app_images.dart';
 import '../../../widgets/button_enter.dart';
 import '../../../widgets/icon_link.dart';
+import '../home_tariff/home_tariff.dart';
 
 class HomePurDelPage extends StatelessWidget {
   const HomePurDelPage({Key? key}) : super(key: key);
@@ -49,8 +50,8 @@ class HomePurDelPage extends StatelessWidget {
       ),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: const [
-          Padding(
+        children: [
+          const Padding(
             padding: EdgeInsets.symmetric(
               horizontal: 30.0,
             ),
@@ -62,26 +63,26 @@ class HomePurDelPage extends StatelessWidget {
               textAlign: TextAlign.center,
             ),
           ),
-          IconLink(
+          const IconLink(
             text: 'Выберите желаемые товары в интернет-магазинах США/Европы.',
             color: AppColors.green,
             icon: AppIcons.buy,
             crossAxisAlignment: CrossAxisAlignment.start,
           ),
-          IconLink(
+          const IconLink(
             text: 'Скопируйте ссылки на выбранные товары в форму заказа.',
             color: AppColors.green,
             icon: AppIcons.copyLink,
             crossAxisAlignment: CrossAxisAlignment.start,
           ),
-          IconLink(
+          const IconLink(
             text:
                 'В течение 30 минут в кабинете появится расчёт стоимости покупки товаров с доставкой.',
             color: AppColors.green,
             icon: AppIcons.moneyBag,
             crossAxisAlignment: CrossAxisAlignment.start,
           ),
-          IconLink(
+          const IconLink(
             text:
                 'Мы выкупим Ваш заказ, и привезем его к Вам. Вы сможете отслеживать его в личном кабинете.',
             color: AppColors.green,
@@ -89,10 +90,16 @@ class HomePurDelPage extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
           ),
           Padding(
-            padding: EdgeInsets.symmetric(
+            padding: const EdgeInsets.symmetric(
               horizontal: 25.0,
             ),
             child: ButtonEnter(
+              onPressed: () => Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) {
+                  return HomeTariff();
+                }),
+              ),
               color: AppColors.green,
               text: 'РАССЧИТАТЬ ПОКУПКУ И ДОСТАВКУ',
               colorText: AppColors.brown,

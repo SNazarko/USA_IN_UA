@@ -6,10 +6,11 @@ import '../../../resources/app_colors.dart';
 import '../../../resources/app_icons.dart';
 import '../../../widgets/button_enter.dart';
 import '../../../widgets/icon_link.dart';
+import '../home_tariff/home_tariff.dart';
 
 class HomeDeliveryPage extends StatelessWidget {
   const HomeDeliveryPage({Key? key}) : super(key: key);
-  static const routeName = '/home_delivery_page.dart';
+  static const routeName = '/home_delivery_page';
 
   @override
   Widget build(BuildContext context) {
@@ -103,11 +104,17 @@ class HomeDeliveryPage extends StatelessWidget {
             icon: AppIcons.location,
             crossAxisAlignment: CrossAxisAlignment.start,
           ),
-          const Padding(
-            padding: EdgeInsets.symmetric(
+          Padding(
+            padding: const EdgeInsets.symmetric(
               horizontal: 25.0,
             ),
             child: ButtonEnter(
+              onPressed: () => Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) {
+                  return HomeTariff();
+                }),
+              ),
               color: AppColors.blue,
               text: 'РАССЧИТАТЬ ТОЛЬКО ДОСТАВКУ',
               colorText: Colors.white,

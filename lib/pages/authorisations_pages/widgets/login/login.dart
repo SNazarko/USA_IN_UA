@@ -84,12 +84,6 @@ class Login extends StatelessWidget {
   Future<void> _facebookSignInTab(BuildContext context) async {
     await FacebookAuth.instance.login();
     final userData = await FacebookAuth.instance.getUserData();
-    // final facebookAuthCredential =
-    //     FacebookAuthProvider.credential(
-    //         facebookLogin.accessToken!.token);
-    // await FirebaseAuth.instance
-    //     .signInWithCredential(
-    //         facebookAuthCredential);
     final TextEditingController email = TextEditingController(
       text: userData['email'],
     );
