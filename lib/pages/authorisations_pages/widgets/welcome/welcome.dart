@@ -39,6 +39,7 @@ class Welcome extends StatelessWidget {
                             context, PresentationPage.routeName),
                         color: AppColors.green,
                         text: 'ПРОДОЛЖЫТЬ',
+                        colorText: AppColors.brown,
                       ),
                     ],
                   ),

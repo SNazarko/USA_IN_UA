@@ -4,13 +4,12 @@ import 'package:flutter_svg/svg.dart';
 
 import '../../../resources/app_colors.dart';
 import '../../../resources/app_icons.dart';
-import '../../../resources/app_images.dart';
 import '../../../widgets/button_enter.dart';
 import '../../../widgets/icon_link.dart';
 
-class HomePurDelPage extends StatelessWidget {
-  const HomePurDelPage({Key? key}) : super(key: key);
-  static const routeName = '/home_pur_del_page';
+class HomeDeliveryPage extends StatelessWidget {
+  const HomeDeliveryPage({Key? key}) : super(key: key);
+  static const routeName = '/home_delivery_page.dart';
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +28,7 @@ class HomePurDelPage extends StatelessWidget {
           ),
         ),
         title: const Text(
-          'Покупка и доставка',
+          'Только доставка',
           style: TextStyle(
             color: AppColors.text,
             fontSize: 20.0,
@@ -49,53 +48,69 @@ class HomePurDelPage extends StatelessWidget {
       ),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: const [
-          Padding(
+        children: [
+          const Padding(
             padding: EdgeInsets.symmetric(
               horizontal: 30.0,
             ),
             child: Text(
-              'Текст о безопастности и всем таком, что отличает покупку и доставку от просто доставки',
+              'Текст о мейлфорвардинге и о том что мы доставим супер быстро но такие покупи менее защищены',
               style: TextStyle(
                 fontWeight: FontWeight.w400,
               ),
               textAlign: TextAlign.center,
             ),
           ),
-          IconLink(
-            text: 'Выберите желаемые товары в интернет-магазинах США/Европы.',
-            color: AppColors.green,
-            icon: AppIcons.buy,
+          Column(
+            children: [
+              const IconLink(
+                text:
+                    'Скопируйте адреса складов, на которые Вы сможете доставлять самостоятельно купленные заказы',
+                color: AppColors.blue,
+                icon: AppIcons.copyLocation,
+                crossAxisAlignment: CrossAxisAlignment.start,
+              ),
+              InkWell(
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 75.0, top: 5.0),
+                  child: Row(
+                    children: [
+                      SvgPicture.asset(AppIcons.storageAddress),
+                      const Text('Адреса складов')
+                    ],
+                  ),
+                ),
+              )
+            ],
+          ),
+          const IconLink(
+            text: 'Введите трекинг-номер, полученный от магазина.',
+            color: AppColors.blue,
+            icon: AppIcons.edit,
             crossAxisAlignment: CrossAxisAlignment.start,
           ),
-          IconLink(
-            text: 'Скопируйте ссылки на выбранные товары в форму заказа.',
-            color: AppColors.green,
-            icon: AppIcons.copyLink,
-            crossAxisAlignment: CrossAxisAlignment.start,
-          ),
-          IconLink(
+          const IconLink(
             text:
                 'В течение 30 минут в кабинете появится расчёт стоимости покупки товаров с доставкой.',
-            color: AppColors.green,
+            color: AppColors.blue,
             icon: AppIcons.moneyBag,
             crossAxisAlignment: CrossAxisAlignment.start,
           ),
-          IconLink(
+          const IconLink(
             text:
                 'Мы выкупим Ваш заказ, и привезем его к Вам. Вы сможете отслеживать его в личном кабинете.',
-            color: AppColors.green,
+            color: AppColors.blue,
             icon: AppIcons.location,
             crossAxisAlignment: CrossAxisAlignment.start,
           ),
-          Padding(
+          const Padding(
             padding: EdgeInsets.symmetric(
               horizontal: 25.0,
             ),
             child: ButtonEnter(
-              color: AppColors.green,
-              text: 'РАССЧИТАТЬ ПОКУПКУ И ДОСТАВКУ',
-              colorText: AppColors.brown,
+              color: AppColors.blue,
+              text: 'РАССЧИТАТЬ ТОЛЬКО ДОСТАВКУ',
+              colorText: Colors.white,
             ),
           ),
         ],

@@ -9,6 +9,7 @@ import '../../resources/app_colors.dart';
 import '../../resources/app_icons.dart';
 import '../../resources/app_images.dart';
 import '../../widgets/icon_link.dart';
+import 'home_delivery_page/home_delivery_page.dart';
 import 'home_pur_del_page/home_pur_del_page.dart';
 
 class HomePage extends StatelessWidget {
@@ -102,7 +103,9 @@ class HomePage extends StatelessWidget {
                             image: AppImages.car,
                             imageWidth: 100.0,
                           ),
-                          const _ButtonHomePage(
+                          _ButtonHomePage(
+                            onTap: () => Navigator.pushNamed(
+                                context, HomeDeliveryPage.routeName),
                             text: 'Только доставка',
                             color: AppColors.blue,
                             image: AppImages.air,

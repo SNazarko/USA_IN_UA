@@ -73,8 +73,11 @@ class FinishScreen extends StatelessWidget {
         Flexible(
           flex: 2,
           child: Padding(
-            padding:
-                const EdgeInsets.only(left: 25.0, right: 25.0, bottom: 20.0),
+            padding: const EdgeInsets.only(
+              left: 25.0,
+              right: 25.0,
+              bottom: 20.0,
+            ),
             child: ButtonEnter(
               onPressed: () => Navigator.pushNamed(
                 context,
@@ -82,6 +85,7 @@ class FinishScreen extends StatelessWidget {
               ),
               color: AppColors.green,
               text: 'НАЧАТЬ',
+              colorText: AppColors.brown,
             ),
           ),
         ),

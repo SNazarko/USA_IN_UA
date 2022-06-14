@@ -3,11 +3,16 @@ import 'package:flutter/material.dart';
 import '../resources/app_colors.dart';
 
 class ButtonEnter extends StatelessWidget {
-  const ButtonEnter(
-      {Key? key, this.onPressed, required this.text, required this.color})
-      : super(key: key);
+  const ButtonEnter({
+    Key? key,
+    this.onPressed,
+    required this.text,
+    required this.color,
+    required this.colorText,
+  }) : super(key: key);
   final String text;
   final Color color;
+  final Color colorText;
   final void Function()? onPressed;
   @override
   Widget build(BuildContext context) {
@@ -28,9 +33,9 @@ class ButtonEnter extends StatelessWidget {
           child: Center(
             child: Text(
               text,
-              style: const TextStyle(
+              style: TextStyle(
                 fontSize: 14.0,
-                color: AppColors.brown,
+                color: colorText,
               ),
             ),
           ),

@@ -27,4 +27,5 @@ class AppIcons {
   static const String homeActive = '$_path/home_active.svg';
   static const String profileActive = '$_path/profile_active.svg';
   static const String empty = '$_path/empty.svg';
+  static const String storageAddress = '$_path/storage_address.svg';
 }

@@ -225,6 +225,7 @@ class _RegistrationState extends State<Registration> {
                             onPressed: () => _buttonContinue(context, state),
                             color: AppColors.green,
                             text: 'ЗАРЕГИСТРИРОВАТЬСЯ',
+                            colorText: AppColors.brown,
                           ),
                           const SizedBox(
                             height: 20.0,
