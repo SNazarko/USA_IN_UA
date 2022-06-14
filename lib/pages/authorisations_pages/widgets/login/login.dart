@@ -154,6 +154,7 @@ class Login extends StatelessWidget {
                         children: [
                           ButtonEnter(
                             onPressed: () => _buttonContinue(context, state),
+                            color: AppColors.green,
                             text: 'ВОЙТИ',
                           ),
                           const SizedBox(

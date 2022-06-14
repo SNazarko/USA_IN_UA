@@ -80,6 +80,7 @@ class FinishScreen extends StatelessWidget {
                 context,
                 MainPage.routeName,
               ),
+              color: AppColors.green,
               text: 'НАЧАТЬ',
             ),
           ),

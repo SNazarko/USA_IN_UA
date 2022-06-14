@@ -3,9 +3,11 @@ import 'package:flutter/material.dart';
 import '../resources/app_colors.dart';
 
 class ButtonEnter extends StatelessWidget {
-  const ButtonEnter({Key? key, this.onPressed, required this.text})
+  const ButtonEnter(
+      {Key? key, this.onPressed, required this.text, required this.color})
       : super(key: key);
   final String text;
+  final Color color;
   final void Function()? onPressed;
   @override
   Widget build(BuildContext context) {
@@ -17,9 +19,9 @@ class ButtonEnter extends StatelessWidget {
         child: Container(
           height: 56.0,
           width: screenWidth,
-          decoration: const BoxDecoration(
-            color: AppColors.green,
-            borderRadius: BorderRadius.all(
+          decoration: BoxDecoration(
+            color: color,
+            borderRadius: const BorderRadius.all(
               Radius.circular(20.0),
             ),
           ),

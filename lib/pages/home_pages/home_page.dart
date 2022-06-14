@@ -1,10 +1,7 @@
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:url_launcher/url_launcher.dart';
-
 import '../../blocs/goods_list_bloc/goods_list_bloc.dart';
 import '../../blocs/goods_list_bloc/goods_list_event.dart';
 import '../../blocs/goods_list_bloc/goods_list_state.dart';
@@ -12,6 +9,7 @@ import '../../resources/app_colors.dart';
 import '../../resources/app_icons.dart';
 import '../../resources/app_images.dart';
 import '../../widgets/icon_link.dart';
+import 'home_pur_del_page/home_pur_del_page.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -95,20 +93,22 @@ class HomePage extends StatelessWidget {
                     ),
                     SizedBox(
                       child: Column(
-                        children: const [
+                        children: [
                           _ButtonHomePage(
+                            onTap: () => Navigator.pushNamed(
+                                context, HomePurDelPage.routeName),
                             text: 'Покупка и доставка',
                             color: AppColors.green,
                             image: AppImages.car,
                             imageWidth: 100.0,
                           ),
-                          _ButtonHomePage(
+                          const _ButtonHomePage(
                             text: 'Только доставка',
                             color: AppColors.blue,
                             image: AppImages.air,
                             imageWidth: 150.0,
                           ),
-                          IconLink(
+                          const IconLink(
                             text: 'Тарифы на услуги доставки',
                             color: AppColors.blue,
                             icon: AppIcons.serviceTariffs,
@@ -330,7 +330,9 @@ class _GoodsModel extends StatelessWidget {
             Align(
               alignment: Alignment.topRight,
               child: Padding(
-                padding: const EdgeInsets.only(top: 40.0),
+                padding: const EdgeInsets.only(
+                  top: 40.0,
+                ),
                 child: Container(
                   width: 60.0,
                   height: 60.0,
@@ -413,14 +415,18 @@ class _LinkInBrowser extends StatelessWidget {
   final String image;
 
   Future<void> _launchUrl(String link) async {
-    final Uri _url = Uri.parse(link);
+    final Uri _url = Uri.parse(
+      link,
+    );
     if (await launchUrl(_url)) throw 'Could not launch $_url';
   }
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 10.0),
+      padding: const EdgeInsets.symmetric(
+        horizontal: 10.0,
+      ),
       child: Material(
         color: Colors.transparent,
         child: InkWell(

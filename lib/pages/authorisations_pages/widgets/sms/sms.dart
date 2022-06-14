@@ -229,6 +229,7 @@ class _SmsState extends State<Sms> {
                               : ButtonEnter(
                                   onPressed: () =>
                                       _buttonContinue(context, state),
+                                  color: AppColors.green,
                                   text: 'ЗАРЕГИСТРИРОВАТЬСЯ',
                                 ),
                           const SizedBox(

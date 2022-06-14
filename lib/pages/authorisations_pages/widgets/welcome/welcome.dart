@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../../resources/app_colors.dart';
 import '../../../../resources/app_images.dart';
 import '../../../../widgets/button_enter.dart';
 import '../../../main_page.dart';
@@ -36,6 +37,7 @@ class Welcome extends StatelessWidget {
                       ButtonEnter(
                         onPressed: () => Navigator.pushNamed(
                             context, PresentationPage.routeName),
+                        color: AppColors.green,
                         text: 'ПРОДОЛЖЫТЬ',
                       ),
                     ],
