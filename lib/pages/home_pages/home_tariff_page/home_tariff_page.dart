@@ -8,16 +8,86 @@ import '../../../widgets/prise_dollar.dart';
 import '../../../widgets/swish_link.dart';
 import '../../../widgets/text_field_input_text_number.dart';
 
-class HomeTariff extends StatefulWidget {
-  const HomeTariff({Key? key}) : super(key: key);
-  static const routeName = '/home_tariff';
-
-  @override
-  State<HomeTariff> createState() => _HomeTariffState();
+class HomeTariffPageArguments {
+  HomeTariffPageArguments(
+    this.isSwishPurDel,
+    this.isSwishDelivery,
+  );
+  final bool isSwishPurDel;
+  final bool isSwishDelivery;
 }
 
-class _HomeTariffState extends State<HomeTariff> {
-  bool isSwish = true;
+class HomeTariffPage extends StatefulWidget {
+  const HomeTariffPage({
+    Key? key,
+    required this.isSwishPurDel,
+    required this.isSwishDelivery,
+  }) : super(key: key);
+  static const routeName = '/home_tariff_page';
+  final bool isSwishPurDel;
+  final bool isSwishDelivery;
+  @override
+  State<HomeTariffPage> createState() => _HomeTariffPageState();
+}
+
+class _HomeTariffPageState extends State<HomeTariffPage> {
+  String? selectedDelivery;
+  List<String> deliveryList = [
+    'Авиадоставка',
+    'Быстрое море',
+  ];
+
+  Widget getDropdownButton() {
+    List<DropdownMenuItem<String>> dropdownItem = [];
+
+    for (String delivery in deliveryList) {
+      var newItem = DropdownMenuItem(
+        child: Text(
+          delivery,
+          style: const TextStyle(
+            color: AppColors.text,
+          ),
+        ),
+        value: delivery,
+      );
+      dropdownItem.add(newItem);
+    }
+    return Container(
+      width: double.infinity,
+      height: 50.0,
+      decoration: BoxDecoration(
+          color: Colors.grey.shade100,
+          borderRadius: const BorderRadius.all(
+            Radius.circular(15.0),
+          )),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(
+          horizontal: 14.0,
+        ),
+        child: DropdownButtonHideUnderline(
+          child: DropdownButton<String>(
+            isExpanded: true,
+            hint: const Text(
+              'Выберите способ доставки',
+              style: TextStyle(
+                color: AppColors.noActive,
+                fontSize: 14.0,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+            value: selectedDelivery,
+            onChanged: (value) {
+              setState(() {
+                selectedDelivery = value!;
+              });
+            },
+            items: dropdownItem,
+          ),
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -68,20 +138,14 @@ class _HomeTariffState extends State<HomeTariff> {
                   children: [
                     Swish(
                       text: 'Покупка и доставка',
-                      onTap: () {
-                        isSwish = !isSwish;
-                        setState(() {});
-                      },
-                      contour: isSwish ? true : false,
+                      onTap: () {},
+                      contour: widget.isSwishPurDel,
                       color: AppColors.green,
                     ),
                     Swish(
                       text: 'Только доставка',
-                      onTap: () {
-                        isSwish = !isSwish;
-                        setState(() {});
-                      },
-                      contour: isSwish ? false : true,
+                      onTap: () {},
+                      contour: widget.isSwishDelivery,
                       color: AppColors.blue,
                     ),
                   ],
@@ -102,10 +166,11 @@ class _HomeTariffState extends State<HomeTariff> {
                         hintText: 'Выберите страну отправки',
                         widget: Text(''),
                       ),
-                      const TextFieldInputTextNumber(
-                        hintText: 'Выберите способ доставки',
-                        widget: Text(''),
-                      ),
+                      getDropdownButton(),
+                      // const TextFieldInputTextNumber(
+                      //   hintText: 'Выберите способ доставки',
+                      //   widget: Text(''),
+                      // ),
                       const TextFieldInputTextNumber(
                         hintText: 'Примерный вес посылки',
                         widget: Text(

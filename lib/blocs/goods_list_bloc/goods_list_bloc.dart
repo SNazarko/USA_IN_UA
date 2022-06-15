@@ -17,8 +17,11 @@ class ListItemBloc extends Bloc<ListItemEvent, ListItemState> {
     ) {
       try {
         _audioSubscription?.cancel();
-        _audioSubscription =
-            GoodsRepositories.instance.readAudio().listen((audioList) {
+        _audioSubscription = GoodsRepositories.instance
+            .readAudio(
+          event.sort ?? 'topGoods',
+        )
+            .listen((audioList) {
           add(
             UpdateListItemEvent(
               list: audioList,

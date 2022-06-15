@@ -15,10 +15,9 @@ class GoodsRepositories {
     phoneNumber = AuthRepositories.instance.user?.phoneNumber!;
   }
 
-  Stream<List<GoodsModel>> readAudio() => FirebaseFirestore.instance
-      .collection(phoneNumber!)
-      .doc('goods')
+  Stream<List<GoodsModel>> readAudio(String sort) => FirebaseFirestore.instance
       .collection('goods')
+      .where('category', arrayContains: sort)
       .snapshots()
       .map((snapshot) =>
           snapshot.docs.map((doc) => GoodsModel.fromJson(doc.data())).toList());

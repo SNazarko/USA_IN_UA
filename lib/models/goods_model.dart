@@ -5,6 +5,7 @@ class GoodsModel {
     this.priceUSA,
     this.goodsImage,
     this.webSite,
+    this.category,
   });
 
   factory GoodsModel.fromJson(
@@ -16,6 +17,7 @@ class GoodsModel {
       priceUSA: json['priceUSA'],
       goodsImage: json['goodsImage'],
       webSite: json['webSite'],
+      category: json['category'],
     );
   }
   String? goodsName;
@@ -23,6 +25,7 @@ class GoodsModel {
   String? priceUSA;
   String? goodsImage;
   String? webSite;
+  List? category;
 
   Map<String, dynamic> toJson() => {
         'goodsName': goodsName,
@@ -30,5 +33,6 @@ class GoodsModel {
         'priceUSA': priceUSA,
         'goodsImage': goodsImage,
         'webSite': webSite,
+        'category': category
       };
 }

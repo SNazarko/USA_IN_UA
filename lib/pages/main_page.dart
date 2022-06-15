@@ -25,9 +25,9 @@ class MainPage extends StatefulWidget {
 class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
   static const List<String> _pages = [
     HomePage.routeName,
-    DeliveryPage.routeName,
-    Test.routeName,
     PurchasePage.routeName,
+    Test.routeName,
+    DeliveryPage.routeName,
     ProfilePage.routeName,
   ];
   bool playPause = true;

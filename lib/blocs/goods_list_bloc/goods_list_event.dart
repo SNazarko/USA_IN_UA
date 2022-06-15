@@ -5,11 +5,14 @@ import 'package:flutter/cupertino.dart';
 abstract class ListItemEvent extends Equatable {}
 
 class LoadListItemEvent extends ListItemEvent {
-  LoadListItemEvent();
+  LoadListItemEvent({
+    this.sort,
+  });
+  final String? sort;
 
   @override
   // TODO: implement props
-  List<Object?> get props => [];
+  List<Object?> get props => [sort];
 }
 
 class UpdateListItemEvent extends ListItemEvent {

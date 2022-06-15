@@ -122,7 +122,7 @@ class _ListGoods extends StatelessWidget {
             child: SizedBox(
               child: Padding(
                 padding: const EdgeInsets.only(
-                  top: 100.0,
+                  top: 10.0,
                   left: 16.0,
                   right: 16.0,
                   bottom: 20.0,
@@ -131,7 +131,6 @@ class _ListGoods extends StatelessWidget {
                   width: screenSize.width,
                   child: Image.network(
                     goodsImage!,
-                    fit: BoxFit.fitHeight,
                   ),
                 ),
               ),

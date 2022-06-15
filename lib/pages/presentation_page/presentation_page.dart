@@ -34,7 +34,9 @@ class _PresentationPageState extends State<PresentationPage> {
     return BlocProvider<ListItemBloc>(
       create: (context) => ListItemBloc()
         ..add(
-          LoadListItemEvent(),
+          LoadListItemEvent(
+            sort: 'topGoods',
+          ),
         ),
       child: Scaffold(
         body: SafeArea(

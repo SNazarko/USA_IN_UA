@@ -6,7 +6,7 @@ import '../pages/delivery_page/delivery_page.dart';
 import '../pages/home_pages/home_delivery_page/home_delivery_page.dart';
 import '../pages/home_pages/home_page.dart';
 import '../pages/home_pages/home_pur_del_page/home_pur_del_page.dart';
-import '../pages/home_pages/home_tariff/home_tariff.dart';
+import '../pages/home_pages/home_tariff_page/home_tariff_page.dart';
 import '../pages/main_page.dart';
 import '../pages/presentation_page/presentation_page.dart';
 import '../pages/profile_page/profile_page.dart';
@@ -55,9 +55,14 @@ class AppRouter {
         builder = (_) => HomePurDelPage();
         break;
 
-      // home_tariff
-      case HomeTariff.routeName:
-        builder = (_) => HomeTariff();
+      // home_tariff_page
+      case HomeTariffPage.routeName:
+        final HomeTariffPageArguments args =
+            arguments as HomeTariffPageArguments;
+        builder = (_) => HomeTariffPage(
+              isSwishDelivery: args.isSwishDelivery,
+              isSwishPurDel: args.isSwishPurDel,
+            );
         break;
 
       // home_page

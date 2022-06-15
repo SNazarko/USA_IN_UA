@@ -7,7 +7,7 @@ import '../../../resources/app_icons.dart';
 import '../../../resources/app_images.dart';
 import '../../../widgets/button_enter.dart';
 import '../../../widgets/icon_link.dart';
-import '../home_tariff/home_tariff.dart';
+import '../home_tariff_page/home_tariff_page.dart';
 
 class HomePurDelPage extends StatelessWidget {
   const HomePurDelPage({Key? key}) : super(key: key);
@@ -97,7 +97,10 @@ class HomePurDelPage extends StatelessWidget {
               onPressed: () => Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) {
-                  return HomeTariff();
+                  return const HomeTariffPage(
+                    isSwishDelivery: false,
+                    isSwishPurDel: true,
+                  );
                 }),
               ),
               color: AppColors.green,

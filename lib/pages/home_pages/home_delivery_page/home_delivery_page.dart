@@ -6,7 +6,7 @@ import '../../../resources/app_colors.dart';
 import '../../../resources/app_icons.dart';
 import '../../../widgets/button_enter.dart';
 import '../../../widgets/icon_link.dart';
-import '../home_tariff/home_tariff.dart';
+import '../home_tariff_page/home_tariff_page.dart';
 
 class HomeDeliveryPage extends StatelessWidget {
   const HomeDeliveryPage({Key? key}) : super(key: key);
@@ -112,7 +112,10 @@ class HomeDeliveryPage extends StatelessWidget {
               onPressed: () => Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) {
-                  return HomeTariff();
+                  return const HomeTariffPage(
+                    isSwishDelivery: true,
+                    isSwishPurDel: false,
+                  );
                 }),
               ),
               color: AppColors.blue,
