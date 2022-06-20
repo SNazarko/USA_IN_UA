@@ -21,4 +21,7 @@ class AppImages {
   static const String link5 = '$_path/link5.png';
   static const String link6 = '$_path/link6.png';
   static const String link7 = '$_path/link7.png';
+  static const String avatar = '$_path/avatar.png';
+  static const String testGoodsImage = '$_path/test_goods_image_.png';
+
 }

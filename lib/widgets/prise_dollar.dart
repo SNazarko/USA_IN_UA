@@ -9,11 +9,12 @@ class PriceDollar extends StatelessWidget {
       {Key? key,
       required this.textNumber,
       required this.fontSize,
-      required this.iconSize})
+      required this.iconSize, this.color,})
       : super(key: key);
   final String textNumber;
   final double fontSize;
   final double iconSize;
+  final Color? color;
 
   @override
   Widget build(BuildContext context) {
@@ -22,12 +23,13 @@ class PriceDollar extends StatelessWidget {
         Text(
           textNumber,
           style: TextStyle(
+            color: color,
             fontSize: fontSize,
           ),
         ),
         SvgPicture.asset(
           AppIcons.dollar,
-          color: AppColors.text,
+          color: color ?? AppColors.text,
           width: iconSize,
           height: iconSize,
         ),

@@ -49,6 +49,8 @@ class HomePage extends StatelessWidget {
               ),
               child: SvgPicture.asset(
                 AppIcons.menu,
+                width: 25.0,
+                height: 25.0,
               ),
             ),
           ],

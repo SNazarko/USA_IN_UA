@@ -29,4 +29,10 @@ class AppIcons {
   static const String empty = '$_path/empty.svg';
   static const String storageAddress = '$_path/storage_address.svg';
   static const String dollar = '$_path/dollar.svg';
+  static const String setting = '$_path/setting.svg';
+  static const String editSquare = '$_path/edit_square.svg';
+  static const String finance = '$_path/finance.svg';
+  static const String creditCard = '$_path/credit_card.svg';
+  static const String makeMoneyWithUs = '$_path/make_money_with_us.svg';
+  static const String news = '$_path/news.svg';
 }
