@@ -32,7 +32,10 @@ class _PurchaseAndDeliveryScreenState extends State<PurchaseAndDeliveryScreen> {
           flex: 5,
           child: SizedBox(
             child: Padding(
-              padding: const EdgeInsets.only(top: 70.0, left: 25.0),
+              padding: const EdgeInsets.only(
+                top: 70.0,
+                left: 25.0,
+              ),
               child: Column(
                 children: [
                   Swish(

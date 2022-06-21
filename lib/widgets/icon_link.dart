@@ -7,13 +7,16 @@ class IconLink extends StatelessWidget {
     required this.text,
     required this.color,
     required this.icon,
-    required this.crossAxisAlignment, this.fontWeight,
+    required this.crossAxisAlignment,
+    this.fontWeight,
+    this.fontSize,
   }) : super(key: key);
   final String text;
   final String icon;
   final Color color;
   final CrossAxisAlignment crossAxisAlignment;
   final FontWeight? fontWeight;
+  final double? fontSize;
 
   @override
   Widget build(BuildContext context) {
@@ -42,6 +45,7 @@ class IconLink extends StatelessWidget {
             child: Text(
               text,
               style: TextStyle(
+                fontSize: fontSize,
                 fontWeight: fontWeight ?? FontWeight.w400,
               ),
             ),

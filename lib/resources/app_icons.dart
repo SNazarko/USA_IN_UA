@@ -35,4 +35,7 @@ class AppIcons {
   static const String creditCard = '$_path/credit_card.svg';
   static const String makeMoneyWithUs = '$_path/make_money_with_us.svg';
   static const String news = '$_path/news.svg';
+  static const String vectorMan = '$_path/vector_man.svg';
+  static const String vectorWoman = '$_path/vector_woman.svg';
+  static const String logout = '$_path/logout.svg';
 }

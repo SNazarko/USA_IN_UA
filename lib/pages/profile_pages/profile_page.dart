@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:usa_in_ua/pages/profile_pages/profile_edit_person_data/profile_edit_person_data.dart';
 import 'package:usa_in_ua/resources/app_icons.dart';
 import 'package:usa_in_ua/resources/app_images.dart';
 import 'package:usa_in_ua/widgets/button_enter.dart';
@@ -22,8 +23,12 @@ class ProfilePage extends StatelessWidget {
         actions: [
           SvgPicture.asset(AppIcons.notification),
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16.0),
-            child: SvgPicture.asset(AppIcons.setting),
+            padding: const EdgeInsets.symmetric(
+              horizontal: 16.0,
+            ),
+            child: SvgPicture.asset(
+              AppIcons.setting,
+            ),
           ),
         ],
       ),
@@ -65,7 +70,9 @@ class _ProfileBox extends StatelessWidget {
         ),
       ),
       child: Padding(
-        padding: const EdgeInsets.all(10.0),
+        padding: const EdgeInsets.all(
+          10.0,
+        ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -105,13 +112,22 @@ class _ProfileBox extends StatelessWidget {
             ),
             Flexible(
               flex: 2,
-              child: Padding(
-                padding: const EdgeInsets.only(right: 16.0, left: 10.0),
-                child: SvgPicture.asset(
-                  AppIcons.editSquare,
-                  width: 25.0,
-                  height: 25.0,
-                  color: AppColors.noActive,
+              child: InkWell(
+                onTap: () => Navigator.pushNamed(
+                  context,
+                  ProfileEditPersonData.routeName,
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.only(
+                    right: 16.0,
+                    left: 10.0,
+                  ),
+                  child: SvgPicture.asset(
+                    AppIcons.editSquare,
+                    width: 25.0,
+                    height: 25.0,
+                    color: AppColors.noActive,
+                  ),
                 ),
               ),
             ),
@@ -137,11 +153,15 @@ class _BalanceBox extends StatelessWidget {
         decoration: const BoxDecoration(
           color: AppColors.bass,
           borderRadius: BorderRadius.all(
-            Radius.circular(10.0),
+            Radius.circular(
+              10.0,
+            ),
           ),
         ),
         child: Padding(
-          padding: const EdgeInsets.all(8.0),
+          padding: const EdgeInsets.all(
+            8.0,
+          ),
           child: Row(
             children: [
               Expanded(
@@ -164,7 +184,9 @@ class _BalanceBox extends StatelessWidget {
                           fontSize: 16.0,
                           color: AppColors.green,
                         ),
-                        Text(' / 22221112 грн.'),
+                        Text(
+                          ' / 22221112 грн.',
+                        ),
                       ],
                     ),
                   ],
@@ -172,7 +194,9 @@ class _BalanceBox extends StatelessWidget {
               ),
               const Expanded(
                 child: Padding(
-                  padding: EdgeInsets.all(5.0),
+                  padding: EdgeInsets.all(
+                    5.0,
+                  ),
                   child: ButtonEnter(
                     text: 'Пополнить',
                     color: AppColors.green,
@@ -195,7 +219,7 @@ class _LinkGoods extends StatelessWidget {
   Widget build(BuildContext context) {
     return SizedBox(
       width: double.infinity,
-      height: 200.0,
+      height: 170.0,
       child: Column(
         children: [
           Row(
@@ -233,7 +257,7 @@ class _Links extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(
-        vertical: 10.0,
+        vertical: 5.0,
       ),
       child: Container(
         width: double.infinity,
@@ -241,14 +265,18 @@ class _Links extends StatelessWidget {
         decoration: const BoxDecoration(
           color: AppColors.bass,
           borderRadius: BorderRadius.all(
-            Radius.circular(5.0),
+            Radius.circular(
+              5.0,
+            ),
           ),
         ),
         child: Row(
           children: [
             Flexible(
               flex: 1,
-              child: Image.asset(AppImages.testGoodsImage),
+              child: Image.asset(
+                AppImages.testGoodsImage,
+              ),
             ),
             const SizedBox(
               width: 10.0,
@@ -279,7 +307,9 @@ class _ProfileLinks extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 15.0),
+      padding: const EdgeInsets.symmetric(
+        vertical: 15.0,
+      ),
       child: SizedBox(
         width: double.infinity,
         height: 240.0,
@@ -372,21 +402,33 @@ class _UsefulLinks extends StatelessWidget {
     return Align(
       alignment: Alignment.centerLeft,
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20.0,),
+        padding: const EdgeInsets.symmetric(
+          horizontal: 20.0,
+        ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: const [
             Padding(
-              padding: EdgeInsets.symmetric(vertical: 5.0,),
+              padding: EdgeInsets.symmetric(
+                vertical: 5.0,
+              ),
               child: Text('Справочник'),
             ),
             Padding(
-              padding: EdgeInsets.symmetric(vertical: 5.0,),
-              child: Text('Правила и условия'),
+              padding: EdgeInsets.symmetric(
+                vertical: 5.0,
+              ),
+              child: Text(
+                'Правила и условия',
+              ),
             ),
             Padding(
-              padding: EdgeInsets.symmetric(vertical: 5.0,),
-              child: Text('Политика конфиденциальности'),
+              padding: EdgeInsets.symmetric(
+                vertical: 5.0,
+              ),
+              child: Text(
+                'Политика конфиденциальности',
+              ),
             ),
           ],
         ),

@@ -9,7 +9,8 @@ import '../pages/home_pages/home_pur_del_page/home_pur_del_page.dart';
 import '../pages/home_pages/home_tariff_page/home_tariff_page.dart';
 import '../pages/main_page.dart';
 import '../pages/presentation_page/presentation_page.dart';
-import '../pages/profile_page/profile_page.dart';
+import '../pages/profile_pages/profile_edit_person_data/profile_edit_person_data.dart';
+import '../pages/profile_pages/profile_page.dart';
 import '../pages/purchase_page/purchase_page.dart';
 import '../pages/test.dart';
 
@@ -78,6 +79,13 @@ class AppRouter {
       // purchase_page
       case PurchasePage.routeName:
         builder = (_) => PurchasePage();
+        break;
+
+      // profile_pages
+
+      // profile_edit_person_data.dart
+      case ProfileEditPersonData.routeName:
+        builder = (_) => ProfileEditPersonData();
         break;
 
       // profile_page
