@@ -10,6 +10,7 @@ class IconLink extends StatelessWidget {
     required this.crossAxisAlignment,
     this.fontWeight,
     this.fontSize,
+    this.sizeIcon,
   }) : super(key: key);
   final String text;
   final String icon;
@@ -17,6 +18,7 @@ class IconLink extends StatelessWidget {
   final CrossAxisAlignment crossAxisAlignment;
   final FontWeight? fontWeight;
   final double? fontSize;
+  final double? sizeIcon;
 
   @override
   Widget build(BuildContext context) {
@@ -28,8 +30,8 @@ class IconLink extends StatelessWidget {
           flex: 1,
           child: SvgPicture.asset(
             icon,
-            width: 30.0,
-            height: 30.0,
+            width: sizeIcon ?? 30.0,
+            height: sizeIcon ?? 30.0,
             color: color,
           ),
         ),

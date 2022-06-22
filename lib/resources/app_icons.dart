@@ -38,4 +38,7 @@ class AppIcons {
   static const String vectorMan = '$_path/vector_man.svg';
   static const String vectorWoman = '$_path/vector_woman.svg';
   static const String logout = '$_path/logout.svg';
+  static const String upload = '$_path/upload.svg';
+  static const String id = '$_path/id.svg';
+  static const String calendar = '$_path/calendar.svg';
 }

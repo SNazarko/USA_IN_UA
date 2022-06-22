@@ -19,9 +19,11 @@ class PriceDollar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
+      crossAxisAlignment: CrossAxisAlignment.end,
       children: [
         Text(
           textNumber,
+          maxLines: 3,
           style: TextStyle(
             color: color,
             fontSize: fontSize,
