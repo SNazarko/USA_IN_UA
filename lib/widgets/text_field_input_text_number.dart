@@ -1,5 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_multi_formatter/formatters/masked_input_formatter.dart';
+import 'package:usa_in_ua/widgets/text_field_phone_number.dart';
 
 import '../resources/app_colors.dart';
 
@@ -9,14 +12,22 @@ class TextFieldInputTextNumber extends StatelessWidget {
     this.onChanged,
     this.controller,
     this.onEditingComplete,
-    required this.hintText,
+    this.hintText,
     required this.widget,
+    this.inputFormatters,
+    this.fontSize,
+    this.textAlign,
+    this.onEditingComp,
   }) : super(key: key);
-  final String hintText;
+  final String? hintText;
   final void Function(String)? onChanged;
   final void Function()? onEditingComplete;
   final TextEditingController? controller;
+  final List<TextInputFormatter>? inputFormatters;
   final Widget widget;
+  final double? fontSize;
+  final TextAlign? textAlign;
+  final void Function()? onEditingComp;
 
   @override
   Widget build(BuildContext context) {
@@ -33,15 +44,18 @@ class TextFieldInputTextNumber extends StatelessWidget {
           Flexible(
             flex: 10,
             child: TextField(
+              onEditingComplete: onEditingComp,
+              textAlign: textAlign ?? TextAlign.start  ,
               keyboardType: TextInputType.number,
-              onEditingComplete: onEditingComplete,
               controller: controller,
-              style: const TextStyle(
+              inputFormatters: inputFormatters,
+              style:  TextStyle(
+                fontSize: fontSize ?? 14.0,
                 color: AppColors.text,
                 fontWeight: FontWeight.w400,
               ),
               decoration: InputDecoration(
-                hintText: hintText,
+                hintText: hintText ?? '',
                 hintTextDirection: TextDirection.ltr,
                 filled: true,
                 fillColor: Colors.grey.shade100,

@@ -9,7 +9,7 @@ import '../../../widgets/prise_dollar.dart';
 
 class ProfileFinancePage extends StatelessWidget {
   const ProfileFinancePage({Key? key}) : super(key: key);
-  static const routeName = '/profile_finance_page.dart';
+  static const routeName = '/profile_finance_page';
 
   @override
   Widget build(BuildContext context) {
