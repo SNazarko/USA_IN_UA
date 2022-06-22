@@ -116,11 +116,14 @@ class HomePage extends StatelessWidget {
                             image: AppImages.air,
                             imageWidth: 150.0,
                           ),
-                          const IconLink(
-                            text: 'Тарифы на услуги доставки',
-                            color: AppColors.blue,
-                            icon: AppIcons.serviceTariffs,
-                            crossAxisAlignment: CrossAxisAlignment.center,
+                          const Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 25.0,),
+                            child: IconLink(
+                              text: 'Тарифы на услуги доставки',
+                              color: AppColors.blue,
+                              icon: AppIcons.serviceTariffs,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                            ),
                           ),
                         ],
                       ),

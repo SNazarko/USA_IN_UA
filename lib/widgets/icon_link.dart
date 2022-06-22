@@ -20,38 +20,33 @@ class IconLink extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(
-        horizontal: 25.0,
-      ),
-      child: Row(
-        // mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: crossAxisAlignment,
-        children: [
-          Flexible(
-            flex: 1,
-            child: SvgPicture.asset(
-              icon,
-              width: 30.0,
-              height: 30.0,
-              color: color,
+    return Row(
+      // mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: crossAxisAlignment,
+      children: [
+        Flexible(
+          flex: 1,
+          child: SvgPicture.asset(
+            icon,
+            width: 30.0,
+            height: 30.0,
+            color: color,
+          ),
+        ),
+        const SizedBox(
+          width: 20.0,
+        ),
+        Flexible(
+          flex: 5,
+          child: Text(
+            text,
+            style: TextStyle(
+              fontSize: fontSize,
+              fontWeight: fontWeight ?? FontWeight.w400,
             ),
           ),
-          const SizedBox(
-            width: 20.0,
-          ),
-          Flexible(
-            flex: 5,
-            child: Text(
-              text,
-              style: TextStyle(
-                fontSize: fontSize,
-                fontWeight: fontWeight ?? FontWeight.w400,
-              ),
-            ),
-          ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }

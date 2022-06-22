@@ -48,52 +48,52 @@ class HomePurDelPage extends StatelessWidget {
           ),
         ],
       ),
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: [
-          const Padding(
-            padding: EdgeInsets.symmetric(
-              horizontal: 30.0,
-            ),
-            child: Text(
-              'Текст о безопастности и всем таком, что отличает покупку и доставку от просто доставки',
-              style: TextStyle(
-                fontWeight: FontWeight.w400,
+      body: Padding(
+        padding: EdgeInsets.symmetric(
+          horizontal: 25.0,
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            const Padding(
+              padding: EdgeInsets.symmetric(
+                horizontal: 5.0,
               ),
-              textAlign: TextAlign.center,
+              child: Text(
+                'Текст о безопастности и всем таком, что отличает покупку и доставку от просто доставки',
+                style: TextStyle(
+                  fontWeight: FontWeight.w400,
+                ),
+                textAlign: TextAlign.center,
+              ),
             ),
-          ),
-          const IconLink(
-            text: 'Выберите желаемые товары в интернет-магазинах США/Европы.',
-            color: AppColors.green,
-            icon: AppIcons.buy,
-            crossAxisAlignment: CrossAxisAlignment.start,
-          ),
-          const IconLink(
-            text: 'Скопируйте ссылки на выбранные товары в форму заказа.',
-            color: AppColors.green,
-            icon: AppIcons.copyLink,
-            crossAxisAlignment: CrossAxisAlignment.start,
-          ),
-          const IconLink(
-            text:
-                'В течение 30 минут в кабинете появится расчёт стоимости покупки товаров с доставкой.',
-            color: AppColors.green,
-            icon: AppIcons.moneyBag,
-            crossAxisAlignment: CrossAxisAlignment.start,
-          ),
-          const IconLink(
-            text:
-                'Мы выкупим Ваш заказ, и привезем его к Вам. Вы сможете отслеживать его в личном кабинете.',
-            color: AppColors.green,
-            icon: AppIcons.location,
-            crossAxisAlignment: CrossAxisAlignment.start,
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(
-              horizontal: 25.0,
+            const IconLink(
+              text: 'Выберите желаемые товары в интернет-магазинах США/Европы.',
+              color: AppColors.green,
+              icon: AppIcons.buy,
+              crossAxisAlignment: CrossAxisAlignment.start,
             ),
-            child: ButtonEnter(
+            const IconLink(
+              text: 'Скопируйте ссылки на выбранные товары в форму заказа.',
+              color: AppColors.green,
+              icon: AppIcons.copyLink,
+              crossAxisAlignment: CrossAxisAlignment.start,
+            ),
+            const IconLink(
+              text:
+                  'В течение 30 минут в кабинете появится расчёт стоимости покупки товаров с доставкой.',
+              color: AppColors.green,
+              icon: AppIcons.moneyBag,
+              crossAxisAlignment: CrossAxisAlignment.start,
+            ),
+            const IconLink(
+              text:
+                  'Мы выкупим Ваш заказ, и привезем его к Вам. Вы сможете отслеживать его в личном кабинете.',
+              color: AppColors.green,
+              icon: AppIcons.location,
+              crossAxisAlignment: CrossAxisAlignment.start,
+            ),
+            ButtonEnter(
               onPressed: () => Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) {
@@ -107,8 +107,8 @@ class HomePurDelPage extends StatelessWidget {
               text: 'РАССЧИТАТЬ ПОКУПКУ И ДОСТАВКУ',
               colorText: AppColors.brown,
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

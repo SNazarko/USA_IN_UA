@@ -1,7 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:usa_in_ua/pages/profile_pages/profile_edit_person_data/profile_edit_person_data.dart';
+import 'package:usa_in_ua/pages/profile_pages/profile_edit_person_data_page/profile_edit_person_data_page.dart';
+import 'package:usa_in_ua/pages/profile_pages/profile_finance_page/profile_finance_page.dart';
 import 'package:usa_in_ua/resources/app_icons.dart';
 import 'package:usa_in_ua/resources/app_images.dart';
 import 'package:usa_in_ua/widgets/button_enter.dart';
@@ -115,7 +116,7 @@ class _ProfileBox extends StatelessWidget {
               child: InkWell(
                 onTap: () => Navigator.pushNamed(
                   context,
-                  ProfileEditPersonData.routeName,
+                  ProfileEditPersonDataPage.routeName,
                 ),
                 child: Padding(
                   padding: const EdgeInsets.only(
@@ -314,20 +315,23 @@ class _ProfileLinks extends StatelessWidget {
         width: double.infinity,
         height: 240.0,
         child: Column(
-          children: const [
+          children:  [
             Padding(
-              padding: EdgeInsets.symmetric(
+              padding: const EdgeInsets.symmetric(
                 vertical: 5.0,
               ),
-              child: IconLink(
-                color: AppColors.blue,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                icon: AppIcons.finance,
-                text: 'Финансы',
-                fontWeight: FontWeight.w700,
+              child: InkWell(
+                onTap: () => Navigator.pushNamed(context, ProfileFinancePage.routeName,),
+                child: const IconLink(
+                  color: AppColors.blue,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  icon: AppIcons.finance,
+                  text: 'Финансы',
+                  fontWeight: FontWeight.w700,
+                ),
               ),
             ),
-            Padding(
+            const Padding(
               padding: EdgeInsets.symmetric(
                 vertical: 5.0,
               ),
@@ -339,7 +343,7 @@ class _ProfileLinks extends StatelessWidget {
                 fontWeight: FontWeight.w700,
               ),
             ),
-            Padding(
+            const Padding(
               padding: EdgeInsets.symmetric(
                 vertical: 5.0,
               ),
@@ -351,7 +355,7 @@ class _ProfileLinks extends StatelessWidget {
                 fontWeight: FontWeight.w700,
               ),
             ),
-            Padding(
+            const Padding(
               padding: EdgeInsets.symmetric(
                 vertical: 5.0,
               ),
@@ -363,7 +367,7 @@ class _ProfileLinks extends StatelessWidget {
                 fontWeight: FontWeight.w700,
               ),
             ),
-            Padding(
+            const Padding(
               padding: EdgeInsets.symmetric(
                 vertical: 5.0,
               ),
@@ -375,7 +379,7 @@ class _ProfileLinks extends StatelessWidget {
                 fontWeight: FontWeight.w700,
               ),
             ),
-            Padding(
+            const Padding(
               padding: EdgeInsets.symmetric(
                 vertical: 5.0,
               ),
@@ -401,37 +405,32 @@ class _UsefulLinks extends StatelessWidget {
   Widget build(BuildContext context) {
     return Align(
       alignment: Alignment.centerLeft,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(
-          horizontal: 20.0,
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: const [
-            Padding(
-              padding: EdgeInsets.symmetric(
-                vertical: 5.0,
-              ),
-              child: Text('Справочник'),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: const [
+          Padding(
+            padding: EdgeInsets.symmetric(
+              vertical: 5.0,
             ),
-            Padding(
-              padding: EdgeInsets.symmetric(
-                vertical: 5.0,
-              ),
-              child: Text(
-                'Правила и условия',
-              ),
+            child: Text('Справочник'),
+          ),
+          Padding(
+            padding: EdgeInsets.symmetric(
+              vertical: 5.0,
             ),
-            Padding(
-              padding: EdgeInsets.symmetric(
-                vertical: 5.0,
-              ),
-              child: Text(
-                'Политика конфиденциальности',
-              ),
+            child: Text(
+              'Правила и условия',
             ),
-          ],
-        ),
+          ),
+          Padding(
+            padding: EdgeInsets.symmetric(
+              vertical: 5.0,
+            ),
+            child: Text(
+              'Политика конфиденциальности',
+            ),
+          ),
+        ],
       ),
     );
   }

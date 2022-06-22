@@ -1,16 +1,13 @@
-import 'package:flutter/cupertino.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-
 import '../../../resources/app_colors.dart';
 import '../../../resources/app_icons.dart';
-import '../../../widgets/button_enter.dart';
 import '../../../widgets/icon_link.dart';
-import '../../../widgets/prise_dollar.dart';
-import '../../../widgets/text_field_phone_number.dart';
 
-class ProfileEditPersonData extends StatelessWidget {
-  ProfileEditPersonData({Key? key}) : super(key: key);
+
+class ProfileEditPersonDataPage extends StatelessWidget {
+  ProfileEditPersonDataPage({Key? key}) : super(key: key);
   static const routeName = '/profile_edit_person_data';
   final TextEditingController? controllerName = TextEditingController(text: 'Сергей');
   final TextEditingController? controllerNumber = TextEditingController(text: '+380630588512');
@@ -257,7 +254,7 @@ class _DataSexState extends State<_DataSex> {
                         icon: AppIcons.vectorMan,
                         text: 'Мужчина',
                         crossAxisAlignment: CrossAxisAlignment.center,
-                        color: sex ? AppColors.blue : AppColors.noActive,
+                        color: sex ? AppColors.noActive : AppColors.blue,
                       ),
                     ),
                   ),
@@ -276,7 +273,7 @@ class _DataSexState extends State<_DataSex> {
                         icon: AppIcons.vectorWoman,
                         text: 'Женщина',
                         crossAxisAlignment: CrossAxisAlignment.center,
-                        color: sex ? AppColors.noActive : AppColors.blue,
+                        color: sex ? AppColors.blue : AppColors.noActive,
                       ),
                     ),
                   ),
