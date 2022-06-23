@@ -11,7 +11,6 @@ class ProfileBankCardsPage extends StatelessWidget {
   const ProfileBankCardsPage({Key? key}) : super(key: key);
   static const routeName = '/profile_bank_cards_page';
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -55,7 +54,27 @@ class ProfileBankCardsPage extends StatelessWidget {
         child: Column(
           children: [
             InkWell(
-              onTap: ()=> Navigator.pushNamed(context, ProfileAddCardsPage.routeName,),
+              onTap: () async {
+                String? cardNumber;
+                String? cardDate;
+                String? cardCvv;
+                List result = await Navigator.push(context,
+                    MaterialPageRoute(builder: (context) {
+                  return ProfileAddCardsPage(
+                    
+                    cardCvv: cardCvv ?? '',
+                    cardDate: cardDate ?? '',
+                    cardNumber: cardNumber ?? '', visaMaster: true,
+                  );
+                }));
+                if (result.isNotEmpty) {
+                  cardNumber = result[0];
+                  cardDate = result[1];
+                  cardCvv = result[2];
+
+                  print(result);
+                }
+              },
               child: const IconLink(
                 text: 'Добавить еще карту',
                 fontWeight: FontWeight.w700,
@@ -107,21 +126,32 @@ class _AutoDebitState extends State<_AutoDebit> {
         ),
         Flexible(
             flex: 5,
-            child: const Text('Автосписывание по умолчанию',
-            style: TextStyle(fontWeight: FontWeight.w400,),)),
+            child: const Text(
+              'Автосписывание по умолчанию',
+              style: TextStyle(
+                fontWeight: FontWeight.w400,
+              ),
+            )),
         Flexible(
           flex: 3,
           child: ListTile(
             title: const Text('Lights'),
             trailing: CupertinoSwitch(
               value: _lights,
-              onChanged: (bool value) { setState(() { _lights = value; }); },
+              onChanged: (bool value) {
+                setState(() {
+                  _lights = value;
+                });
+              },
             ),
-            onTap: () { setState(() { _lights = !_lights; }); },
+            onTap: () {
+              setState(() {
+                _lights = !_lights;
+              });
+            },
           ),
         )
       ],
     );
   }
 }
-

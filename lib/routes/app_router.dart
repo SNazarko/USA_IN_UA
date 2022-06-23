@@ -86,31 +86,37 @@ class AppRouter {
 
       // profile_pages
 
-        // profile_bank_cards_pages
+      // profile_bank_cards_pages
 
-          // profile_add_cards_page
+      // profile_add_cards_page
 
       case ProfileAddCardsPage.routeName:
-        builder = (_) => ProfileAddCardsPage();
+        final ProfileAddCardsPageArguments args =
+            arguments as ProfileAddCardsPageArguments;
+        builder = (_) => ProfileAddCardsPage(
+              cardNumber: args.cardNumber,
+              cardDate: args.cardDate,
+              cardCvv: args.cardCvv,
+          visaMaster: args.visaMaster,
+            );
         break;
 
-        // profile_bank_cards_page
+      // profile_bank_cards_page
       case ProfileBankCardsPage.routeName:
         builder = (_) => ProfileBankCardsPage();
         break;
 
-        // profile_edit_person_data_page
+      // profile_edit_person_data_page
       case ProfileEditPersonDataPage.routeName:
         builder = (_) => ProfileEditPersonDataPage();
         break;
 
-        // profile_edit_person_data_page
+      // profile_edit_person_data_page
       case ProfileFinancePage.routeName:
         builder = (_) => const ProfileFinancePage();
         break;
 
-
-        // profile_page
+      // profile_page
       case ProfilePage.routeName:
         builder = (_) => ProfilePage();
         break;
