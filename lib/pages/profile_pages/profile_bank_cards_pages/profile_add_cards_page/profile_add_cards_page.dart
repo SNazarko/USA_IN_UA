@@ -2,38 +2,21 @@ import 'package:flutter/material.dart';
 import 'package:flutter_multi_formatter/formatters/masked_input_formatter.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:hive/hive.dart';
 
+import '../../../../models/card_model.dart';
 import '../../../../resources/app_colors.dart';
 import '../../../../resources/app_icons.dart';
 import '../../../../widgets/button_enter.dart';
 import '../../../../widgets/text_field_input_text_number.dart';
 
-class ProfileAddCardsPageArguments {
-  ProfileAddCardsPageArguments(
-    this.cardNumber,
-    this.cardDate,
-    this.cardCvv,
-      this.visaMaster,
-  );
-  final String cardNumber;
-  final String cardDate;
-  final String cardCvv;
-  final bool visaMaster;
-}
 
 class ProfileAddCardsPage extends StatefulWidget {
-  ProfileAddCardsPage({
+  const ProfileAddCardsPage({
     Key? key,
-    required this.cardNumber,
-    required this.cardDate,
-    required this.cardCvv,
-    required this.visaMaster,
   }) : super(key: key);
   static const routeName = '/profile_bank_cards_page/profile_add_cards_page';
-  String cardNumber;
-  String cardDate;
-  String cardCvv;
-  bool visaMaster;
+
 
   @override
   State<ProfileAddCardsPage> createState() => _ProfileAddCardsPageState();
@@ -41,9 +24,13 @@ class ProfileAddCardsPage extends StatefulWidget {
 
 class _ProfileAddCardsPageState extends State<ProfileAddCardsPage> {
   late FToast fToast;
+  String? cardNumber = '';
+  String? cardDate = '';
+  String? cardCvv = '';
+  bool? visaMaster;
 
-  bool isCreditCard (int value){
-    if(value == 4) return true;
+  bool isCreditCard(int value) {
+    if (value == 4) return true;
     return false;
   }
 
@@ -131,7 +118,7 @@ class _ProfileAddCardsPageState extends State<ProfileAddCardsPage> {
                 ),
                 TextFieldInputTextNumber(
                   onChanged: (date) {
-                    widget.cardNumber = date;
+                    cardNumber = date;
                   },
                   onEditingComplete: () {
                     FocusScope.of(context).nextFocus();
@@ -171,7 +158,7 @@ class _ProfileAddCardsPageState extends State<ProfileAddCardsPage> {
                             ),
                             TextFieldInputTextNumber(
                               onChanged: (date) {
-                                widget.cardDate = date;
+                                cardDate = date;
                               },
                               onEditingComplete: () {
                                 FocusScope.of(context).nextFocus();
@@ -211,7 +198,7 @@ class _ProfileAddCardsPageState extends State<ProfileAddCardsPage> {
                             ),
                             TextFieldInputTextNumber(
                               onChanged: (date) {
-                                widget.cardCvv = date;
+                                cardCvv = date;
                               },
                               onEditingComplete: () {
                                 FocusScope.of(context).nextFocus();
@@ -233,33 +220,42 @@ class _ProfileAddCardsPageState extends State<ProfileAddCardsPage> {
               ],
             ),
             ButtonEnter(
-              onPressed: () {
-                if(widget.cardNumber.isEmpty || widget.cardNumber.length < 19){
+              onPressed: () async {
+                if (cardNumber!.isEmpty ||
+                    cardNumber!.length < 19) {
                   fToast.showToast(
                     child: toast('Введите номер карты'),
                     gravity: ToastGravity.TOP,
                     toastDuration: const Duration(seconds: 2),
                   );
-                } else if (widget.cardDate.isEmpty || widget.cardDate.length < 6){
+                } else if (cardDate!.isEmpty ||
+                    cardDate!.length < 6) {
                   fToast.showToast(
                     child: toast('Введите строки действия карты'),
                     gravity: ToastGravity.TOP,
                     toastDuration: const Duration(seconds: 2),
                   );
-                }else if (widget.cardCvv.isEmpty || widget.cardCvv.length <3){
+                } else if (cardCvv!.isEmpty ||
+                    cardCvv!.length < 3) {
                   fToast.showToast(
                     child: toast('Введите CVV'),
                     gravity: ToastGravity.TOP,
                     toastDuration: const Duration(seconds: 2),
                   );
-                }else{
-                  final int isCard = int.parse(widget.cardNumber[0]);
-                Navigator.pop(context, [
-                  widget.cardNumber,
-                  widget.cardDate,
-                  widget.cardCvv,
-                  isCreditCard(isCard),
-                ]);
+                } else {
+                  if(!Hive.isAdapterRegistered(1)){
+                    Hive.registerAdapter(CardModelAdapter());
+                  }
+                  final int isCard = int.parse(cardNumber![0]);
+                  final box = await Hive.openBox<CardModel>('card_box');
+                  final card = CardModel(
+                    cardNumber: cardNumber!,
+                    cardDate: cardDate!,
+                    isCard: isCreditCard(isCard),
+                    cardCvv: cardCvv!,
+                  );
+                  await box.add(card);
+                  Navigator.pop(context);
                 }
               },
               color: AppColors.green,

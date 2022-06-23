@@ -91,14 +91,7 @@ class AppRouter {
       // profile_add_cards_page
 
       case ProfileAddCardsPage.routeName:
-        final ProfileAddCardsPageArguments args =
-            arguments as ProfileAddCardsPageArguments;
-        builder = (_) => ProfileAddCardsPage(
-              cardNumber: args.cardNumber,
-              cardDate: args.cardDate,
-              cardCvv: args.cardCvv,
-          visaMaster: args.visaMaster,
-            );
+        builder = (_) => ProfileAddCardsPage();
         break;
 
       // profile_bank_cards_page

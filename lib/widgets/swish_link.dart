@@ -3,17 +3,19 @@ import 'package:flutter/material.dart';
 import '../resources/app_colors.dart';
 
 class Swish extends StatelessWidget {
-  const Swish(
-      {Key? key,
-      required this.text,
-      required this.onTap,
-      required this.contour,
-      required this.color})
-      : super(key: key);
+  const Swish({
+    Key? key,
+    required this.text,
+    required this.onTap,
+    required this.contour,
+    required this.color,
+    this.colorText,
+  }) : super(key: key);
   final String text;
   final bool contour;
   final Color color;
   final void Function() onTap;
+  final bool? colorText;
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -58,7 +60,8 @@ class Swish extends StatelessWidget {
             Text(
               text,
               style: TextStyle(
-                color: contour ? AppColors.text : AppColors.contour,
+                color:
+                    colorText ?? contour ? AppColors.text : AppColors.contour,
                 fontSize: 20.0,
                 fontWeight: FontWeight.w600,
               ),
