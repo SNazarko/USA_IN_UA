@@ -22,6 +22,7 @@ class ProfileBankCardsPage extends StatefulWidget {
 
 class _ProfileBankCardsPageState extends State<ProfileBankCardsPage> {
   List<CardModel> cardList = [];
+  bool _lights = true;
 
   Future<void> _setup() async {
     if (!Hive.isAdapterRegistered(1)) {
@@ -34,6 +35,31 @@ class _ProfileBankCardsPageState extends State<ProfileBankCardsPage> {
       cardList = box.values.toList();
       setState(() {});
     });
+  }
+
+  Future<void> _update(int index, CardModel card) async {
+    if (!Hive.isAdapterRegistered(1)) {
+      Hive.registerAdapter(CardModelAdapter());
+    }
+    final box = await Hive.openBox<CardModel>('card_box');
+    await box.add(card);
+   await box.deleteAt(index);
+  }
+
+
+  Future<void> _delete(int index) async {
+    if (!Hive.isAdapterRegistered(1)) {
+      Hive.registerAdapter(CardModelAdapter());
+    }
+    final box = await Hive.openBox<CardModel>('card_box');
+    box.deleteAt(index);
+  }
+
+  double _customExpanded(List list) {
+    if (list.length == 1) return 100.0;
+    if (list.length == 2) return 200.0;
+    if (list.length >= 3) return 300.0;
+    return 0.0;
   }
 
   @override
@@ -84,15 +110,34 @@ class _ProfileBankCardsPageState extends State<ProfileBankCardsPage> {
         ),
         child: Column(
           children: [
-            Expanded(
+            SizedBox(
+              width: double.infinity,
+              height: _customExpanded(cardList),
               child: ListView.builder(
+                reverse: true,
                 itemBuilder: (BuildContext context, int index) {
                   final card = cardList[index];
-                  return _CreditCardModel(
-                    indexList: index,
-                    cardNumber: card.cardNumber,
-                    isCard: card.isCard,
-                  );
+
+                    return DismissibleWidget(
+                      item: card,
+                      onResize: () => _delete(index),
+                      child: _CreditCardModel(
+                        indexList: index,
+                        cardNumber: card.cardNumber,
+                        isCard: card.isCard,
+                        contour: card.usedCard,
+                        onTap: () {
+                          final newCard = CardModel(
+                              cardNumber: card.cardNumber,
+                              cardDate: card.cardDate,
+                              isCard: card.isCard,
+                              cardCvv: card.cardCvv,
+                              usedCard: !card.usedCard,
+                          );
+                          _update(index,newCard);
+                        },
+                      ),
+                    );
                 },
                 itemCount: cardList.length,
               ),
@@ -124,6 +169,27 @@ class _ProfileBankCardsPageState extends State<ProfileBankCardsPage> {
       ),
     );
   }
+}
+
+class DismissibleWidget extends StatelessWidget {
+  const DismissibleWidget({
+    Key? key,
+    required this.child,
+    required this.item,
+    required this.onResize,
+  }) : super(key: key);
+  final Widget child;
+  final CardModel item;
+  final void Function() onResize;
+  @override
+  Widget build(BuildContext context) => Dismissible(
+        onResize: onResize,
+        background: Container(
+          color: AppColors.bass,
+        ),
+        key: ObjectKey(item),
+        child: child,
+      );
 }
 
 class _AutoDebit extends StatefulWidget {
@@ -191,13 +257,16 @@ class _CreditCardModel extends StatelessWidget {
     required this.indexList,
     required this.cardNumber,
     required this.isCard,
+    required this.contour,
+    required this.onTap,
   }) : super(key: key);
   final int indexList;
   final String cardNumber;
   final bool isCard;
+  final bool contour;
+  final void Function() onTap;
 
-
-  String _smallNumber(String cardNumber){
+  String _smallNumber(String cardNumber) {
     final firstNumber = cardNumber.substring(0, 7);
     final lastNumber = cardNumber.substring(15, 19);
     return '$firstNumber .... $lastNumber';
@@ -229,8 +298,8 @@ class _CreditCardModel extends StatelessWidget {
               Swish(
                 colorText: true,
                 text: _smallNumber(cardNumber),
-                onTap: () {},
-                contour: true,
+                onTap: onTap,
+                contour: contour,
                 color: AppColors.blue,
               ),
               const SizedBox(

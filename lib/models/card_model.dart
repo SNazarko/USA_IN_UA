@@ -9,7 +9,9 @@ class CardModel {
     required this.cardNumber,
     required this.cardDate,
     required this.isCard,
-    required this.cardCvv,});
+    required this.cardCvv,
+    required this.usedCard,
+  });
 
   @HiveField(0)
   String cardNumber;
@@ -21,4 +23,10 @@ class CardModel {
   String cardCvv;
 
   @HiveField(3)
-  bool isCard;}
+  bool isCard;
+
+  @HiveField(4)
+  bool usedCard;
+
+
+}

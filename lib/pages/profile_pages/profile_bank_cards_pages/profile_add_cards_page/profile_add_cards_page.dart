@@ -29,10 +29,17 @@ class _ProfileAddCardsPageState extends State<ProfileAddCardsPage> {
   String? cardCvv = '';
   bool? visaMaster;
 
-  bool isCreditCard(int value) {
+  bool _isCreditCard(int value) {
     if (value == 4) return true;
     return false;
   }
+
+  bool _isUsedCard(box) {
+    if (box.length == 1) return true;
+    return false;
+  }
+
+
 
   Widget toast(String text) {
     return Container(
@@ -251,8 +258,9 @@ class _ProfileAddCardsPageState extends State<ProfileAddCardsPage> {
                   final card = CardModel(
                     cardNumber: cardNumber!,
                     cardDate: cardDate!,
-                    isCard: isCreditCard(isCard),
+                    isCard: _isCreditCard(isCard),
                     cardCvv: cardCvv!,
+                    usedCard: _isUsedCard(box),
                   );
                   await box.add(card);
                   Navigator.pop(context);
