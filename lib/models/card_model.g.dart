@@ -17,11 +17,11 @@ class CardModelAdapter extends TypeAdapter<CardModel> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return CardModel(
-      cardNumber: fields[0] as String,
-      cardDate: fields[1] as String,
-      isCard: fields[3] as bool,
-      cardCvv: fields[2] as String,
-      usedCard: fields[4] as bool,
+      cardNumber: fields[0] as String?,
+      cardDate: fields[1] as String?,
+      isCard: fields[3] as bool?,
+      cardCvv: fields[2] as String?,
+      usedCard: fields[4] as bool?,
     );
   }
 

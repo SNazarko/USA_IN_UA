@@ -6,27 +6,42 @@ part 'card_model.g.dart';
 class CardModel {
 
   CardModel({
-    required this.cardNumber,
-    required this.cardDate,
-    required this.isCard,
-    required this.cardCvv,
-    required this.usedCard,
+     this.cardNumber,
+    this.cardDate,
+    this.isCard,
+    this.cardCvv,
+    this.usedCard,
   });
 
   @HiveField(0)
-  String cardNumber;
+  String? cardNumber;
 
   @HiveField(1)
-  String cardDate;
+  String? cardDate;
 
   @HiveField(2)
-  String cardCvv;
+  String? cardCvv;
 
   @HiveField(3)
-  bool isCard;
+  bool? isCard;
 
   @HiveField(4)
-  bool usedCard;
+  bool? usedCard;
+ CardModel copyWith ({
+   String? cardNumber,
+   String? cardDate,
+   String? cardCvv,
+   bool? isCard,
+   bool? usedCard,
 
+}){
+   return CardModel(
+   cardNumber: cardNumber ?? this.cardNumber,
+   cardDate: cardDate ?? this.cardDate,
+isCard: isCard ?? this.isCard,
+cardCvv: cardCvv ?? this.cardCvv,
+usedCard: usedCard ?? this.usedCard
+);
+ }
 
 }

@@ -4,6 +4,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:hive/hive.dart';
 
+import '../../../../database/local_database.dart';
 import '../../../../models/card_model.dart';
 import '../../../../resources/app_colors.dart';
 import '../../../../resources/app_icons.dart';
@@ -35,10 +36,48 @@ class _ProfileAddCardsPageState extends State<ProfileAddCardsPage> {
   }
 
   bool _isUsedCard(box) {
-    if (box.length == 1) return true;
+    if (box.isEmpty) return true;
     return false;
   }
 
+
+  Future<void> _saveCard ()async{
+    if (cardNumber!.isEmpty ||
+        cardNumber!.length < 19) {
+      fToast.showToast(
+        child: toast('Введите номер карты'),
+        gravity: ToastGravity.TOP,
+        toastDuration: const Duration(seconds: 2),
+      );
+    } else if (cardDate!.isEmpty ||
+        cardDate!.length < 6) {
+      fToast.showToast(
+        child: toast('Введите строки действия карты'),
+        gravity: ToastGravity.TOP,
+        toastDuration: const Duration(seconds: 2),
+      );
+    } else if (cardCvv!.isEmpty ||
+        cardCvv!.length < 3) {
+      fToast.showToast(
+        child: toast('Введите CVV'),
+        gravity: ToastGravity.TOP,
+        toastDuration: const Duration(seconds: 2),
+      );
+    } else {
+      LocalDB.instance.initializeHive();
+      final int isCard = int.parse(cardNumber![0]);
+      final box = await Hive.openBox<CardModel>('card_box');
+      final card = CardModel(
+        cardNumber: cardNumber,
+        cardDate: cardDate ,
+        isCard: _isCreditCard(isCard),
+        cardCvv: cardCvv ,
+        usedCard: _isUsedCard(box),
+      );
+      LocalDB.instance.add(card);
+      Navigator.pop(context);
+    }
+  }
 
 
   Widget toast(String text) {
@@ -51,6 +90,7 @@ class _ProfileAddCardsPageState extends State<ProfileAddCardsPage> {
       child: Text(text),
     );
   }
+
 
   @override
   void initState() {
@@ -227,45 +267,7 @@ class _ProfileAddCardsPageState extends State<ProfileAddCardsPage> {
               ],
             ),
             ButtonEnter(
-              onPressed: () async {
-                if (cardNumber!.isEmpty ||
-                    cardNumber!.length < 19) {
-                  fToast.showToast(
-                    child: toast('Введите номер карты'),
-                    gravity: ToastGravity.TOP,
-                    toastDuration: const Duration(seconds: 2),
-                  );
-                } else if (cardDate!.isEmpty ||
-                    cardDate!.length < 6) {
-                  fToast.showToast(
-                    child: toast('Введите строки действия карты'),
-                    gravity: ToastGravity.TOP,
-                    toastDuration: const Duration(seconds: 2),
-                  );
-                } else if (cardCvv!.isEmpty ||
-                    cardCvv!.length < 3) {
-                  fToast.showToast(
-                    child: toast('Введите CVV'),
-                    gravity: ToastGravity.TOP,
-                    toastDuration: const Duration(seconds: 2),
-                  );
-                } else {
-                  if(!Hive.isAdapterRegistered(1)){
-                    Hive.registerAdapter(CardModelAdapter());
-                  }
-                  final int isCard = int.parse(cardNumber![0]);
-                  final box = await Hive.openBox<CardModel>('card_box');
-                  final card = CardModel(
-                    cardNumber: cardNumber!,
-                    cardDate: cardDate!,
-                    isCard: _isCreditCard(isCard),
-                    cardCvv: cardCvv!,
-                    usedCard: _isUsedCard(box),
-                  );
-                  await box.add(card);
-                  Navigator.pop(context);
-                }
-              },
+              onPressed: () => _saveCard(),
               color: AppColors.green,
               colorText: AppColors.brown,
               text: 'СОХРАНИТЬ',

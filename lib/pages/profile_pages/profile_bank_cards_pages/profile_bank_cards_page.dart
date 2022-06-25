@@ -1,59 +1,21 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:hive/hive.dart';
-import 'package:hive_flutter/hive_flutter.dart';
 import 'package:usa_in_ua/pages/profile_pages/profile_bank_cards_pages/profile_add_cards_page/profile_add_cards_page.dart';
 import 'package:usa_in_ua/resources/app_images.dart';
 
+import '../../../database/local_database.dart';
 import '../../../models/card_model.dart';
 import '../../../resources/app_colors.dart';
 import '../../../resources/app_icons.dart';
 import '../../../widgets/icon_link.dart';
 import '../../../widgets/swish_link.dart';
+import 'bloc/card_bloc.dart';
 
-class ProfileBankCardsPage extends StatefulWidget {
-  ProfileBankCardsPage({Key? key}) : super(key: key);
+class ProfileBankCardsPage extends StatelessWidget {
+  const ProfileBankCardsPage({Key? key}) : super(key: key);
   static const routeName = '/profile_bank_cards_page';
-
-  @override
-  State<ProfileBankCardsPage> createState() => _ProfileBankCardsPageState();
-}
-
-class _ProfileBankCardsPageState extends State<ProfileBankCardsPage> {
-  List<CardModel> cardList = [];
-  bool _lights = true;
-
-  Future<void> _setup() async {
-    if (!Hive.isAdapterRegistered(1)) {
-      Hive.registerAdapter(CardModelAdapter());
-    }
-    final box = await Hive.openBox<CardModel>('card_box');
-    cardList = box.values.toList();
-    setState(() {});
-    box.listenable().addListener(() {
-      cardList = box.values.toList();
-      setState(() {});
-    });
-  }
-
-  Future<void> _update(int index, CardModel card) async {
-    if (!Hive.isAdapterRegistered(1)) {
-      Hive.registerAdapter(CardModelAdapter());
-    }
-    final box = await Hive.openBox<CardModel>('card_box');
-    await box.add(card);
-   await box.deleteAt(index);
-  }
-
-
-  Future<void> _delete(int index) async {
-    if (!Hive.isAdapterRegistered(1)) {
-      Hive.registerAdapter(CardModelAdapter());
-    }
-    final box = await Hive.openBox<CardModel>('card_box');
-    box.deleteAt(index);
-  }
 
   double _customExpanded(List list) {
     if (list.length == 1) return 100.0;
@@ -63,108 +25,122 @@ class _ProfileBankCardsPageState extends State<ProfileBankCardsPage> {
   }
 
   @override
-  void initState() {
-    _setup();
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        elevation: 0.0,
-        centerTitle: true,
-        leading: InkWell(
-          onTap: () => Navigator.pop(context),
-          child: Padding(
-            padding: const EdgeInsets.all(15.0),
-            child: SvgPicture.asset(
-              AppIcons.arrowLeft,
-            ),
-          ),
-        ),
-        title: const Text(
-          'Банковские карты',
-          style: TextStyle(
-            color: AppColors.text,
-            fontSize: 20.0,
-            fontWeight: FontWeight.w600,
-          ),
-        ),
-        actions: [
-          Padding(
-            padding: const EdgeInsets.only(
-              right: 16.0,
-            ),
-            child: SvgPicture.asset(
-              AppIcons.menu,
-            ),
-          ),
-        ],
-      ),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(
-          horizontal: 16.0,
-          vertical: 20.0,
-        ),
-        child: Column(
-          children: [
-            SizedBox(
-              width: double.infinity,
-              height: _customExpanded(cardList),
-              child: ListView.builder(
-                reverse: true,
-                itemBuilder: (BuildContext context, int index) {
-                  final card = cardList[index];
-
-                    return DismissibleWidget(
-                      item: card,
-                      onResize: () => _delete(index),
-                      child: _CreditCardModel(
-                        indexList: index,
-                        cardNumber: card.cardNumber,
-                        isCard: card.isCard,
-                        contour: card.usedCard,
-                        onTap: () {
-                          final newCard = CardModel(
-                              cardNumber: card.cardNumber,
-                              cardDate: card.cardDate,
-                              isCard: card.isCard,
-                              cardCvv: card.cardCvv,
-                              usedCard: !card.usedCard,
-                          );
-                          _update(index,newCard);
-                        },
-                      ),
-                    );
-                },
-                itemCount: cardList.length,
+    return BlocProvider<CardBloc>(
+      create: (context) =>
+      CardBloc()
+        ..add(LoadCardItemEvent(),),
+      child: Scaffold(
+        appBar: AppBar(
+          backgroundColor: Colors.white,
+          elevation: 0.0,
+          centerTitle: true,
+          leading: InkWell(
+            onTap: () => Navigator.pop(context),
+            child: Padding(
+              padding: const EdgeInsets.all(15.0),
+              child: SvgPicture.asset(
+                AppIcons.arrowLeft,
               ),
             ),
-            InkWell(
-              onTap: () {
-                Navigator.pushNamed(
-                  context,
-                  ProfileAddCardsPage.routeName,
-                );
-              },
-              child: const IconLink(
-                text: 'Добавить еще карту',
-                fontWeight: FontWeight.w700,
-                icon: AppIcons.plus,
-                color: AppColors.blue,
-                crossAxisAlignment: CrossAxisAlignment.center,
-              ),
+          ),
+          title: const Text(
+            'Банковские карты',
+            style: TextStyle(
+              color: AppColors.text,
+              fontSize: 20.0,
+              fontWeight: FontWeight.w600,
             ),
-            const Padding(
-              padding: EdgeInsets.only(
-                left: 10.0,
-                top: 15.0,
+          ),
+          actions: [
+            Padding(
+              padding: const EdgeInsets.only(
+                right: 16.0,
               ),
-              child: _AutoDebit(),
+              child: SvgPicture.asset(
+                AppIcons.menu,
+              ),
             ),
           ],
+        ),
+        body: Padding(
+          padding: const EdgeInsets.symmetric(
+            horizontal: 16.0,
+            vertical: 20.0,
+          ),
+          child: Column(
+            children: [
+              BlocBuilder<CardBloc, CardState>(
+                builder: (context, state) {
+                  if (state.status == CardStatus.success){
+                    return SizedBox(
+                      width: double.infinity,
+                      height: _customExpanded(state.list),
+                      child: ListView.builder(
+                        itemCount: state.list.length,
+                        itemBuilder: (BuildContext context, int index) {
+                        final card = state.list[index];
+                        return DismissibleWidget(
+                          item: card,
+                          onResize: () => LocalDB.instance.delete(index),
+                          child: _CreditCardModel(
+                            indexList: index,
+                            cardNumber: card.cardNumber!,
+                            isCard: card.isCard ?? true,
+                            contour: card.usedCard ?? false,
+                            onTap: () {
+                              final newCard = CardModel().copyWith(
+                                isCard: card.isCard,
+                                cardCvv: card.cardCvv,
+                                cardDate: card.cardDate,
+                                cardNumber: card.cardNumber,
+                                usedCard: !card.usedCard!,);
+                              LocalDB.instance.update(index, newCard);
+                            },
+                          ),
+                        );
+                      },
+
+                  ),
+                    );}
+                  if (state.status == CardStatus.initial) {
+                    return const Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  }
+                  if (state.status == CardStatus.failed) {
+                    return const Center(
+                      child: Text('Ошыбка'),
+                    );
+                  } else {
+                    return const Text('data');
+                  }
+                },
+              ),
+              InkWell(
+                onTap: () {
+                  Navigator.pushNamed(
+                    context,
+                    ProfileAddCardsPage.routeName,
+                  );
+                },
+                child: const IconLink(
+                  text: 'Добавить еще карту',
+                  fontWeight: FontWeight.w700,
+                  icon: AppIcons.plus,
+                  color: AppColors.blue,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                ),
+              ),
+              const Padding(
+                padding: EdgeInsets.only(
+                  left: 10.0,
+                  top: 15.0,
+                ),
+                child: _AutoDebit(),
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -181,8 +157,10 @@ class DismissibleWidget extends StatelessWidget {
   final Widget child;
   final CardModel item;
   final void Function() onResize;
+
   @override
-  Widget build(BuildContext context) => Dismissible(
+  Widget build(BuildContext context) =>
+      Dismissible(
         onResize: onResize,
         background: Container(
           color: AppColors.bass,
@@ -201,6 +179,7 @@ class _AutoDebit extends StatefulWidget {
 
 class _AutoDebitState extends State<_AutoDebit> {
   bool _lights = false;
+
   @override
   Widget build(BuildContext context) {
     return Row(
