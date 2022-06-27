@@ -1,102 +1,180 @@
-
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_multi_formatter/formatters/masked_input_formatter.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:hive/hive.dart';
+import '../../../database/local_database.dart';
+import '../../../models/user_model.dart';
+import '../../../repositories/goods_repositories.dart';
+import '../../../repositories/profile_repositories.dart';
 import '../../../resources/app_colors.dart';
 import '../../../resources/app_icons.dart';
 import '../../../widgets/icon_link.dart';
+import 'bloc/profile_edit_bloc.dart';
 
 
 class ProfileEditPersonDataPage extends StatelessWidget {
-  ProfileEditPersonDataPage({Key? key}) : super(key: key);
+   ProfileEditPersonDataPage({Key? key}) : super(key: key);
   static const routeName = '/profile_edit_person_data';
-  final TextEditingController? controllerName = TextEditingController(text: 'Сергей');
-  final TextEditingController? controllerNumber = TextEditingController(text: '+380630588512');
-  final TextEditingController? controllerDate = TextEditingController(text: '16.04.1991');
-  final TextEditingController? controllerMail = TextEditingController(text: 'velenchuk18@gmail.com');
+   final TextEditingController controllerName = TextEditingController();
+   final TextEditingController controllerNumber = TextEditingController();
+   final TextEditingController controllerDate = TextEditingController();
+   final TextEditingController controllerMail = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        elevation: 0.0,
-        centerTitle: true,
-        leading: InkWell(
-          onTap: () => Navigator.pop(context),
-          child: Padding(
-            padding: const EdgeInsets.all(15.0),
-            child: SvgPicture.asset(
-              AppIcons.arrowLeft,
+    return BlocProvider<ProfileEditBloc>(
+      create: (context) =>
+      ProfileEditBloc()
+        ..add(const LoadProfileEditEvent(),),
+      child: Scaffold(
+        appBar: AppBar(
+          backgroundColor: Colors.white,
+          elevation: 0.0,
+          centerTitle: true,
+          leading: InkWell(
+            onTap: () async{
+              LocalDB.instance.initializeHive2();
+              final  box = await Hive.openBox<UserModel>('profile_box');
+              final dataList = box.values.toList();
+              final data = dataList.single;
+               bool isValue =
+                   data.userName == controllerName.text ||
+                   data.userEmail == controllerMail.text ||
+              data.userPhoneNumb == controllerNumber.text;
+              if(isValue){
+                ProfileRepositories.instance.updateProfile(
+                    controllerName.text,
+                    controllerMail.text,
+                    controllerNumber.text,
+                    controllerDate.text,
+                    false
+                );
+                final user = UserModel(
+                  userName: controllerName.text,
+                  userEmail: controllerMail.text,
+                  userPhoneNumb: controllerNumber.text,
+                  userSex: false,
+                  userDate: controllerDate.text,
+                );
+                await box.putAt(0, user);
+              }
+
+
+
+              Navigator.pop(context);
+              },
+            child: Padding(
+              padding: const EdgeInsets.all(15.0),
+              child: SvgPicture.asset(
+                AppIcons.arrowLeft,
+              ),
             ),
           ),
+          title: const Text(
+            'Личные данные',
+            style: TextStyle(
+              color: AppColors.text,
+              fontSize: 20.0,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+          actions: [
+            Padding(
+              padding: const EdgeInsets.only(
+                right: 16.0,
+              ),
+              child: SvgPicture.asset(
+                AppIcons.menu,
+              ),
+            ),
+          ],
         ),
-        title: const Text(
-          'Личные данные',
-          style: TextStyle(
-            color: AppColors.text,
-            fontSize: 20.0,
-            fontWeight: FontWeight.w600,
-          ),
-        ),
-        actions: [
-          Padding(
-            padding: const EdgeInsets.only(
-              right: 16.0,
-            ),
-            child: SvgPicture.asset(
-              AppIcons.menu,
-            ),
-          ),
-        ],
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: SingleChildScrollView(
-          child: Column(
-            children:[
-              DataOutput(
-                  controller: controllerName,
-                  dataOutputStatus: DataOutputStatus.name
-              ),
-              DataOutput(
-                  controller: controllerDate,
-                  dataOutputStatus: DataOutputStatus.data,
-              ),
-              const _DataSex(
-              ),
-              const Align(
-                alignment: Alignment.centerLeft,
-                child: Text(
-                  'Контактная информация',
-                  style: TextStyle(
-                    fontSize: 20.0,
-                    fontWeight: FontWeight.w600,
+        body: BlocBuilder<ProfileEditBloc, ProfileEditState>(
+          builder: (context, state) {
+            if (state.status == ProfileEditStatus.success){
+              final dataList = state.list;
+              if(dataList.isEmpty){return const CircularProgressIndicator();}
+              if(dataList.isNotEmpty){
+                final data = dataList.single;
+                controllerName.text = data.userName;
+                controllerNumber.text =  data.userPhoneNumb;
+                controllerDate.text = data.userDate ?? '';
+                controllerMail.text = data.userEmail;
+                return Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        DataOutput(
+                            controller: controllerName,
+                            dataOutputStatus: DataOutputStatus.name
+                        ),
+                        DataOutput(
+                          inputFormatters: [MaskedInputFormatter('##.##.####'),],
+                          controller: controllerDate,
+                          dataOutputStatus: DataOutputStatus.data,
+                        ),
+                         _DataSex(sex: data.userSex,
+                        ),
+                        const Align(
+                          alignment: Alignment.centerLeft,
+                          child: Text(
+                            'Контактная информация',
+                            style: TextStyle(
+                              fontSize: 20.0,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                        ),
+                        DataOutput(
+                          controller: controllerNumber,
+                          dataOutputStatus: DataOutputStatus.number,
+                        ),
+                        DataOutput(
+                          controller: controllerMail,
+                          dataOutputStatus: DataOutputStatus.emailAddress,
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(
+                            vertical: 15.0,
+                          ),
+                          child: InkWell(
+                            onTap: () {
+                              ProfileRepositories.instance.getProfile();
+                            },
+                            child: const IconLink(
+                              fontWeight: FontWeight.w600,
+                              fontSize: 14.0,
+                              icon: AppIcons.logout,
+                              text: 'Вийти',
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              color: AppColors.blue,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-              ),
-              DataOutput(
-                controller: controllerNumber,
-                dataOutputStatus: DataOutputStatus.number,
-              ),
-              DataOutput(
-                controller: controllerMail,
-                dataOutputStatus: DataOutputStatus.emailAddress,
-              ),
-              const Padding(
-                padding: EdgeInsets.symmetric(
-                  vertical: 15.0,
-                ),
-                child: IconLink(
-                  fontWeight: FontWeight.w600,
-                  fontSize: 14.0,
-                  icon: AppIcons.logout,
-                  text: 'Вийти',
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  color: AppColors.blue,
-                ),
-              ),
-            ],
-          ),
+                );}
+            }
+            if (state.status == ProfileEditStatus.initial) {
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            }
+            if (state.status == ProfileEditStatus.failed) {
+              return const Center(
+                child: Text('Ошыбка'),
+              );
+            } else {
+              return const Text('data');
+            }
+
+
+
+          },
         ),
       ),
     );
@@ -116,12 +194,13 @@ class DataOutput extends StatelessWidget {
     this.dataOutputStatus = DataOutputStatus.number,
     this.onChanged,
     this.onEditingComplete,
-    this.controller,
+    this.controller, this.inputFormatters,
   }) : super(key: key);
   final DataOutputStatus dataOutputStatus;
   final void Function(String)? onChanged;
   final void Function()? onEditingComplete;
   final TextEditingController? controller;
+  final List<TextInputFormatter>? inputFormatters;
 
   TextInputType _dataOutputType(DataOutputStatus type) {
     if (type == DataOutputStatus.number) return TextInputType.number;
@@ -162,7 +241,7 @@ class DataOutput extends StatelessWidget {
           children: [
             Padding(
               padding: const EdgeInsets.only(
-                  top: 10.0,left: 12.0
+                  top: 10.0, left: 12.0
               ),
               child: Text(
                 _hintTextType(dataOutputStatus),
@@ -175,14 +254,15 @@ class DataOutput extends StatelessWidget {
             ),
             Padding(
               padding: const EdgeInsets.only(
-                top: 8.0,left: 2.0
+                  top: 8.0, left: 2.0
               ),
               child: TextField(
+                inputFormatters: inputFormatters,
                 onEditingComplete: onEditingComplete,
                 controller: controller,
                 keyboardType: _dataOutputType(dataOutputStatus),
                 style: const TextStyle(
-                  fontSize: 16.0,
+                    fontSize: 16.0,
                     color: AppColors.text,
                     fontWeight: FontWeight.w700),
                 decoration: const InputDecoration(
@@ -203,9 +283,9 @@ class DataOutput extends StatelessWidget {
 
 class _DataSex extends StatefulWidget {
   const _DataSex({
-    Key? key,
+    Key? key, required this.sex,
   }) : super(key: key);
-
+final bool sex;
 
   @override
   State<_DataSex> createState() => _DataSexState();
@@ -213,6 +293,7 @@ class _DataSex extends StatefulWidget {
 
 class _DataSexState extends State<_DataSex> {
   bool sex = true;
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -240,11 +321,10 @@ class _DataSexState extends State<_DataSex> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Expanded(
-                    child:InkWell(
-                      onTap: (){
-
+                    child: InkWell(
+                      onTap: () {
                         sex = !sex;
-                        setState((){
+                        setState(() {
 
                         });
                       },
@@ -254,16 +334,15 @@ class _DataSexState extends State<_DataSex> {
                         icon: AppIcons.vectorMan,
                         text: 'Мужчина',
                         crossAxisAlignment: CrossAxisAlignment.center,
-                        color: sex ? AppColors.noActive : AppColors.blue,
+                        color: widget.sex ? AppColors.noActive : AppColors.blue,
                       ),
                     ),
                   ),
                   Expanded(
-                    child:            InkWell(
-                      onTap: (){
-
+                    child: InkWell(
+                      onTap: () {
                         sex = !sex;
-                        setState((){
+                        setState(() {
 
                         });
                       },

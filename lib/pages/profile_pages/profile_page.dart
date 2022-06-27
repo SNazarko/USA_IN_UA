@@ -4,6 +4,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:usa_in_ua/pages/profile_pages/profile_bank_cards_pages/profile_bank_cards_page.dart';
 import 'package:usa_in_ua/pages/profile_pages/profile_edit_person_data_page/profile_edit_person_data_page.dart';
 import 'package:usa_in_ua/pages/profile_pages/profile_finance_page/profile_finance_page.dart';
+import 'package:usa_in_ua/pages/profile_pages/profile_recipient_addresses_page/profile_recipient_addresses_page.dart';
 import 'package:usa_in_ua/resources/app_icons.dart';
 import 'package:usa_in_ua/resources/app_images.dart';
 import 'package:usa_in_ua/widgets/button_enter.dart';
@@ -353,16 +354,22 @@ class _ProfileLinks extends StatelessWidget {
                 ),
               ),
             ),
-            const Padding(
-              padding: EdgeInsets.symmetric(
+             Padding(
+              padding: const EdgeInsets.symmetric(
                 vertical: 5.0,
               ),
-              child: IconLink(
-                color: AppColors.blue,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                icon: AppIcons.location,
-                text: 'Адреса получателей',
-                fontWeight: FontWeight.w700,
+              child: InkWell(
+                onTap: () => Navigator.pushNamed(
+                  context,
+                  ProfileRecipientAddressesPage.routeName,
+                ),
+                child: const IconLink(
+                  color: AppColors.blue,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  icon: AppIcons.location,
+                  text: 'Адреса получателей',
+                  fontWeight: FontWeight.w700,
+                ),
               ),
             ),
             const Padding(

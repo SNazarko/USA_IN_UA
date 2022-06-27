@@ -70,7 +70,7 @@ class AuthRepositories {
                 'userPhoneNumb': phone,
                 'userEmail': userEmail,
                 'userSex': null,
-                'userDate': null,
+                'userDate': '',
               });
             }
           }

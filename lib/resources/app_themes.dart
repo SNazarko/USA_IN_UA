@@ -7,15 +7,18 @@ class AppThemes {
 
   static ThemeData light() {
     return ThemeData.light().copyWith(
+
       textTheme: const TextTheme(
         bodyText2: TextStyle(
           color: AppColors.text,
           fontWeight: FontWeight.w700,
+            fontFamily: 'Lato',
         ),
         bodyText1: TextStyle(
           color: AppColors.text,
           fontWeight: FontWeight.w400,
           fontSize: 14.0,
+          fontFamily: 'Lato',
         ),
       ),
       scaffoldBackgroundColor: Colors.white,

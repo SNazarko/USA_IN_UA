@@ -21,4 +21,19 @@ class GoodsRepositories {
       .snapshots()
       .map((snapshot) =>
           snapshot.docs.map((doc) => GoodsModel.fromJson(doc.data())).toList());
+
+
+
+  Future<void> getGoods(String sort)async{
+    final docRef = FirebaseFirestore.instance.collection('goods')
+        .where('category', arrayContains: sort)
+    .get().then(
+          (res) => res.docs.map((doc) => GoodsModel.fromJson(doc.data())).toList());
+
+
+
+
+  }
+
+
 }
