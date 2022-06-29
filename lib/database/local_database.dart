@@ -7,38 +7,39 @@ import '../models/user_model.dart';
 
 class LocalDB {
   const LocalDB._();
-
-  static const String _authBox = 'authBox';
   static const LocalDB instance = LocalDB._();
 
-  Future<void> initializeHive() async {
+
+  Future<void> initializeHive() async =>
+    await Hive.initFlutter();
+
+
+  Future<void> registerAdapter() async {
     if (!Hive.isAdapterRegistered(1)) {
       Hive.registerAdapter(CardModelAdapter());
     }
   }
 
-
-
   Future<void> add (CardModel card) async {
-    initializeHive();
+    registerAdapter();
     final box = await Hive.openBox<CardModel>('card_box');
     await box.add(card);
   }
 
   Future<void> update (int index, CardModel card) async {
-    initializeHive();
+    registerAdapter();
     final box = await Hive.openBox<CardModel>('card_box');
     await box.putAt(index, card);
 
   }
 
   Future<void> delete(int index) async {
-    initializeHive();
+    registerAdapter();
     final box = await Hive.openBox<CardModel>('card_box');
    await box.deleteAt(index);
   }
 
-  Future<void> initializeHive2() async {
+  Future<void> registerAdapter2() async {
     if (!Hive.isAdapterRegistered(2)) {
       Hive.registerAdapter(UserModelAdapter());
     }
@@ -46,7 +47,7 @@ class LocalDB {
 
 
   Future<void> add2 (model) async {
-    initializeHive2();
+    registerAdapter2();
     final box = await Hive.openBox<UserModel>('profile_box');
     await box.add(model);
   }

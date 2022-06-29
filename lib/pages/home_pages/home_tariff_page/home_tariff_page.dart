@@ -88,6 +88,7 @@ class _HomeTariffPageState extends State<HomeTariffPage> {
     );
   }
 
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -166,11 +167,7 @@ class _HomeTariffPageState extends State<HomeTariffPage> {
                         hintText: 'Выберите страну отправки',
                         widget: Text(''),
                       ),
-                      getDropdownButton(),
-                      // const TextFieldInputTextNumber(
-                      //   hintText: 'Выберите способ доставки',
-                      //   widget: Text(''),
-                      // ),
+                     getDropdownButton(),
                       const TextFieldInputTextNumber(
                         hintText: 'Примерный вес посылки',
                         widget: Text(
@@ -253,6 +250,7 @@ class _HomeTariffPageState extends State<HomeTariffPage> {
     );
   }
 }
+
 
 class _TextGet extends StatelessWidget {
   const _TextGet({Key? key, required this.textName, required this.textNumber})

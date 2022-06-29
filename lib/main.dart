@@ -6,10 +6,12 @@ import 'package:usa_in_ua/pages/authorisations_pages/authorisation_page/authoris
 import 'package:usa_in_ua/resources/app_themes.dart';
 import 'package:usa_in_ua/routes/app_router.dart';
 
+import 'database/local_database.dart';
+
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Hive.initFlutter();
+  LocalDB.instance.initializeHive();
   await Firebase.initializeApp();
   runApp(const MyApp());
 }

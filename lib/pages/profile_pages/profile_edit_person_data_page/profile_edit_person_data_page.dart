@@ -35,7 +35,7 @@ class ProfileEditPersonDataPage extends StatelessWidget {
           centerTitle: true,
           leading: InkWell(
             onTap: () async{
-              LocalDB.instance.initializeHive2();
+              LocalDB.instance.registerAdapter2();
               final  box = await Hive.openBox<UserModel>('profile_box');
               final dataList = box.values.toList();
               final data = dataList.single;
@@ -292,7 +292,7 @@ final bool sex;
 }
 
 class _DataSexState extends State<_DataSex> {
-  bool sex = true;
+  bool sex = false;
 
   @override
   Widget build(BuildContext context) {

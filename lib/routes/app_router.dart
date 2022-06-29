@@ -13,6 +13,7 @@ import '../pages/profile_pages/profile_bank_cards_pages/profile_add_cards_page/p
 import '../pages/profile_pages/profile_bank_cards_pages/profile_bank_cards_page.dart';
 import '../pages/profile_pages/profile_edit_person_data_page/profile_edit_person_data_page.dart';
 import '../pages/profile_pages/profile_finance_page/profile_finance_page.dart';
+import '../pages/profile_pages/profile_google_maps_page/profile_google_maps_page.dart';
 import '../pages/profile_pages/profile_page.dart';
 import '../pages/profile_pages/profile_recipient_addresses_page/profile_recipient_addresses_page.dart';
 import '../pages/purchase_page/purchase_page.dart';
@@ -111,8 +112,14 @@ class AppRouter {
 
       // profile_recipient_addresses_page
       case ProfileRecipientAddressesPage.routeName:
-        builder = (_) => const ProfileRecipientAddressesPage();
+        builder = (_) =>  ProfileRecipientAddressesPage();
         break;
+      // profile_google_maps_page
+      case ProfileGoogleMapsPage.routeName:
+        builder = (_) =>  const ProfileGoogleMapsPage();
+        break;
+
+
 
       // profile_page
       case ProfilePage.routeName:

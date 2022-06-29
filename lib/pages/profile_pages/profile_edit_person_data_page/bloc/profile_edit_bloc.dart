@@ -21,7 +21,7 @@ class ProfileEditBloc extends Bloc<ProfileEditEvent, ProfileEditState> {
         Emitter<ProfileEditState> emit,
         ) async {
       try {
-        LocalDB.instance.initializeHive2();
+        LocalDB.instance.registerAdapter2();
         final  box = await Hive.openBox<UserModel>('profile_box');
         if(box.isNotEmpty){
           add(
@@ -30,7 +30,7 @@ class ProfileEditBloc extends Bloc<ProfileEditEvent, ProfileEditState> {
           ),
         );} else{
           ProfileRepositories.instance.getProfile();
-          LocalDB.instance.initializeHive2();
+          LocalDB.instance.registerAdapter2();
           final  box = await Hive.openBox<UserModel>('profile_box');
           add(
             UpdateProfileEditEvent(

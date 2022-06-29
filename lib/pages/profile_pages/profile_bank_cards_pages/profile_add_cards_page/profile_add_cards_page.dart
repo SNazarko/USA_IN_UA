@@ -64,7 +64,7 @@ class _ProfileAddCardsPageState extends State<ProfileAddCardsPage> {
         toastDuration: const Duration(seconds: 2),
       );
     } else {
-      LocalDB.instance.initializeHive();
+      LocalDB.instance.registerAdapter();
       final int isCard = int.parse(cardNumber![0]);
       final box = await Hive.openBox<CardModel>('card_box');
       final card = CardModel(
@@ -136,143 +136,145 @@ class _ProfileAddCardsPageState extends State<ProfileAddCardsPage> {
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Text(
-                  'Для добавления карты, как средства платежа введите ее реквизиты',
-                  style: TextStyle(
-                    fontWeight: FontWeight.w400,
-                    fontSize: 14.0,
-                  ),
-                ),
-                const Padding(
-                  padding: EdgeInsets.only(
-                    top: 20.0,
-                    bottom: 10.0,
-                  ),
-                  child: Text(
-                    'Номер карты',
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text(
+                    'Для добавления карты, как средства платежа введите ее реквизиты',
                     style: TextStyle(
                       fontWeight: FontWeight.w400,
                       fontSize: 14.0,
                     ),
                   ),
-                ),
-                TextFieldInputTextNumber(
-                  onChanged: (date) {
-                    cardNumber = date;
-                  },
-                  onEditingComplete: () {
-                    FocusScope.of(context).nextFocus();
-                  },
-                  textAlign: TextAlign.center,
-                  fontSize: 20.0,
-                  inputFormatters: [
-                    MaskedInputFormatter('#### #### #### ####'),
-                  ],
-                  widget: SvgPicture.asset(
-                    AppIcons.creditCard,
-                    color: AppColors.noActive,
-                  ),
-                ),
-                Row(
-                  children: [
-                    Expanded(
-                      child: Padding(
-                        padding: const EdgeInsets.only(
-                          top: 20.0,
-                          right: 20.0,
-                        ),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const Padding(
-                              padding: EdgeInsets.only(
-                                bottom: 10.0,
-                              ),
-                              child: Text(
-                                'Срок действия',
-                                style: TextStyle(
-                                  fontWeight: FontWeight.w400,
-                                  fontSize: 14.0,
-                                ),
-                              ),
-                            ),
-                            TextFieldInputTextNumber(
-                              onChanged: (date) {
-                                cardDate = date;
-                              },
-                              onEditingComplete: () {
-                                FocusScope.of(context).nextFocus();
-                              },
-                              hintText: 'ММ/ ГГ',
-                              textAlign: TextAlign.center,
-                              fontSize: 20.0,
-                              inputFormatters: [
-                                MaskedInputFormatter('##/ ##'),
-                              ],
-                              widget: const SizedBox.expand(),
-                            ),
-                          ],
-                        ),
+                  const Padding(
+                    padding: EdgeInsets.only(
+                      top: 20.0,
+                      bottom: 10.0,
+                    ),
+                    child: Text(
+                      'Номер карты',
+                      style: TextStyle(
+                        fontWeight: FontWeight.w400,
+                        fontSize: 14.0,
                       ),
                     ),
-                    Expanded(
-                      child: Padding(
-                        padding: const EdgeInsets.only(
-                          top: 20.0,
-                          left: 20.0,
-                        ),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const Padding(
-                              padding: EdgeInsets.only(
-                                bottom: 10.0,
-                              ),
-                              child: Text(
-                                'CVV',
-                                style: TextStyle(
-                                  fontWeight: FontWeight.w400,
-                                  fontSize: 14.0,
+                  ),
+                  TextFieldInputTextNumber(
+                    onChanged: (date) {
+                      cardNumber = date;
+                    },
+                    onEditingComplete: () {
+                      FocusScope.of(context).nextFocus();
+                    },
+                    textAlign: TextAlign.center,
+                    fontSize: 20.0,
+                    inputFormatters: [
+                      MaskedInputFormatter('#### #### #### ####'),
+                    ],
+                    widget: SvgPicture.asset(
+                      AppIcons.creditCard,
+                      color: AppColors.noActive,
+                    ),
+                  ),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: Padding(
+                          padding: const EdgeInsets.only(
+                            top: 20.0,
+                            right: 20.0,
+                          ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const Padding(
+                                padding: EdgeInsets.only(
+                                  bottom: 10.0,
+                                ),
+                                child: Text(
+                                  'Срок действия',
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.w400,
+                                    fontSize: 14.0,
+                                  ),
                                 ),
                               ),
-                            ),
-                            TextFieldInputTextNumber(
-                              onChanged: (date) {
-                                cardCvv = date;
-                              },
-                              onEditingComplete: () {
-                                FocusScope.of(context).nextFocus();
-                              },
-                              hintText: 'XXX',
-                              textAlign: TextAlign.center,
-                              fontSize: 20.0,
-                              inputFormatters: [
-                                MaskedInputFormatter('###'),
-                              ],
-                              widget: const SizedBox.expand(),
-                            ),
-                          ],
+                              TextFieldInputTextNumber(
+                                onChanged: (date) {
+                                  cardDate = date;
+                                },
+                                onEditingComplete: () {
+                                  FocusScope.of(context).nextFocus();
+                                },
+                                hintText: 'ММ/ ГГ',
+                                textAlign: TextAlign.center,
+                                fontSize: 20.0,
+                                inputFormatters: [
+                                  MaskedInputFormatter('##/ ##'),
+                                ],
+                                widget: const SizedBox.expand(),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
-                    )
-                  ],
-                ),
-              ],
-            ),
-            ButtonEnter(
-              onPressed: () => _saveCard(),
-              color: AppColors.green,
-              colorText: AppColors.brown,
-              text: 'СОХРАНИТЬ',
-            ),
-          ],
+                      Expanded(
+                        child: Padding(
+                          padding: const EdgeInsets.only(
+                            top: 20.0,
+                            left: 20.0,
+                          ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const Padding(
+                                padding: EdgeInsets.only(
+                                  bottom: 10.0,
+                                ),
+                                child: Text(
+                                  'CVV',
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.w400,
+                                    fontSize: 14.0,
+                                  ),
+                                ),
+                              ),
+                              TextFieldInputTextNumber(
+                                onChanged: (date) {
+                                  cardCvv = date;
+                                },
+                                onEditingComplete: () {
+                                  FocusScope.of(context).nextFocus();
+                                },
+                                hintText: 'XXX',
+                                textAlign: TextAlign.center,
+                                fontSize: 20.0,
+                                inputFormatters: [
+                                  MaskedInputFormatter('###'),
+                                ],
+                                widget: const SizedBox.expand(),
+                              ),
+                            ],
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
+                ],
+              ),
+              ButtonEnter(
+                onPressed: () => _saveCard(),
+                color: AppColors.green,
+                colorText: AppColors.brown,
+                text: 'СОХРАНИТЬ',
+              ),
+            ],
+          ),
         ),
       ),
     );

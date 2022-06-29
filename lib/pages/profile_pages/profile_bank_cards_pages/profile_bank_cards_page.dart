@@ -68,78 +68,80 @@ class ProfileBankCardsPage extends StatelessWidget {
             horizontal: 16.0,
             vertical: 20.0,
           ),
-          child: Column(
-            children: [
-              BlocBuilder<CardBloc, CardState>(
-                builder: (context, state) {
-                  if (state.status == CardStatus.success){
-                    return SizedBox(
-                      width: double.infinity,
-                      height: _customExpanded(state.list),
-                      child: ListView.builder(
-                        itemCount: state.list.length,
-                        itemBuilder: (BuildContext context, int index) {
-                        final card = state.list[index];
-                        return DismissibleWidget(
-                          item: card,
-                          onResize: () => LocalDB.instance.delete(index),
-                          child: _CreditCardModel(
-                            indexList: index,
-                            cardNumber: card.cardNumber!,
-                            isCard: card.isCard ?? true,
-                            contour: card.usedCard ?? false,
-                            onTap: () {
-                              final newCard = CardModel().copyWith(
-                                isCard: card.isCard,
-                                cardCvv: card.cardCvv,
-                                cardDate: card.cardDate,
-                                cardNumber: card.cardNumber,
-                                usedCard: !card.usedCard!,);
-                              LocalDB.instance.update(index, newCard);
-                            },
-                          ),
-                        );
-                      },
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                BlocBuilder<CardBloc, CardState>(
+                  builder: (context, state) {
+                    if (state.status == CardStatus.success){
+                      return SizedBox(
+                        width: double.infinity,
+                        height: _customExpanded(state.list),
+                        child: ListView.builder(
+                          itemCount: state.list.length,
+                          itemBuilder: (BuildContext context, int index) {
+                          final card = state.list[index];
+                          return DismissibleWidget(
+                            item: card,
+                            onResize: () => LocalDB.instance.delete(index),
+                            child: _CreditCardModel(
+                              indexList: index,
+                              cardNumber: card.cardNumber!,
+                              isCard: card.isCard ?? true,
+                              contour: card.usedCard ?? false,
+                              onTap: () {
+                                final newCard = CardModel().copyWith(
+                                  isCard: card.isCard,
+                                  cardCvv: card.cardCvv,
+                                  cardDate: card.cardDate,
+                                  cardNumber: card.cardNumber,
+                                  usedCard: !card.usedCard!,);
+                                LocalDB.instance.update(index, newCard);
+                              },
+                            ),
+                          );
+                        },
 
+                    ),
+                      );}
+                    if (state.status == CardStatus.initial) {
+                      return const Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    }
+                    if (state.status == CardStatus.failed) {
+                      return const Center(
+                        child: Text('Ошыбка'),
+                      );
+                    } else {
+                      return const Text('data');
+                    }
+                  },
+                ),
+                InkWell(
+                  onTap: () {
+                    Navigator.pushNamed(
+                      context,
+                      ProfileAddCardsPage.routeName,
+                    );
+                  },
+                  child: const IconLink(
+                    text: 'Добавить еще карту',
+                    fontWeight: FontWeight.w700,
+                    icon: AppIcons.plus,
+                    color: AppColors.blue,
+                    crossAxisAlignment: CrossAxisAlignment.center,
                   ),
-                    );}
-                  if (state.status == CardStatus.initial) {
-                    return const Center(
-                      child: CircularProgressIndicator(),
-                    );
-                  }
-                  if (state.status == CardStatus.failed) {
-                    return const Center(
-                      child: Text('Ошыбка'),
-                    );
-                  } else {
-                    return const Text('data');
-                  }
-                },
-              ),
-              InkWell(
-                onTap: () {
-                  Navigator.pushNamed(
-                    context,
-                    ProfileAddCardsPage.routeName,
-                  );
-                },
-                child: const IconLink(
-                  text: 'Добавить еще карту',
-                  fontWeight: FontWeight.w700,
-                  icon: AppIcons.plus,
-                  color: AppColors.blue,
-                  crossAxisAlignment: CrossAxisAlignment.center,
                 ),
-              ),
-              const Padding(
-                padding: EdgeInsets.only(
-                  left: 10.0,
-                  top: 15.0,
+                const Padding(
+                  padding: EdgeInsets.only(
+                    left: 10.0,
+                    top: 15.0,
+                  ),
+                  child: _AutoDebit(),
                 ),
-                child: _AutoDebit(),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),

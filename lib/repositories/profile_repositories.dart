@@ -22,7 +22,7 @@ class ProfileRepositories {
     docRef.get().then((DocumentSnapshot doc) async {
       final data = doc.data() as Map<String, dynamic>;
       final user = UserModel.fromJson(data);
-      LocalDB.instance.initializeHive2();
+      LocalDB.instance.registerAdapter2();
       LocalDB.instance.add2(user);
     }, onError: (e) => print("Error getting document: $e"));
   }

@@ -9,13 +9,14 @@ class Swish extends StatelessWidget {
     required this.onTap,
     required this.contour,
     required this.color,
-    this.colorText,
+    this.colorText, this.fontSize,
   }) : super(key: key);
   final String text;
   final bool contour;
   final Color color;
   final void Function() onTap;
   final bool? colorText;
+  final double? fontSize;
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -62,7 +63,7 @@ class Swish extends StatelessWidget {
               style: TextStyle(
                 color:
                     colorText ?? contour ? AppColors.text : AppColors.contour,
-                fontSize: 20.0,
+                fontSize: fontSize ?? 20.0,
                 fontWeight: FontWeight.w600,
               ),
             ),
