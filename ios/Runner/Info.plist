@@ -7,6 +7,9 @@
 		<key>CFBundleDisplayName</key>
 		<string>Usa In Ua</string>
 		<key>CFBundleExecutable</key>
+		<key>NSLocationWhenInUseUsageDescription</key>
+		<key>NSLocationAlwaysUsageDescription</key>
+		<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
 		<string>$(EXECUTABLE_NAME)</string>
 		<key>CFBundleIdentifier</key>
 		<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>

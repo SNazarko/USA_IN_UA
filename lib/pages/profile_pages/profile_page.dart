@@ -9,7 +9,9 @@ import 'package:usa_in_ua/resources/app_icons.dart';
 import 'package:usa_in_ua/resources/app_images.dart';
 import 'package:usa_in_ua/widgets/button_enter.dart';
 
+import '../../repositories/located_repositories.dart';
 import '../../resources/app_colors.dart';
+import '../../services/located.dart';
 import '../../widgets/icon_link.dart';
 import '../../widgets/prise_dollar.dart';
 
@@ -372,16 +374,19 @@ class _ProfileLinks extends StatelessWidget {
                 ),
               ),
             ),
-            const Padding(
-              padding: EdgeInsets.symmetric(
+             Padding(
+              padding: const EdgeInsets.symmetric(
                 vertical: 5.0,
               ),
-              child: IconLink(
-                color: AppColors.blue,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                icon: AppIcons.storageAddress,
-                text: 'Адреса складов',
-                fontWeight: FontWeight.w700,
+              child: InkWell(
+                onTap: () {},
+                child: const IconLink(
+                  color: AppColors.blue,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  icon: AppIcons.storageAddress,
+                  text: 'Адреса складов',
+                  fontWeight: FontWeight.w700,
+                ),
               ),
             ),
             const Padding(
