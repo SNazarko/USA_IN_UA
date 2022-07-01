@@ -10,36 +10,74 @@ import '../services/located.dart';
 import 'dart:async';
 
 // "https://maps.googleapis.com/maps/api/directions/json?"
-const apiKey = 'AIzaSyAEg2dVWnVPjrSDScV-LqGmdUKMsWT79PU';
+const googleApiKey = 'AIzaSyAEg2dVWnVPjrSDScV-LqGmdUKMsWT79PU';
+const newPostApiKey = 'da6ddc24259b34b6f5082168bcf5da8f';
 
 class LocatedRepositories {
   LocatedRepositories._();
   static const String _baseUrl =
-      "https://maps.googleapis.com/maps/api/place/findplacefromtext/json?";
+      "https://api.novaposhta.ua/v2.0/json=/Address/getCities";
 
   static LocatedRepositories instance = LocatedRepositories._();
   final dio = Dio();
+  void getHttp() async {
+    try {
+      var response = await dio.get(_baseUrl,
+        queryParameters:
+        {
+          "apiKey": newPostApiKey,
+          "modelName": "Address",
+          "calledMethod": "getSettlements",
+          "methodProperties": {}
+        }
+
+
+
+      );
+      print(response);
+    } catch (e) {
+      print(e);
+    }
+  }
+
+
+
 
   Future<void> getDirections({
     required LatLng origin,
   }) async {
-    final places = GoogleMapsPlaces(apiKey: "$apiKey");
+    final places = GoogleMapsPlaces(apiKey: "");
     PlacesSearchResponse response = await places.searchNearbyWithRadius(
         Location(lat: origin.latitude, lng: origin.longitude), 1);
 if(response.results.isNotEmpty){
   final PlacesSearchResult data = response.results.first;
   final id = data.placeId;
-
-
   PlacesDetailsResponse response2 = await places.getDetailsByPlaceId('$id');
   final PlaceDetails details = response2.result;
+  final adress = details.formattedAddress;
+  final List<AddressComponent> adress1 = details.addressComponents;
+  final AddressComponent adress2 = adress1[0];
+  final AddressComponent adress3 = adress1[1];
+
+  final wwww =  adress2.longName;
+  final aaaa =  adress3.longName;
+  // final qqqq =  adress4.longName;
+  // final eeee =  adress5.longName;
 
 
 
 
 
-  // print('00000000000000000000$adress3');
-  // print('00000000000000000000$types ');
+
+
+
+  print('00000000000000000000$wwww');
+  print('00000000000000000000$aaaa ');
+  // print('00000000000000000000$qqqq ');
+  // print('00000000000000000000$eeee ');
+
+
+
 
 
 }

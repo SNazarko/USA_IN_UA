@@ -17,7 +17,7 @@ class TextFieldInputTextNumber extends StatelessWidget {
     this.inputFormatters,
     this.fontSize,
     this.textAlign,
-    this.onTap,
+    this.onTap,this.textInputType,
   }) : super(key: key);
   final String? hintText;
   final void Function(String)? onChanged;
@@ -28,6 +28,7 @@ class TextFieldInputTextNumber extends StatelessWidget {
   final Widget widget;
   final double? fontSize;
   final TextAlign? textAlign;
+  final TextInputType? textInputType;
 
 
   @override
@@ -48,7 +49,7 @@ class TextFieldInputTextNumber extends StatelessWidget {
               onTap: onTap,
               onEditingComplete: onEditingComplete,
               textAlign: textAlign ?? TextAlign.start  ,
-              keyboardType: TextInputType.number,
+              keyboardType: textInputType ?? TextInputType.number,
               controller: controller,
               inputFormatters: inputFormatters,
               style:  TextStyle(

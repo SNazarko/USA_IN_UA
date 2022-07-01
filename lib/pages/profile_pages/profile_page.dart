@@ -379,7 +379,7 @@ class _ProfileLinks extends StatelessWidget {
                 vertical: 5.0,
               ),
               child: InkWell(
-                onTap: () {},
+                onTap: () => LocatedRepositories.instance.getHttp(),
                 child: const IconLink(
                   color: AppColors.blue,
                   crossAxisAlignment: CrossAxisAlignment.center,
