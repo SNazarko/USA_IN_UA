@@ -10,6 +10,10 @@ class ProfileRecipientEvent extends Equatable {
     this.surname,
     this.phoneNumber,
     this.departmentNP,
+    this.addressName,
+    this.country,
+    this.houseNumber,
+    this.flatNumber,
 
   });
   final String? region;
@@ -19,6 +23,10 @@ class ProfileRecipientEvent extends Equatable {
   final String? surname;
   final String? phoneNumber;
   final String? departmentNP;
+  final String? addressName;
+  final String? country;
+  final String? houseNumber;
+  final String? flatNumber;
 
 
   @override
@@ -31,6 +39,9 @@ class ProfileRecipientEvent extends Equatable {
     surname,
     phoneNumber,
     departmentNP,
-
+    addressName,
+    country,
+    houseNumber,
+    flatNumber,
   ];
 }

@@ -23,16 +23,6 @@ class ProfileRecipientAddressesPage extends StatefulWidget {
 
 class _ProfileRecipientAddressesPageState
     extends State<ProfileRecipientAddressesPage> {
-  String? addressName;
-  String? country;
-  String? name;
-  String? surname;
-  String? phoneNumber;
-  String? region;
-  String? city;
-  String? surnameNewPost;
-  String? addressUser;
-
   bool isSwish = true;
 
   @override
@@ -107,23 +97,25 @@ class _ProfileRecipientAddressesPageState
                       ),
                     ),
                     TextFieldInputTextNumber(
-                      onChanged: (data) {
-                        addressName = data;
-                      },
+                      onChanged: (data) =>
+                          context.read<ProfileRecipientBloc>().add(
+                                ProfileRecipientEvent(
+                                  addressName: data,
+                                ),
+                              ),
                       textInputType: TextInputType.text,
                       hintText: 'Название адреса (дом, офис и т.п.',
                       widget: const SizedBox.expand(),
                     ),
                     TextFieldInputTextNumber(
-                      onChanged: (data) {
-                        country = data;
-                      },
+                      onChanged: (data) => context.read<ProfileRecipientBloc>().add(
+                        ProfileRecipientEvent(
+                          country: data,
+                        ),
+                      ),
                       textInputType: TextInputType.text,
                       hintText: 'Страна',
-                      widget: const Icon(
-                        Icons.arrow_drop_down_outlined,
-                        color: AppColors.noActive,
-                      ),
+                      widget: const SizedBox.expand(),
                     ),
                   ],
                 ),
@@ -156,15 +148,16 @@ class _ProfileRecipientAddressesPageState
                   ],
                 ),
               ),
-              isSwish
-                  ? DepartmentPost()
-                  : AddressDelivery(),
-              const Padding(
-                padding: EdgeInsets.only(
+              isSwish ? DepartmentPost() : AddressDelivery(),
+               Padding(
+                padding: const EdgeInsets.only(
                   top: 20.0,
                   bottom: 10.0,
                 ),
                 child: ButtonEnter(
+                  onPressed: (){
+
+                  },
                   color: AppColors.contour,
                   colorText: Colors.white,
                   text: 'СОХРАНИТЬ',
@@ -182,7 +175,7 @@ class AddressDelivery extends StatelessWidget {
   AddressDelivery({
     Key? key,
   }) : super(key: key);
-  final  List<String>  region = FilesDB.regions;
+  final List<String> region = FilesDB.regions;
 
   List<String> deliveryList2 = [
     'Авиадоставка',
@@ -361,7 +354,18 @@ class AddressDelivery extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
+              // DropdownButtonCustom(
+              //   region: FilesDB.regions,
+              //   hint: 'Улица',
+              //   value: state.street ?? FilesDB.regions.first,
+              //   onChanged: (data) => context.read<ProfileRecipientBloc>().add(
+              //     ProfileRecipientEvent(
+              //       street: data,
+              //     ),
+              //   ),
+              // ),
               TextFieldInputTextNumber(
+                textInputType: TextInputType.text,
                 onChanged: (data) {
                   context.read<ProfileRecipientBloc>().add(
                         ProfileRecipientEvent(
@@ -373,6 +377,7 @@ class AddressDelivery extends StatelessWidget {
                 widget: const SizedBox.expand(),
               ),
               TextFieldInputTextNumber(
+                textInputType: TextInputType.text,
                 onChanged: (data) {
                   context.read<ProfileRecipientBloc>().add(
                         ProfileRecipientEvent(
@@ -384,6 +389,7 @@ class AddressDelivery extends StatelessWidget {
                 widget: const SizedBox.expand(),
               ),
               TextFieldInputTextNumber(
+                textInputType: TextInputType.phone,
                 onChanged: (data) {
                   context.read<ProfileRecipientBloc>().add(
                         ProfileRecipientEvent(
@@ -398,20 +404,32 @@ class AddressDelivery extends StatelessWidget {
               cityDropdownButton(state, context),
               streetDropdownButton(state, context),
               Row(
-                children: const [
+                children:  [
                   Expanded(
                     child: TextFieldInputTextNumber(
+                      onChanged: (data) => context.read<ProfileRecipientBloc>().add(
+                        ProfileRecipientEvent(
+                          houseNumber: data,
+                        ),
+                      ),
+                      textInputType: TextInputType.text,
                       hintText: 'Номер дома',
-                      widget: SizedBox.expand(),
+                      widget: const SizedBox.expand(),
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     width: 5.0,
                   ),
                   Expanded(
                     child: TextFieldInputTextNumber(
+                      onChanged: (data) => context.read<ProfileRecipientBloc>().add(
+                        ProfileRecipientEvent(
+                          flatNumber: data,
+                        ),
+                      ),
+                      textInputType: TextInputType.number,
                       hintText: 'Номер квартиры',
-                      widget: SizedBox.expand(),
+                      widget: const SizedBox.expand(),
                     ),
                   ),
                 ],
@@ -427,7 +445,6 @@ class AddressDelivery extends StatelessWidget {
 class DepartmentPost extends StatelessWidget {
   DepartmentPost({
     Key? key,
-
   }) : super(key: key);
   final List<String> region = FilesDB.regions;
   List<String> deliveryList = [
@@ -442,7 +459,6 @@ class DepartmentPost extends StatelessWidget {
     'Авиадоставка',
     'Быстрое море',
   ];
-
 
   Widget regionDropdownButton(state, BuildContext context) {
     List<DropdownMenuItem<String>> dropdownItem = [];
@@ -608,6 +624,7 @@ class DepartmentPost extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               TextFieldInputTextNumber(
+                textInputType: TextInputType.text,
                 onChanged: (data) => context.read<ProfileRecipientBloc>().add(
                       ProfileRecipientEvent(
                         name: data,
@@ -617,6 +634,7 @@ class DepartmentPost extends StatelessWidget {
                 widget: const SizedBox.expand(),
               ),
               TextFieldInputTextNumber(
+                textInputType: TextInputType.text,
                 onChanged: (data) => context.read<ProfileRecipientBloc>().add(
                       ProfileRecipientEvent(
                         surname: data,
@@ -626,6 +644,7 @@ class DepartmentPost extends StatelessWidget {
                 widget: const SizedBox.expand(),
               ),
               TextFieldInputTextNumber(
+                textInputType: TextInputType.phone,
                 onChanged: (data) => context.read<ProfileRecipientBloc>().add(
                       ProfileRecipientEvent(
                         phoneNumber: data,
@@ -644,3 +663,68 @@ class DepartmentPost extends StatelessWidget {
     );
   }
 }
+
+// class DropdownButtonCustom extends StatelessWidget {
+//   DropdownButtonCustom({
+//     Key? key,
+//     required this.onChanged,
+//     required this.value,
+//     required this.hint,
+//     required this.region,
+//   }) : super(key: key);
+//   final void Function(String?) onChanged;
+//   final String value;
+//   final String hint;
+//   final List<String> region;
+//   List<DropdownMenuItem<String>> dropdownItem = [];
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     for (String delivery in region) {
+//       var newItem = DropdownMenuItem(
+//         child: Text(
+//           delivery,
+//           style: const TextStyle(
+//             color: AppColors.text,
+//           ),
+//         ),
+//         value: delivery,
+//       );
+//       dropdownItem.add(newItem);
+//     }
+//     return BlocBuilder<ProfileRecipientBloc, ProfileRecipientState>(
+//       builder: (context, state) {
+//         return Container(
+//           width: double.infinity,
+//           height: 50.0,
+//           decoration: BoxDecoration(
+//               color: Colors.grey.shade100,
+//               borderRadius: const BorderRadius.all(
+//                 Radius.circular(15.0),
+//               )),
+//           child: Padding(
+//             padding: const EdgeInsets.symmetric(
+//               horizontal: 14.0,
+//             ),
+//             child: DropdownButtonHideUnderline(
+//               child: DropdownButton<String>(
+//                 isExpanded: true,
+//                 hint: Text(
+//                   hint,
+//                   style: const TextStyle(
+//                     color: AppColors.noActive,
+//                     fontSize: 14.0,
+//                     fontWeight: FontWeight.w600,
+//                   ),
+//                 ),
+//                 value: value,
+//                 onChanged: onChanged,
+//                 items: dropdownItem,
+//               ),
+//             ),
+//           ),
+//         );
+//       },
+//     );
+//   }
+// }

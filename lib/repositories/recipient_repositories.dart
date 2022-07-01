@@ -48,7 +48,7 @@ class RecipientRepositories {
     FirebaseFirestore.instance
         .collection(phoneNumber)
         .doc('recipient')
-        .update(json);
+    .set(json);
     print(json);
   }
 }

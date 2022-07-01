@@ -12,7 +12,7 @@ class RecipientModel {
   factory RecipientModel.fromJson(
     Map<String, dynamic> json,
   ) {
-    return GoodsModel(
+    return RecipientModel(
       region: json['region'],
       city: json['city'],
       street: json['street'],

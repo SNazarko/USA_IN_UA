@@ -11,6 +11,8 @@ class ProfileRecipientState extends Equatable {
     this.surname,
     this.phoneNumber,
     this.departmentNP,
+    this.addressName,
+    this.country,
 
   });
   final String? region;
@@ -20,6 +22,8 @@ class ProfileRecipientState extends Equatable {
   final String? surname;
   final String? phoneNumber;
   final String? departmentNP;
+  final String? addressName;
+  final String? country;
 
 
   ProfileRecipientState copyWith({
@@ -30,6 +34,8 @@ class ProfileRecipientState extends Equatable {
     String? surname,
     String? phoneNumber,
     String? departmentNP,
+    String? addressName,
+    String? country,
 
   }) {
     return ProfileRecipientState(
@@ -37,9 +43,11 @@ class ProfileRecipientState extends Equatable {
       city: city ?? this.city,
       street: street ?? this.street,
       name: name ?? this.name,
-      surname: surname?? this.surname,
-      phoneNumber: phoneNumber?? this.phoneNumber,
-      departmentNP: departmentNP?? this.departmentNP,
+      surname: surname ?? this.surname,
+      phoneNumber: phoneNumber ?? this.phoneNumber,
+      departmentNP: departmentNP ?? this.departmentNP,
+      addressName: addressName ?? this.addressName,
+      country: country ?? this.country,
 
     );
   }
@@ -53,6 +61,8 @@ class ProfileRecipientState extends Equatable {
     name,
     surname,
     phoneNumber,
+    addressName,
+    country,
 
   ];
 }
