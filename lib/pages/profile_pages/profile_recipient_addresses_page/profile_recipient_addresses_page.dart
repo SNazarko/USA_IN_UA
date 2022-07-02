@@ -1,19 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_multi_formatter/formatters/masked_input_formatter.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:usa_in_ua/pages/profile_pages/profile_recipient_addresses_page/blocs/bloc_data/profile_recipient_event.dart';
 
 import '../../../database/files_db.dart';
+import '../../../models/recipient_model.dart';
+import '../../../repositories/recipient_repositories.dart';
 import '../../../resources/app_colors.dart';
 import '../../../resources/app_icons.dart';
 import '../../../widgets/button_enter.dart';
 import '../../../widgets/swish_link.dart';
 import '../../../widgets/text_field_input_text_number.dart';
 import '../profile_google_maps_page/profile_google_maps_page.dart';
-import 'bloc/profile_recipient_bloc.dart';
-import 'bloc/profile_recipient_event.dart';
+import 'blocs/bloc_data/profile_recipient_bloc.dart';
 
 class ProfileRecipientAddressesPage extends StatefulWidget {
-  ProfileRecipientAddressesPage({Key? key}) : super(key: key);
+  const ProfileRecipientAddressesPage({Key? key}) : super(key: key);
   static const routeName = '/profile_recipient_addresses_page';
 
   @override
@@ -56,8 +59,11 @@ class _ProfileRecipientAddressesPageState
               padding: const EdgeInsets.only(
                 right: 16.0,
               ),
-              child: SvgPicture.asset(
-                AppIcons.menu,
+              child: InkWell(
+                onTap: () async {},
+                child: SvgPicture.asset(
+                  AppIcons.menu,
+                ),
               ),
             ),
           ],
@@ -69,57 +75,7 @@ class _ProfileRecipientAddressesPageState
           child: SingleChildScrollView(
               child: Column(
             children: [
-              SizedBox(
-                width: double.infinity,
-                height: 250.0,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    const Text(
-                      'Добавьте новый адрес для доставки и используйте его по умолчанию.',
-                      style: TextStyle(
-                        fontSize: 14.0,
-                        fontWeight: FontWeight.w400,
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(
-                        top: 20.0,
-                      ),
-                      child: ButtonEnter(
-                        onPressed: () => Navigator.pushNamed(
-                          context,
-                          ProfileGoogleMapsPage.routeName,
-                        ),
-                        color: AppColors.green,
-                        colorText: Colors.white,
-                        text: 'ВЫБРАТЬ АДРЕС НА КАРТЕ',
-                      ),
-                    ),
-                    TextFieldInputTextNumber(
-                      onChanged: (data) =>
-                          context.read<ProfileRecipientBloc>().add(
-                                ProfileRecipientEvent(
-                                  addressName: data,
-                                ),
-                              ),
-                      textInputType: TextInputType.text,
-                      hintText: 'Название адреса (дом, офис и т.п.',
-                      widget: const SizedBox.expand(),
-                    ),
-                    TextFieldInputTextNumber(
-                      onChanged: (data) => context.read<ProfileRecipientBloc>().add(
-                        ProfileRecipientEvent(
-                          country: data,
-                        ),
-                      ),
-                      textInputType: TextInputType.text,
-                      hintText: 'Страна',
-                      widget: const SizedBox.expand(),
-                    ),
-                  ],
-                ),
-              ),
+              const Header(),
               SizedBox(
                 width: double.infinity,
                 height: 135,
@@ -149,24 +105,120 @@ class _ProfileRecipientAddressesPageState
                 ),
               ),
               isSwish ? DepartmentPost() : AddressDelivery(),
-               Padding(
-                padding: const EdgeInsets.only(
-                  top: 20.0,
-                  bottom: 10.0,
-                ),
-                child: ButtonEnter(
-                  onPressed: (){
-
-                  },
-                  color: AppColors.contour,
-                  colorText: Colors.white,
-                  text: 'СОХРАНИТЬ',
-                ),
-              ),
+              SaveButton(isSwish: isSwish),
             ],
           )),
         ),
       ),
+    );
+  }
+}
+
+class Header extends StatelessWidget {
+  const Header({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: double.infinity,
+      height: 250.0,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          const Text(
+            'Добавьте новый адрес для доставки и используйте его по умолчанию.',
+            style: TextStyle(
+              fontSize: 14.0,
+              fontWeight: FontWeight.w400,
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(
+              top: 20.0,
+            ),
+            child: ButtonEnter(
+              onPressed: () => Navigator.pushNamed(
+                context,
+                ProfileGoogleMapsPage.routeName,
+              ),
+              color: AppColors.green,
+              colorText: Colors.white,
+              text: 'ВЫБРАТЬ АДРЕС НА КАРТЕ',
+            ),
+          ),
+          TextFieldInputTextNumber(
+            onEditingComplete: () {
+              FocusScope.of(context).nextFocus();
+            },
+            onChanged: (data) => context.read<ProfileRecipientBloc>().add(
+                  ProfileRecipientEvent(
+                    addressName: data,
+                  ),
+                ),
+            textInputType: TextInputType.text,
+            hintText: 'Название адреса (дом, офис и т.п.',
+            widget: const SizedBox.expand(),
+          ),
+          TextFieldInputTextNumber(
+            onEditingComplete: () {
+              FocusScope.of(context).nextFocus();
+            },
+            onChanged: (data) => context.read<ProfileRecipientBloc>().add(
+                  ProfileRecipientEvent(
+                    country: data,
+                  ),
+                ),
+            textInputType: TextInputType.text,
+            hintText: 'Страна',
+            widget: const SizedBox.expand(),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class SaveButton extends StatelessWidget {
+  const SaveButton({Key? key, required this.isSwish}) : super(key: key);
+  final bool isSwish;
+  bool _isUsedCard(isGet) {
+    if (isGet == null) return true;
+    return false;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<ProfileRecipientBloc, ProfileRecipientState>(
+      builder: (context, state) {
+        return Padding(
+          padding: const EdgeInsets.only(
+            top: 20.0,
+            bottom: 10.0,
+          ),
+          child: ButtonEnter(
+            onPressed: () async {
+              final Future<List<RecipientModel>>? isGet =
+                  await RecipientRepositories.instance.getRecipient();
+              isGet?.then((value) {
+                RecipientRepositories.instance.add(
+                  state.region ?? '',
+                  state.city ?? '',
+                  state.street ?? '',
+                  state.name ?? '',
+                  state.surname ?? '',
+                  state.phoneNumber ?? '',
+                  state.departmentNP ?? '',
+                  isSwish,
+                  _isUsedCard(value),
+                );
+              });
+            },
+            color: AppColors.contour,
+            colorText: Colors.white,
+            text: 'СОХРАНИТЬ',
+          ),
+        );
+      },
     );
   }
 }
@@ -365,6 +417,9 @@ class AddressDelivery extends StatelessWidget {
               //   ),
               // ),
               TextFieldInputTextNumber(
+                onEditingComplete: () {
+                  FocusScope.of(context).nextFocus();
+                },
                 textInputType: TextInputType.text,
                 onChanged: (data) {
                   context.read<ProfileRecipientBloc>().add(
@@ -377,6 +432,9 @@ class AddressDelivery extends StatelessWidget {
                 widget: const SizedBox.expand(),
               ),
               TextFieldInputTextNumber(
+                onEditingComplete: () {
+                  FocusScope.of(context).nextFocus();
+                },
                 textInputType: TextInputType.text,
                 onChanged: (data) {
                   context.read<ProfileRecipientBloc>().add(
@@ -389,6 +447,12 @@ class AddressDelivery extends StatelessWidget {
                 widget: const SizedBox.expand(),
               ),
               TextFieldInputTextNumber(
+                inputFormatters: [
+                  MaskedInputFormatter('#### #### #### ####'),
+                ],
+                onEditingComplete: () {
+                  FocusScope.of(context).nextFocus();
+                },
                 textInputType: TextInputType.phone,
                 onChanged: (data) {
                   context.read<ProfileRecipientBloc>().add(
@@ -404,14 +468,18 @@ class AddressDelivery extends StatelessWidget {
               cityDropdownButton(state, context),
               streetDropdownButton(state, context),
               Row(
-                children:  [
+                children: [
                   Expanded(
                     child: TextFieldInputTextNumber(
-                      onChanged: (data) => context.read<ProfileRecipientBloc>().add(
-                        ProfileRecipientEvent(
-                          houseNumber: data,
-                        ),
-                      ),
+                      onEditingComplete: () {
+                        FocusScope.of(context).nextFocus();
+                      },
+                      onChanged: (data) =>
+                          context.read<ProfileRecipientBloc>().add(
+                                ProfileRecipientEvent(
+                                  houseNumber: data,
+                                ),
+                              ),
                       textInputType: TextInputType.text,
                       hintText: 'Номер дома',
                       widget: const SizedBox.expand(),
@@ -422,11 +490,15 @@ class AddressDelivery extends StatelessWidget {
                   ),
                   Expanded(
                     child: TextFieldInputTextNumber(
-                      onChanged: (data) => context.read<ProfileRecipientBloc>().add(
-                        ProfileRecipientEvent(
-                          flatNumber: data,
-                        ),
-                      ),
+                      onEditingComplete: () {
+                        FocusScope.of(context).nextFocus();
+                      },
+                      onChanged: (data) =>
+                          context.read<ProfileRecipientBloc>().add(
+                                ProfileRecipientEvent(
+                                  flatNumber: data,
+                                ),
+                              ),
                       textInputType: TextInputType.number,
                       hintText: 'Номер квартиры',
                       widget: const SizedBox.expand(),
@@ -624,6 +696,9 @@ class DepartmentPost extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               TextFieldInputTextNumber(
+                onEditingComplete: () {
+                  FocusScope.of(context).nextFocus();
+                },
                 textInputType: TextInputType.text,
                 onChanged: (data) => context.read<ProfileRecipientBloc>().add(
                       ProfileRecipientEvent(
@@ -634,6 +709,9 @@ class DepartmentPost extends StatelessWidget {
                 widget: const SizedBox.expand(),
               ),
               TextFieldInputTextNumber(
+                onEditingComplete: () {
+                  FocusScope.of(context).nextFocus();
+                },
                 textInputType: TextInputType.text,
                 onChanged: (data) => context.read<ProfileRecipientBloc>().add(
                       ProfileRecipientEvent(
@@ -644,6 +722,12 @@ class DepartmentPost extends StatelessWidget {
                 widget: const SizedBox.expand(),
               ),
               TextFieldInputTextNumber(
+                inputFormatters: [
+                  MaskedInputFormatter('#### #### #### ####'),
+                ],
+                onEditingComplete: () {
+                  FocusScope.of(context).nextFocus();
+                },
                 textInputType: TextInputType.phone,
                 onChanged: (data) => context.read<ProfileRecipientBloc>().add(
                       ProfileRecipientEvent(

@@ -4,6 +4,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:usa_in_ua/pages/profile_pages/profile_bank_cards_pages/profile_bank_cards_page.dart';
 import 'package:usa_in_ua/pages/profile_pages/profile_edit_person_data_page/profile_edit_person_data_page.dart';
 import 'package:usa_in_ua/pages/profile_pages/profile_finance_page/profile_finance_page.dart';
+import 'package:usa_in_ua/pages/profile_pages/profile_recipient_addresses_page/profile_recipient_address_form_page/profile_recipient_address_form_page.dart';
 import 'package:usa_in_ua/pages/profile_pages/profile_recipient_addresses_page/profile_recipient_addresses_page.dart';
 import 'package:usa_in_ua/resources/app_icons.dart';
 import 'package:usa_in_ua/resources/app_images.dart';
@@ -26,7 +27,9 @@ class ProfilePage extends StatelessWidget {
         backgroundColor: Colors.white,
         elevation: 0.0,
         actions: [
-          SvgPicture.asset(AppIcons.notification),
+          InkWell(
+              onTap: ()=> Navigator.pushNamed(context,      ProfileRecipientAddressFormPage.routeName),
+              child: SvgPicture.asset(AppIcons.notification)),
           Padding(
             padding: const EdgeInsets.symmetric(
               horizontal: 16.0,

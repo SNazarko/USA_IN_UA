@@ -157,7 +157,7 @@ class DismissibleWidget extends StatelessWidget {
     required this.onResize,
   }) : super(key: key);
   final Widget child;
-  final CardModel item;
+  final item;
   final void Function() onResize;
 
   @override

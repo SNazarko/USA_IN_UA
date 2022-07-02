@@ -15,6 +15,7 @@ import '../pages/profile_pages/profile_edit_person_data_page/profile_edit_person
 import '../pages/profile_pages/profile_finance_page/profile_finance_page.dart';
 import '../pages/profile_pages/profile_google_maps_page/profile_google_maps_page.dart';
 import '../pages/profile_pages/profile_page.dart';
+import '../pages/profile_pages/profile_recipient_addresses_page/profile_recipient_address_form_page/profile_recipient_address_form_page.dart';
 import '../pages/profile_pages/profile_recipient_addresses_page/profile_recipient_addresses_page.dart';
 import '../pages/purchase_page/purchase_page.dart';
 import '../pages/test.dart';
@@ -114,6 +115,12 @@ class AppRouter {
       case ProfileRecipientAddressesPage.routeName:
         builder = (_) =>  ProfileRecipientAddressesPage();
         break;
+
+    // profile_recipient_address_form_page
+      case ProfileRecipientAddressFormPage.routeName:
+        builder = (_) =>  ProfileRecipientAddressFormPage();
+        break;
+
       // profile_google_maps_page
       case ProfileGoogleMapsPage.routeName:
         builder = (_) =>  const ProfileGoogleMapsPage();

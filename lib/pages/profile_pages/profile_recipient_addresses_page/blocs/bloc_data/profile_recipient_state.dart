@@ -63,6 +63,7 @@ class ProfileRecipientState extends Equatable {
     phoneNumber,
     addressName,
     country,
+    departmentNP,
 
   ];
 }

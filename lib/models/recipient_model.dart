@@ -7,6 +7,8 @@ class RecipientModel {
     this.surname,
     this.phoneNumber,
     this.departmentNP,
+    this.isCard,
+    this.userCard,
   });
 
   factory RecipientModel.fromJson(
@@ -20,6 +22,8 @@ class RecipientModel {
       surname: json['surname'],
       phoneNumber: json['phoneNumber'],
       departmentNP: json['departmentNP'],
+      isCard: json['isCard'],
+      userCard: json['userCard'],
     );
   }
   String? region;
@@ -29,6 +33,8 @@ class RecipientModel {
   String? surname;
   String? phoneNumber;
   String? departmentNP;
+  bool? isCard;
+  bool? userCard;
 
   Map<String, dynamic> toJson() => {
         'region': region,
@@ -37,6 +43,8 @@ class RecipientModel {
         'name': name,
         'surname': surname,
         'phoneNumber': phoneNumber,
-        'departmentNP': departmentNP
+        'departmentNP': departmentNP,
+        'isCard': isCard,
+        'userCard': userCard
       };
 }

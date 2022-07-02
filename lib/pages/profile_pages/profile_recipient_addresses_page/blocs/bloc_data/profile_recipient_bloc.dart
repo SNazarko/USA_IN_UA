@@ -3,8 +3,7 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:usa_in_ua/pages/profile_pages/profile_recipient_addresses_page/bloc/profile_recipient_event.dart';
-
+import 'package:usa_in_ua/pages/profile_pages/profile_recipient_addresses_page/blocs/bloc_data/profile_recipient_event.dart';
 part 'profile_recipient_state.dart';
 
 class ProfileRecipientBloc
