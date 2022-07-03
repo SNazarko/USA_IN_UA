@@ -179,7 +179,7 @@ class Header extends StatelessWidget {
 }
 
 class SaveButton extends StatelessWidget {
-  const SaveButton({Key? key, required this.isSwish}) : super(key: key);
+  const SaveButton({Key? key, required this.isSwish,}) : super(key: key);
   final bool isSwish;
   bool _isUsedCard(isGet) {
     if (isGet == null) return true;
@@ -208,6 +208,7 @@ class SaveButton extends StatelessWidget {
                   state.surname ?? '',
                   state.phoneNumber ?? '',
                   state.departmentNP ?? '',
+                  state.addressName ?? '',
                   isSwish,
                   _isUsedCard(value),
                 );

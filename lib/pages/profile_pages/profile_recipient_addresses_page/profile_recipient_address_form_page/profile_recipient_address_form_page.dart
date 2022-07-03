@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 
 import '../../../../models/recipient_model.dart';
+import '../../../../repositories/recipient_repositories.dart';
 import '../../../../resources/app_colors.dart';
 import '../../../../resources/app_icons.dart';
 import '../../../../widgets/icon_link.dart';
@@ -60,25 +61,27 @@ class ProfileRecipientAddressFormPage extends StatelessWidget {
           padding: const EdgeInsets.symmetric(
             horizontal: 16.0,
           ),
-          child: Column(
-            children: [
-              _ListItem(),
-              InkWell(
-                onTap: () {
-                  Navigator.pushNamed(
-                    context,
-                    ProfileAddCardsPage.routeName,
-                  );
-                },
-                child: const IconLink(
-                  text: 'Добавить еще карту',
-                  fontWeight: FontWeight.w700,
-                  icon: AppIcons.plus,
-                  color: AppColors.blue,
-                  crossAxisAlignment: CrossAxisAlignment.center,
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                _ListItem(),
+                InkWell(
+                  onTap: () {
+                    Navigator.pushNamed(
+                      context,
+                      ProfileAddCardsPage.routeName,
+                    );
+                  },
+                  child: const IconLink(
+                    text: 'Добавить еще карту',
+                    fontWeight: FontWeight.w700,
+                    icon: AppIcons.plus,
+                    color: AppColors.blue,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),
@@ -109,8 +112,9 @@ class _ListItem extends StatelessWidget {
                 final RecipientModel list = state.list[index];
                 return DismissibleWidget(
                   item:  list,
-                  onResize: () {},
+                  onResize: () => RecipientRepositories.instance.delete(list.addressName!,),
                   child: _RecipientAddressFormModel(
+                    addressName: list.addressName,
                     region: list.region,
                     city: list.city,
                     street: list.street,
@@ -189,7 +193,7 @@ class _RecipientAddressFormModel extends StatelessWidget {
                 Flexible(
                   flex: 10,
                   child: Swish(
-                    text: 'Дом',
+                    text: addressName!,
                     contour: true,
                     color: AppColors.blue,
                     onTap: () {},

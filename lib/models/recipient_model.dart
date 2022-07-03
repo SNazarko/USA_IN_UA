@@ -9,6 +9,7 @@ class RecipientModel {
     this.departmentNP,
     this.isCard,
     this.userCard,
+    this.addressName,
   });
 
   factory RecipientModel.fromJson(
@@ -24,6 +25,7 @@ class RecipientModel {
       departmentNP: json['departmentNP'],
       isCard: json['isCard'],
       userCard: json['userCard'],
+      addressName: json['addressName'],
     );
   }
   String? region;
@@ -33,6 +35,7 @@ class RecipientModel {
   String? surname;
   String? phoneNumber;
   String? departmentNP;
+  String? addressName;
   bool? isCard;
   bool? userCard;
 
@@ -45,6 +48,7 @@ class RecipientModel {
         'phoneNumber': phoneNumber,
         'departmentNP': departmentNP,
         'isCard': isCard,
+        'addressName': addressName,
         'userCard': userCard
       };
 }

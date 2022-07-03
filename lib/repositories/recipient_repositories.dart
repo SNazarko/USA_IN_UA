@@ -46,10 +46,12 @@ class RecipientRepositories {
     String surname,
     String phone,
     String departmentNP,
+    String addressName,
     bool isCard,
     bool userCard,
   ) async {
     final data = RecipientModel(
+      addressName: addressName,
       region: region,
       city: city,
       street: street,
@@ -65,7 +67,21 @@ class RecipientRepositories {
         .collection(phoneNumber!)
         .doc('recipient')
         .collection('recipient')
-        .add(json);
+    .doc(addressName)
+        .set(json);
     print(json);
+  }
+  Future<void> delete(
+      String addressName,
+      ) async {
+    final data = RecipientModel(
+      addressName: addressName,
+    );
+    FirebaseFirestore.instance
+        .collection(phoneNumber!)
+        .doc('recipient')
+        .collection('recipient')
+        .doc(addressName)
+.delete();
   }
 }
