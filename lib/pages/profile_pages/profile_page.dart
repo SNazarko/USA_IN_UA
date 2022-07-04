@@ -4,8 +4,6 @@ import 'package:flutter_svg/svg.dart';
 import 'package:usa_in_ua/pages/profile_pages/profile_bank_cards_pages/profile_bank_cards_page.dart';
 import 'package:usa_in_ua/pages/profile_pages/profile_edit_person_data_page/profile_edit_person_data_page.dart';
 import 'package:usa_in_ua/pages/profile_pages/profile_finance_page/profile_finance_page.dart';
-import 'package:usa_in_ua/pages/profile_pages/profile_recipient_addresses_page/profile_recipient_address_form_page/profile_recipient_address_form_page.dart';
-import 'package:usa_in_ua/pages/profile_pages/profile_recipient_addresses_page/profile_recipient_addresses_page.dart';
 import 'package:usa_in_ua/resources/app_icons.dart';
 import 'package:usa_in_ua/resources/app_images.dart';
 import 'package:usa_in_ua/widgets/button_enter.dart';
@@ -15,6 +13,8 @@ import '../../resources/app_colors.dart';
 import '../../services/located.dart';
 import '../../widgets/icon_link.dart';
 import '../../widgets/prise_dollar.dart';
+import 'profile_recipient_page/profile_recipient_add_page/profile_recipient_add_page.dart';
+import 'profile_recipient_page/profile_recipient_page.dart';
 
 class ProfilePage extends StatelessWidget {
   const ProfilePage({Key? key}) : super(key: key);
@@ -28,7 +28,8 @@ class ProfilePage extends StatelessWidget {
         elevation: 0.0,
         actions: [
           InkWell(
-              onTap: ()=> Navigator.pushNamed(context,      ProfileRecipientAddressFormPage.routeName),
+              onTap: ()=> Navigator.pushNamed(context,
+                  ProfileRecipientAddressFormPage.routeName),
               child: SvgPicture.asset(AppIcons.notification)),
           Padding(
             padding: const EdgeInsets.symmetric(
@@ -366,7 +367,7 @@ class _ProfileLinks extends StatelessWidget {
               child: InkWell(
                 onTap: () => Navigator.pushNamed(
                   context,
-                  ProfileRecipientAddressesPage.routeName,
+                  ProfileRecipientAddressFormPage.routeName,
                 ),
                 child: const IconLink(
                   color: AppColors.blue,
@@ -404,16 +405,19 @@ class _ProfileLinks extends StatelessWidget {
                 fontWeight: FontWeight.w700,
               ),
             ),
-            const Padding(
-              padding: EdgeInsets.symmetric(
+             Padding(
+              padding: const EdgeInsets.symmetric(
                 vertical: 5.0,
               ),
-              child: IconLink(
-                color: AppColors.blue,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                icon: AppIcons.news,
-                text: 'Новости',
-                fontWeight: FontWeight.w700,
+              child: InkWell(
+                onTap: () => LocatedRepositories.instance.getCity(),
+                child: const IconLink(
+                  color: AppColors.blue,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  icon: AppIcons.news,
+                  text: 'Новости',
+                  fontWeight: FontWeight.w700,
+                ),
               ),
             ),
           ],

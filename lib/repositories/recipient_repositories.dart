@@ -15,6 +15,14 @@ class RecipientRepositories {
     phoneNumber = AuthRepositories.instance.user?.phoneNumber!;
   }
 
+  Stream<List<RecipientModel>> readAudio() => FirebaseFirestore.instance
+      .collection(phoneNumber!)
+      .doc('recipient')
+      .collection('recipient')
+      .snapshots()
+      .map((snapshot) =>
+      snapshot.docs.map((doc) => RecipientModel.fromJson(doc.data())).toList());
+
   Future<Future<List<RecipientModel>>?> getRecipient() async {
     var isExists = await FirebaseFirestore.instance
         .collection(phoneNumber!)
@@ -74,9 +82,6 @@ class RecipientRepositories {
   Future<void> delete(
       String addressName,
       ) async {
-    final data = RecipientModel(
-      addressName: addressName,
-    );
     FirebaseFirestore.instance
         .collection(phoneNumber!)
         .doc('recipient')

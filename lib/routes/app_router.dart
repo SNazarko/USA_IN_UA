@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:usa_in_ua/pages/profile_pages/profile_recipient_page/profile_recipient_add_page/profile_recipient_add_page.dart';
+import 'package:usa_in_ua/pages/profile_pages/profile_recipient_page/profile_recipient_page.dart';
 
 import '../pages/authorisations_pages/authorisation_page/authorisations_page.dart';
 import '../pages/authorisations_pages/registration_page/registration_page.dart';
@@ -15,10 +17,9 @@ import '../pages/profile_pages/profile_edit_person_data_page/profile_edit_person
 import '../pages/profile_pages/profile_finance_page/profile_finance_page.dart';
 import '../pages/profile_pages/profile_google_maps_page/profile_google_maps_page.dart';
 import '../pages/profile_pages/profile_page.dart';
-import '../pages/profile_pages/profile_recipient_addresses_page/profile_recipient_address_form_page/profile_recipient_address_form_page.dart';
-import '../pages/profile_pages/profile_recipient_addresses_page/profile_recipient_addresses_page.dart';
 import '../pages/purchase_page/purchase_page.dart';
 import '../pages/test.dart';
+
 
 class AppRouter {
   const AppRouter._();
@@ -111,12 +112,12 @@ class AppRouter {
         builder = (_) => const ProfileFinancePage();
         break;
 
-      // profile_recipient_addresses_page
+      // profile_recipient_add_page
       case ProfileRecipientAddressesPage.routeName:
         builder = (_) =>  ProfileRecipientAddressesPage();
         break;
 
-    // profile_recipient_address_form_page
+    // profile_recipient_add_page
       case ProfileRecipientAddressFormPage.routeName:
         builder = (_) =>  ProfileRecipientAddressFormPage();
         break;
