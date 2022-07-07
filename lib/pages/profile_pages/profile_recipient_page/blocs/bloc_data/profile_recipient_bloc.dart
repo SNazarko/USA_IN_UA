@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
+import '../../../../../repositories/located_repositories.dart';
 import 'profile_recipient_event.dart';
 part 'profile_recipient_state.dart';
 
@@ -15,7 +16,7 @@ class ProfileRecipientBloc
     on<ProfileRecipientEvent>((
       event,
       emit,
-    ) {
+    ) async {
       emit(
         state.copyWith(
           region: event.region,

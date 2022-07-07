@@ -13,6 +13,7 @@ class ProfileRecipientState extends Equatable {
     this.departmentNP,
     this.addressName,
     this.country,
+    this.regionList,
 
 
   });
@@ -25,6 +26,7 @@ class ProfileRecipientState extends Equatable {
   final String? departmentNP;
   final String? addressName;
   final String? country;
+  final List? regionList;
 
 
 
@@ -39,6 +41,7 @@ class ProfileRecipientState extends Equatable {
     String? departmentNP,
     String? addressName,
     String? country,
+    List? regionList,
 
 
   }) {
@@ -52,6 +55,7 @@ class ProfileRecipientState extends Equatable {
       departmentNP: departmentNP ?? this.departmentNP,
       addressName: addressName ?? this.addressName,
       country: country ?? this.country,
+      regionList: regionList ?? this.regionList,
 
 
     );
@@ -69,5 +73,6 @@ class ProfileRecipientState extends Equatable {
     addressName,
     country,
     departmentNP,
+    regionList
   ];
 }

@@ -6,6 +6,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 
 import '../../../../database/files_db.dart';
 import '../../../../models/recipient_model.dart';
+import '../../../../repositories/located_repositories.dart';
 import '../../../../repositories/recipient_repositories.dart';
 import '../../../../resources/app_colors.dart';
 import '../../../../resources/app_icons.dart';
@@ -13,9 +14,12 @@ import '../../../../widgets/button_enter.dart';
 import '../../../../widgets/swish_link.dart';
 import '../../../../widgets/text_field_input_text_number.dart';
 import '../../profile_google_maps_page/profile_google_maps_page.dart';
+import '../blocs/bloc_city/city_bloc.dart';
 import '../blocs/bloc_data/profile_recipient_bloc.dart';
 import '../blocs/bloc_data/profile_recipient_event.dart';
 import '../blocs/bloc_list_form/list_form_bloc.dart';
+import '../blocs/bloc_new_post/new_post_bloc.dart';
+import '../blocs/bloc_region/region_bloc.dart';
 
 class ProfileRecipientAddressesPage extends StatefulWidget {
   const ProfileRecipientAddressesPage({Key? key}) : super(key: key);
@@ -47,6 +51,15 @@ class _ProfileRecipientAddressesPageState
 ),
     BlocProvider<ListFormBloc >(
       create: (context) => ListFormBloc(),
+    ),
+    BlocProvider<RegionBloc >(
+      create: (context) => RegionBloc() ..add(LoadRegionEvent(),),
+    ),
+    BlocProvider<CityBloc >(
+      create: (context) => CityBloc(),
+    ),
+    BlocProvider<NewPostBloc >(
+      create: (context) => NewPostBloc(),
     ),
   ],
   child: Scaffold(
@@ -130,7 +143,7 @@ class _ProfileRecipientAddressesPageState
           )),
         ),
       ),
-);
+    );
   }
 }
 
@@ -198,113 +211,16 @@ class Header extends StatelessWidget {
   }
 }
 
-class SaveButton extends StatelessWidget {
-  const SaveButton({
-    Key? key,
-    required this.isSwish,
-    required this.fToast,
-  }) : super(key: key);
-  final FToast fToast;
-  final bool isSwish;
-  bool _isUsedCard(isGet) {
-    if (isGet == null) return true;
-    return false;
-  }
-
-  Widget toast(String text) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 12.0),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(25.0),
-        color: AppColors.green,
-      ),
-      child: Text(text),
-    );
-  }
-
-  bool _saveLogic(state) {
-    final bool isConst = state.addressName != null &&
-        state.addressName?.isNotEmpty &&
-        state.country != null &&
-        state.country!.isNotEmpty &&
-        state.name != null &&
-        state.name!.isNotEmpty &&
-        state.surname != null &&
-        state.surname!.isNotEmpty &&
-        state.phoneNumber != null &&
-        state.phoneNumber!.isNotEmpty &&
-        state.region != null &&
-        state.region!.isNotEmpty &&
-        state.city != null &&
-        state.city!.isNotEmpty;
-
-    final bool isValue =
-        (state.departmentNP != null && state.departmentNP!.isNotEmpty) ||
-            (state.addressName != null && state.addressName!.isNotEmpty);
-    if (isConst && isValue) return true;
-    return false;
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return BlocBuilder<ProfileRecipientBloc, ProfileRecipientState>(
-      builder: (context, state) {
-        return Padding(
-          padding: const EdgeInsets.only(
-            top: 20.0,
-            bottom: 10.0,
-          ),
-          child: ButtonEnter(
-            onPressed: () async {
-              if (_saveLogic(state)) {
-                final Future<List<RecipientModel>>? isGet =
-                    await RecipientRepositories.instance.getRecipient();
-                isGet?.then((value) {
-                  RecipientRepositories.instance.add(
-                    state.region ?? '',
-                    state.city ?? '',
-                    state.street ?? '',
-                    state.name ?? '',
-                    state.surname ?? '',
-                    state.phoneNumber ?? '',
-                    state.departmentNP ?? '',
-                    state.addressName ?? '',
-                    isSwish,
-                    _isUsedCard(value),
-                  );
-                });
-               context.read<ListFormBloc>().add(LoadListFormEvent());
-                Navigator.pop(context);
-              } else {
-                fToast.showToast(
-                  child: toast('Нужно заполнить поля ...'),
-                  gravity: ToastGravity.TOP,
-                  toastDuration: const Duration(seconds: 2),
-                );
-              }
-            },
-            color: _saveLogic(state) ? AppColors.green : AppColors.contour,
-            colorText: Colors.white,
-            text: 'СОХРАНИТЬ',
-          ),
-        );
-      },
-    );
-  }
-}
-
 class AddressDelivery extends StatelessWidget {
-  const AddressDelivery({
+  AddressDelivery({
     Key? key,
   }) : super(key: key);
-  final List<String> region = FilesDB.regions;
-  final List<String> gorod = FilesDB.gorod;
-  final List<String> departmentNP = FilesDB.departmentNP;
 
-  Widget regionDropdownButton(state, BuildContext context) {
+
+  Widget regionDropdownButton(state,stateRegion, BuildContext context) {
     List<DropdownMenuItem<String>> dropdownItem = [];
 
-    for (String delivery in region) {
+    for (String delivery in stateRegion.region ) {
       var newItem = DropdownMenuItem(
         child: Text(
           delivery,
@@ -342,11 +258,19 @@ class AddressDelivery extends StatelessWidget {
             value: state.region,
             onChanged: (value) {
               context.read<ProfileRecipientBloc>().add(
-                    ProfileRecipientEvent(
-                      region: value,
-                    ),
-                  );
-            },
+              ProfileRecipientEvent(
+                region: value,
+              ),
+            );
+              context.read<CityBloc>().add(
+                LoadCityEvent(
+                  city: value,
+                ),
+              );
+    },
+
+
+
             items: dropdownItem,
           ),
         ),
@@ -354,10 +278,10 @@ class AddressDelivery extends StatelessWidget {
     );
   }
 
-  Widget cityDropdownButton(state, BuildContext context) {
+  Widget cityDropdownButton(state, stateCity,BuildContext context) {
     List<DropdownMenuItem<String>> dropdownItem = [];
 
-    for (String delivery in gorod) {
+    for (String delivery in stateCity.city) {
       var newItem = DropdownMenuItem(
         child: Text(
           delivery,
@@ -407,61 +331,68 @@ class AddressDelivery extends StatelessWidget {
     );
   }
 
-  Widget streetDropdownButton(state, BuildContext context) {
-    List<DropdownMenuItem<String>> dropdownItem = [];
-
-    for (String delivery in departmentNP) {
-      var newItem = DropdownMenuItem(
-        child: Text(
-          delivery,
-          style: const TextStyle(
-            color: AppColors.text,
-          ),
-        ),
-        value: delivery,
-      );
-      dropdownItem.add(newItem);
-    }
-    return Container(
-      width: double.infinity,
-      height: 50.0,
-      decoration: BoxDecoration(
-          color: Colors.grey.shade100,
-          borderRadius: const BorderRadius.all(
-            Radius.circular(15.0),
-          )),
-      child: Padding(
-        padding: const EdgeInsets.symmetric(
-          horizontal: 14.0,
-        ),
-        child: DropdownButtonHideUnderline(
-          child: DropdownButton<String>(
-            isExpanded: true,
-            hint: const Text(
-              'Улича',
-              style: TextStyle(
-                color: AppColors.noActive,
-                fontSize: 14.0,
-                fontWeight: FontWeight.w600,
-              ),
-            ),
-            value: state.street,
-            onChanged: (value) => context.read<ProfileRecipientBloc>().add(
-                  ProfileRecipientEvent(
-                    street: value,
-                  ),
-                ),
-            items: dropdownItem,
-          ),
-        ),
-      ),
-    );
-  }
+  // Widget streetDropdownButton(state, BuildContext context) {
+  //
+  //
+  //   List<DropdownMenuItem<String>> dropdownItem = [];
+  //
+  //   for (String delivery in departmentNP) {
+  //     var newItem = DropdownMenuItem(
+  //       child: Text(
+  //         delivery,
+  //         style: const TextStyle(
+  //           color: AppColors.text,
+  //         ),
+  //       ),
+  //       value: delivery,
+  //     );
+  //     dropdownItem.add(newItem);
+  //   }
+  //   return Container(
+  //     width: double.infinity,
+  //     height: 50.0,
+  //     decoration: BoxDecoration(
+  //         color: Colors.grey.shade100,
+  //         borderRadius: const BorderRadius.all(
+  //           Radius.circular(15.0),
+  //         )),
+  //     child: Padding(
+  //       padding: const EdgeInsets.symmetric(
+  //         horizontal: 14.0,
+  //       ),
+  //       child: DropdownButtonHideUnderline(
+  //         child: DropdownButton<String>(
+  //           isExpanded: true,
+  //           hint: const Text(
+  //             'Улича',
+  //             style: TextStyle(
+  //               color: AppColors.noActive,
+  //               fontSize: 14.0,
+  //               fontWeight: FontWeight.w600,
+  //             ),
+  //           ),
+  //           value: state.street,
+  //           onChanged: (value) => context.read<ProfileRecipientBloc>().add(
+  //                 ProfileRecipientEvent(
+  //                   street: value,
+  //                 ),
+  //               ),
+  //           items: dropdownItem,
+  //         ),
+  //       ),
+  //     ),
+  //   );
+  // }
 
   @override
   Widget build(BuildContext context) {
+    return BlocBuilder<CityBloc, CityState>(
+  builder: (_, stateCity) {
+    return BlocBuilder<RegionBloc, RegionState>(
+  builder: (_, stateRegion) {
     return BlocBuilder<ProfileRecipientBloc, ProfileRecipientState>(
       builder: (context, state) {
+       
         return SizedBox(
           width: double.infinity,
           height: 420.0,
@@ -526,9 +457,9 @@ class AddressDelivery extends StatelessWidget {
                 hintText: 'Номер телефона',
                 widget: const SizedBox.expand(),
               ),
-              regionDropdownButton(state, context),
-              cityDropdownButton(state, context),
-              streetDropdownButton(state, context),
+              regionDropdownButton(state,stateRegion, context),
+              cityDropdownButton(state,stateCity, context),
+              // streetDropdownButton(state, context),
               Row(
                 children: [
                   Expanded(
@@ -573,6 +504,10 @@ class AddressDelivery extends StatelessWidget {
         );
       },
     );
+  },
+);
+  },
+);
   }
 }
 
@@ -580,14 +515,11 @@ class DepartmentPost extends StatelessWidget {
   DepartmentPost({
     Key? key,
   }) : super(key: key);
-  final List<String> region = FilesDB.regions;
-  final List<String> gorod = FilesDB.gorod;
-  final List<String> departmentNP = FilesDB.departmentNP;
 
-  Widget regionDropdownButton(state, BuildContext context) {
+  Widget regionDropdownButton(state, stateRegion, BuildContext context) {
     List<DropdownMenuItem<String>> dropdownItem = [];
 
-    for (String delivery in region) {
+    for (String delivery in stateRegion.region ?? []) {
       var newItem = DropdownMenuItem(
         child: Text(
           delivery,
@@ -623,11 +555,20 @@ class DepartmentPost extends StatelessWidget {
               ),
             ),
             value: state.region,
-            onChanged: (value) => context.read<ProfileRecipientBloc>().add(
-                  ProfileRecipientEvent(
-                    region: value,
-                  ),
+            onChanged: (value) {
+              context.read<ProfileRecipientBloc>().add(
+                ProfileRecipientEvent(
+                  region: value,
                 ),
+              );
+              context.read<CityBloc>().add(
+                LoadCityEvent(
+                  city: value,
+                ),
+              );
+            },
+
+
             items: dropdownItem,
           ),
         ),
@@ -635,10 +576,10 @@ class DepartmentPost extends StatelessWidget {
     );
   }
 
-  Widget cityDropdownButton(state, BuildContext context) {
+  Widget cityDropdownButton(state, stateCity, BuildContext context) {
     List<DropdownMenuItem<String>> dropdownItem = [];
 
-    for (String delivery in gorod) {
+    for (String delivery in stateCity.city ?? []) {
       var newItem = DropdownMenuItem(
         child: Text(
           delivery,
@@ -674,11 +615,19 @@ class DepartmentPost extends StatelessWidget {
               ),
             ),
             value: state.city,
-            onChanged: (value) => context.read<ProfileRecipientBloc>().add(
-                  ProfileRecipientEvent(
-                    city: value,
-                  ),
+            onChanged: (value) {
+
+              context.read<ProfileRecipientBloc>().add(
+                ProfileRecipientEvent(
+                  city: value,
                 ),
+              );
+              context.read<NewPostBloc>().add(
+                LoadNewPostEvent(
+                  department: value,
+                ),
+              );
+            } ,
             items: dropdownItem,
           ),
         ),
@@ -686,10 +635,10 @@ class DepartmentPost extends StatelessWidget {
     );
   }
 
-  Widget departmentDropdownButton(state, BuildContext context) {
+  Widget departmentDropdownButton(state,stateNewPost, BuildContext context) {
     List<DropdownMenuItem<String>> dropdownItem = [];
 
-    for (String delivery in departmentNP) {
+    for (String delivery in stateNewPost.department ?? []) {
       var newItem = DropdownMenuItem(
         child: Text(
           delivery,
@@ -739,8 +688,17 @@ class DepartmentPost extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    return BlocBuilder<NewPostBloc, NewPostState>(
+  builder: (context, stateNewPost) {
+    return BlocBuilder<CityBloc, CityState>(
+  builder: (_, stateCity) {
+    return BlocBuilder<RegionBloc, RegionState>(
+  builder: (_, stateRegion) {
     return BlocBuilder<ProfileRecipientBloc, ProfileRecipientState>(
       builder: (context, state) {
+        print('lklklklklklklklk${state.departmentNP}');
+        print('lklk444444444klk${stateNewPost.department}');
+
         return SizedBox(
           width: double.infinity,
           height: 380.0,
@@ -789,17 +747,117 @@ class DepartmentPost extends StatelessWidget {
                 hintText: 'Номер телефона',
                 widget: const SizedBox.expand(),
               ),
-              regionDropdownButton(state, context),
-              cityDropdownButton(state, context),
-              departmentDropdownButton(state, context),
+              regionDropdownButton(state, stateRegion, context),
+              cityDropdownButton(state, stateCity,context),
+              departmentDropdownButton(state,stateNewPost, context),
             ],
+          ),
+        );
+      },
+    );
+  },
+);
+  },
+);
+  },
+);
+  }
+}
+
+class SaveButton extends StatelessWidget {
+  const SaveButton({
+    Key? key,
+    required this.isSwish,
+    required this.fToast,
+  }) : super(key: key);
+  final FToast fToast;
+  final bool isSwish;
+  bool _isUsedCard(isGet) {
+    if (isGet == null) return true;
+    return false;
+  }
+
+  Widget toast(String text) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 12.0),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(25.0),
+        color: AppColors.green,
+      ),
+      child: Text(text),
+    );
+  }
+
+  bool _saveLogic(state) {
+    final bool isConst = state.addressName != null &&
+        state.addressName?.isNotEmpty &&
+        state.country != null &&
+        state.country!.isNotEmpty &&
+        state.name != null &&
+        state.name!.isNotEmpty &&
+        state.surname != null &&
+        state.surname!.isNotEmpty &&
+        state.phoneNumber != null &&
+        state.phoneNumber!.isNotEmpty &&
+        state.region != null &&
+        state.region!.isNotEmpty &&
+        state.city != null &&
+        state.city!.isNotEmpty;
+
+    final bool isValue =
+        (state.departmentNP != null && state.departmentNP!.isNotEmpty) ||
+            (state.addressName != null && state.addressName!.isNotEmpty);
+    if (isConst && isValue) return true;
+    return false;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<ProfileRecipientBloc, ProfileRecipientState>(
+      builder: (context, state) {
+        return Padding(
+          padding: const EdgeInsets.only(
+            top: 20.0,
+            bottom: 10.0,
+          ),
+          child: ButtonEnter(
+            onPressed: () async {
+              if (_saveLogic(state)) {
+                final Future<List<RecipientModel>>? isGet =
+                await RecipientRepositories.instance.getRecipient();
+                isGet?.then((value) {
+                  RecipientRepositories.instance.add(
+                    state.region ?? '',
+                    state.city ?? '',
+                    state.street ?? '',
+                    state.name ?? '',
+                    state.surname ?? '',
+                    state.phoneNumber ?? '',
+                    state.departmentNP ?? '',
+                    state.addressName ?? '',
+                    isSwish,
+                    _isUsedCard(value),
+                  );
+                });
+                context.read<ListFormBloc>().add(LoadListFormEvent());
+                Navigator.pop(context);
+              } else {
+                fToast.showToast(
+                  child: toast('Нужно заполнить поля ...'),
+                  gravity: ToastGravity.TOP,
+                  toastDuration: const Duration(seconds: 2),
+                );
+              }
+            },
+            color: _saveLogic(state) ? AppColors.green : AppColors.contour,
+            colorText: Colors.white,
+            text: 'СОХРАНИТЬ',
           ),
         );
       },
     );
   }
 }
-
 // class DropdownButtonCustom extends StatelessWidget {
 //   DropdownButtonCustom({
 //     Key? key,

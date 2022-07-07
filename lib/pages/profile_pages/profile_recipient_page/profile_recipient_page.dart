@@ -21,7 +21,10 @@ class ProfileRecipientAddressFormPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider<ListFormBloc>(
-      create: (context) => ListFormBloc()..add(LoadListFormEvent(),),
+      create: (context) => ListFormBloc()
+        ..add(
+          LoadListFormEvent(),
+        ),
       child: Scaffold(
         appBar: AppBar(
           backgroundColor: Colors.white,
@@ -30,7 +33,9 @@ class ProfileRecipientAddressFormPage extends StatelessWidget {
           leading: InkWell(
             onTap: () => Navigator.pop(context),
             child: Padding(
-              padding: const EdgeInsets.all(15.0,),
+              padding: const EdgeInsets.all(
+                15.0,
+              ),
               child: SvgPicture.asset(
                 AppIcons.arrowLeft,
               ),
@@ -90,7 +95,6 @@ class ProfileRecipientAddressFormPage extends StatelessWidget {
   }
 }
 
-
 class _ListItem extends StatelessWidget {
   const _ListItem({Key? key}) : super(key: key);
 
@@ -99,11 +103,12 @@ class _ListItem extends StatelessWidget {
     if (list.length >= 2) return 530.0;
     return 0.0;
   }
+
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<ListFormBloc, ListFormState>(
       builder: (context, state) {
-        if (state.status == ListFormStatus.success){
+        if (state.status == ListFormStatus.success) {
           return SizedBox(
             width: double.infinity,
             height: _customExpanded(state.list),
@@ -111,12 +116,12 @@ class _ListItem extends StatelessWidget {
               itemCount: state.list.length,
               itemBuilder: (BuildContext context, int index) {
                 final RecipientModel list = state.list[index];
-                return
-                  DismissibleWidget(
-                  item:  list,
-                  onResize: () => RecipientRepositories.instance.delete(list.addressName!,),
-                  child:
-                  _RecipientAddressFormModel(
+                return DismissibleWidget(
+                  item: list,
+                  onResize: () => RecipientRepositories.instance.delete(
+                    list.addressName!,
+                  ),
+                  child: _RecipientAddressFormModel(
                     addressName: list.addressName,
                     region: list.region,
                     city: list.city,
@@ -130,9 +135,9 @@ class _ListItem extends StatelessWidget {
                   ),
                 );
               },
-
             ),
-          );}
+          );
+        }
         if (state.status == ListFormStatus.initial) {
           return const Center(
             child: CircularProgressIndicator(),
@@ -150,7 +155,6 @@ class _ListItem extends StatelessWidget {
   }
 }
 
-
 class _RecipientAddressFormModel extends StatelessWidget {
   const _RecipientAddressFormModel({
     Key? key,
@@ -163,7 +167,7 @@ class _RecipientAddressFormModel extends StatelessWidget {
     this.departmentNP,
     this.addressName,
     this.isCard,
-  }) : super(key: key);
+  }) :  super(key: key);
   final String? region;
   final String? city;
   final String? street;
@@ -173,7 +177,6 @@ class _RecipientAddressFormModel extends StatelessWidget {
   final String? departmentNP;
   final String? addressName;
   final bool? isCard;
-
 
   @override
   Widget build(BuildContext context) {
@@ -222,16 +225,15 @@ class _RecipientAddressFormModel extends StatelessWidget {
                 ),
               ],
             ),
-            _Link(text1: 'Способ доставки', text2: isCard!
-                ? 'НП (до отделения)'
-                : 'НП (адресная доставка)'
-            ),
+            _Link(
+                text1: 'Способ доставки',
+                text2:
+                    isCard! ? 'НП (до отделения)' : 'НП (адресная доставка)'),
             _Link(text1: 'Область', text2: region!),
             _Link(text1: 'Город', text2: city!),
             isCard!
                 ? _Link(text1: 'Отделение', text2: departmentNP!)
                 : _Link(text1: 'Адрес', text2: street!),
-
             _Link(text1: 'Имя', text2: name!),
             _Link(text1: 'Фамилия', text2: surname!),
             _Link(text1: 'Номер телефона', text2: phoneNumber!),

@@ -1,25 +1,25 @@
 class RegionModel {
   RegionModel({
-    this.region,
+    this.ref,
     this.city,
 
   });
 
-  factory RegionModel.fromJson(
-      Map<String, dynamic> json,
-      ) {
-    return RegionModel(
-      region: json['region'],
-      city: json['object_name'],
+  // factory RegionModel.fromJson(
+  //     Map<String, dynamic> json,
+  //     ) {
+  //   return RegionModel(
+  //     region: json['region'],
+  //     city: json['object_name'],
+  //
+  //   );
+  // }
+  List? ref;
+  List? city;
 
-    );
-  }
-  String? region;
-  String? city;
-
-
-  Map<String, dynamic> toJson() => {
-    'region': region,
-    'object_name': city
-  };
+  //
+  // Map<String, dynamic> toJson() => {
+  //   'region': region,
+  //   'object_name': city
+  // };
 }
