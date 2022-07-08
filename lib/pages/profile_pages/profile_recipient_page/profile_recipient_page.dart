@@ -73,10 +73,23 @@ class ProfileRecipientAddressFormPage extends StatelessWidget {
                 const _ListItem(),
                 InkWell(
                   onTap: () {
-                    Navigator.pushNamed(
-                      context,
-                      ProfileRecipientAddressesPage.routeName,
-                    );
+                    Navigator.push(context, MaterialPageRoute(builder: (context) {
+                      return  ProfileRecipientAddressesPage(
+                        name: '',
+                        phoneNumber: '',
+                        departmentNP: '',
+                        street: '',
+                        houseNumber: '',
+                        isCard: true,
+                        city: '',
+                        surname: '',
+                        addressName: '',
+                        flatNumber: '',
+                        region: '',
+                        country: '',
+                        userCard: true,);
+                    }));
+
                   },
                   child: const IconLink(
                     text: 'Добавить еще карту',
@@ -122,6 +135,10 @@ class _ListItem extends StatelessWidget {
                     list.addressName!,
                   ),
                   child: _RecipientAddressFormModel(
+                    userCard: list.userCard,
+                    country: list.country,
+                    houseNumber: list.houseNumber,
+                    flatNumber: list.flatNumber,
                     addressName: list.addressName,
                     region: list.region,
                     city: list.city,
@@ -166,7 +183,7 @@ class _RecipientAddressFormModel extends StatelessWidget {
     this.phoneNumber,
     this.departmentNP,
     this.addressName,
-    this.isCard,
+    this.isCard, this.houseNumber, this.flatNumber, this.country, this.userCard,
   }) :  super(key: key);
   final String? region;
   final String? city;
@@ -176,7 +193,11 @@ class _RecipientAddressFormModel extends StatelessWidget {
   final String? phoneNumber;
   final String? departmentNP;
   final String? addressName;
+  final String? houseNumber;
+  final String? flatNumber;
+  final String? country;
   final bool? isCard;
+  final bool? userCard;
 
   @override
   Widget build(BuildContext context) {
@@ -208,7 +229,25 @@ class _RecipientAddressFormModel extends StatelessWidget {
                 Flexible(
                   flex: 2,
                   child: InkWell(
-                    onTap: () {},
+                    onTap: () {
+                      Navigator.push(context, MaterialPageRoute(builder: (context) {
+                        return  ProfileRecipientAddressesPage(
+                          name: addressName ?? '',
+                          phoneNumber: phoneNumber ?? '',
+                          departmentNP: departmentNP ?? '',
+                          street: street ?? '',
+                          houseNumber: houseNumber ?? '',
+                          isCard: isCard ?? false,
+                          city: city ?? '',
+                          surname: surname ?? '',
+                          addressName: addressName ?? '',
+                          flatNumber: flatNumber ?? '',
+                          region: region ?? '',
+                          country: country ?? '',
+                          userCard: userCard ?? true,
+                        );
+                      }));
+                    },
                     child: Padding(
                       padding: const EdgeInsets.only(
                         right: 16.0,

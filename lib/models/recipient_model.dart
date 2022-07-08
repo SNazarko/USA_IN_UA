@@ -10,6 +10,9 @@ class RecipientModel {
     this.isCard,
     this.userCard,
     this.addressName,
+    this.flatNumber,
+    this.houseNumber,
+    this.country,
   });
 
   factory RecipientModel.fromJson(
@@ -26,6 +29,9 @@ class RecipientModel {
       isCard: json['isCard'],
       userCard: json['userCard'],
       addressName: json['addressName'],
+      flatNumber: json['flatNumber'],
+      houseNumber: json['houseNumber'],
+      country: json['country'],
     );
   }
   String? region;
@@ -36,8 +42,13 @@ class RecipientModel {
   String? phoneNumber;
   String? departmentNP;
   String? addressName;
+  String? flatNumber;
+  String? houseNumber;
+  String? country;
+
   bool? isCard;
   bool? userCard;
+
 
   Map<String, dynamic> toJson() => {
         'region': region,
@@ -49,6 +60,9 @@ class RecipientModel {
         'departmentNP': departmentNP,
         'isCard': isCard,
         'addressName': addressName,
-        'userCard': userCard
+        'userCard': userCard,
+        'flatNumber': flatNumber,
+        'houseNumber': houseNumber,
+        'country': country
       };
 }

@@ -114,7 +114,21 @@ class AppRouter {
 
       // profile_recipient_add_page
       case ProfileRecipientAddressesPage.routeName:
-        builder = (_) =>  ProfileRecipientAddressesPage();
+        final ProfileRecipientAddressesPageArguments args =
+        arguments as ProfileRecipientAddressesPageArguments;
+        builder = (_) =>  ProfileRecipientAddressesPage(
+          name: args.name, 
+          phoneNumber: args.phoneNumber, 
+          departmentNP: args.departmentNP, 
+          street: args.street, 
+          region: args.region, 
+          country: args.country, 
+          city: args.city, 
+          addressName: args.addressName, 
+          surname: args.surname, 
+          houseNumber: args.houseNumber, 
+          flatNumber: args.flatNumber, isCard: args.isCard,
+           userCard: args.userCard,);
         break;
 
     // profile_recipient_add_page

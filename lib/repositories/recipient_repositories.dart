@@ -55,6 +55,9 @@ class RecipientRepositories {
     String phone,
     String departmentNP,
     String addressName,
+      String flatNumber,
+      String houseNumber,
+      String country,
     bool isCard,
     bool userCard,
   ) async {
@@ -69,6 +72,9 @@ class RecipientRepositories {
       departmentNP: departmentNP,
       isCard: isCard,
       userCard: userCard,
+        flatNumber: flatNumber,
+      houseNumber: houseNumber,
+        country: country
     );
     final json = data.toJson();
     FirebaseFirestore.instance
@@ -89,4 +95,15 @@ class RecipientRepositories {
         .doc(addressName)
 .delete();
   }
+
+  Future<void> doneAddress(
+      String addressName, bool done,) async {
+    FirebaseFirestore.instance
+        .collection(phoneNumber!)
+        .doc('recipient')
+        .collection('recipient')
+        .doc(addressName)
+        .update({'isCard': done});
+  }
+
 }

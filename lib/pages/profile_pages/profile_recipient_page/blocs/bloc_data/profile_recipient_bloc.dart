@@ -21,13 +21,15 @@ class ProfileRecipientBloc
         state.copyWith(
           region: event.region,
           city: event.city,
-          street: '${event.street ?? ''} ${event.houseNumber ?? ''}/${event.flatNumber}',
+          street: event.street ,
           name: event.name,
           surname: event.surname,
           phoneNumber: event.phoneNumber,
           departmentNP: event.departmentNP,
           addressName: event.addressName,
           country: event.country,
+          houseNumber: event.houseNumber,
+          flatNumber: event.flatNumber,
 
         ),
       );

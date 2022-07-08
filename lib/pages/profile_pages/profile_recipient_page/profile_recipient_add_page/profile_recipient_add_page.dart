@@ -1,3 +1,4 @@
+import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_multi_formatter/formatters/masked_input_formatter.dart';
@@ -21,9 +22,68 @@ import '../blocs/bloc_list_form/list_form_bloc.dart';
 import '../blocs/bloc_new_post/new_post_bloc.dart';
 import '../blocs/bloc_region/region_bloc.dart';
 
+class ProfileRecipientAddressesPageArguments {
+  ProfileRecipientAddressesPageArguments(
+    this.region,
+    this.city,
+    this.street,
+    this.name,
+    this.surname,
+    this.phoneNumber,
+    this.departmentNP,
+    this.addressName,
+    this.country,
+    this.flatNumber,
+    this.houseNumber,
+    this.isCard,
+    this.userCard,
+  );
+  final String region;
+  final String city;
+  final String street;
+  final String name;
+  final String surname;
+  final String phoneNumber;
+  final String departmentNP;
+  final String addressName;
+  final String country;
+  final String flatNumber;
+  final String houseNumber;
+  final bool isCard;
+  final bool userCard;
+}
+
 class ProfileRecipientAddressesPage extends StatefulWidget {
-  const ProfileRecipientAddressesPage({Key? key}) : super(key: key);
+  const ProfileRecipientAddressesPage({
+    Key? key,
+    required this.region,
+    required this.city,
+    required this.street,
+    required this.name,
+    required this.surname,
+    required this.phoneNumber,
+    required this.departmentNP,
+    required this.addressName,
+    required this.country,
+    required this.flatNumber,
+    required this.houseNumber,
+    required this.isCard,
+    required this.userCard,
+  }) : super(key: key);
   static const routeName = '/profile_recipient_add_page';
+  final String region;
+  final String city;
+  final String street;
+  final String name;
+  final String surname;
+  final String phoneNumber;
+  final String departmentNP;
+  final String addressName;
+  final String country;
+  final String flatNumber;
+  final String houseNumber;
+  final bool isCard;
+  final bool userCard;
 
   @override
   State<ProfileRecipientAddressesPage> createState() =>
@@ -32,7 +92,16 @@ class ProfileRecipientAddressesPage extends StatefulWidget {
 
 class _ProfileRecipientAddressesPageState
     extends State<ProfileRecipientAddressesPage> {
-  bool isSwish = true;
+  final TextEditingController addressNameController = TextEditingController();
+  final TextEditingController countryController = TextEditingController();
+
+  final TextEditingController nameController = TextEditingController();
+  final TextEditingController surnameController = TextEditingController();
+  final TextEditingController phoneNumberController = TextEditingController();
+  final TextEditingController houseNumberController = TextEditingController();
+  final TextEditingController flatNumberController = TextEditingController();
+  final TextEditingController streetController = TextEditingController();
+  late bool isSwish;
   late FToast fToast;
 
   @override
@@ -40,29 +109,41 @@ class _ProfileRecipientAddressesPageState
     super.initState();
     fToast = FToast();
     fToast.init(context);
+    addressNameController.text = widget.addressName;
+    countryController.text = widget.country;
+    nameController.text = widget.name;
+    surnameController.text = widget.surname;
+    phoneNumberController.text = widget.phoneNumber;
+    houseNumberController.text = widget.houseNumber;
+    flatNumberController.text = widget.flatNumber;
+    streetController.text = widget.street;
+    isSwish = widget.userCard;
   }
 
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
-  providers: [
-    BlocProvider<ProfileRecipientBloc>(
-      create: (context) => ProfileRecipientBloc(),
-),
-    BlocProvider<ListFormBloc >(
-      create: (context) => ListFormBloc(),
-    ),
-    BlocProvider<RegionBloc >(
-      create: (context) => RegionBloc() ..add(LoadRegionEvent(),),
-    ),
-    BlocProvider<CityBloc >(
-      create: (context) => CityBloc(),
-    ),
-    BlocProvider<NewPostBloc >(
-      create: (context) => NewPostBloc(),
-    ),
-  ],
-  child: Scaffold(
+      providers: [
+        BlocProvider<ProfileRecipientBloc>(
+          create: (context) => ProfileRecipientBloc(),
+        ),
+        BlocProvider<ListFormBloc>(
+          create: (context) => ListFormBloc(),
+        ),
+        BlocProvider<RegionBloc>(
+          create: (context) => RegionBloc()
+            ..add(
+              LoadRegionEvent(),
+            ),
+        ),
+        BlocProvider<CityBloc>(
+          create: (context) => CityBloc(),
+        ),
+        BlocProvider<NewPostBloc>(
+          create: (context) => NewPostBloc(),
+        ),
+      ],
+      child: Scaffold(
         appBar: AppBar(
           backgroundColor: Colors.white,
           elevation: 0.0,
@@ -105,7 +186,10 @@ class _ProfileRecipientAddressesPageState
           child: SingleChildScrollView(
               child: Column(
             children: [
-              const Header(),
+              Header(
+                addressNameController: addressNameController,
+                countryController: countryController,
+              ),
               SizedBox(
                 width: double.infinity,
                 height: 135,
@@ -118,6 +202,8 @@ class _ProfileRecipientAddressesPageState
                       fontSize: 16.0,
                       onTap: () {
                         isSwish = !isSwish;
+                        RecipientRepositories.instance
+                            .doneAddress(addressNameController.text, isSwish);
                         setState(() {});
                       },
                     ),
@@ -128,13 +214,34 @@ class _ProfileRecipientAddressesPageState
                       fontSize: 16.0,
                       onTap: () {
                         isSwish = !isSwish;
+                        RecipientRepositories.instance
+                            .doneAddress(addressNameController.text, isSwish);
+                        isSwish = !isSwish;
                         setState(() {});
                       },
                     ),
                   ],
                 ),
               ),
-              isSwish ? DepartmentPost() : AddressDelivery(),
+              isSwish
+                  ? DepartmentPost(
+                      phoneNumberController: phoneNumberController,
+                      surnameController: surnameController,
+                      nameController: nameController,
+                      region: widget.region,
+                      city: widget.city,
+                      departmentNP: widget.departmentNP,
+                    )
+                  : AddressDelivery(
+                      phoneNumberController: phoneNumberController,
+                      houseNumberController: houseNumberController,
+                      flatNumberController: flatNumberController,
+                      surnameController: surnameController,
+                      streetController: streetController,
+                      nameController: nameController,
+                      city: widget.city,
+                      region: widget.region,
+                    ),
               SaveButton(
                 isSwish: isSwish,
                 fToast: fToast,
@@ -148,8 +255,13 @@ class _ProfileRecipientAddressesPageState
 }
 
 class Header extends StatelessWidget {
-  const Header({Key? key}) : super(key: key);
-
+  const Header({
+    Key? key,
+    required this.addressNameController,
+    required this.countryController,
+  }) : super(key: key);
+  final TextEditingController addressNameController;
+  final TextEditingController countryController;
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -180,6 +292,7 @@ class Header extends StatelessWidget {
             ),
           ),
           TextFieldInputTextNumber(
+            controller: addressNameController,
             onEditingComplete: () {
               FocusScope.of(context).nextFocus();
             },
@@ -193,6 +306,7 @@ class Header extends StatelessWidget {
             widget: const SizedBox.expand(),
           ),
           TextFieldInputTextNumber(
+            controller: countryController,
             onEditingComplete: () {
               FocusScope.of(context).nextFocus();
             },
@@ -212,15 +326,30 @@ class Header extends StatelessWidget {
 }
 
 class AddressDelivery extends StatelessWidget {
-  AddressDelivery({
+  const AddressDelivery({
     Key? key,
+    required this.nameController,
+    required this.surnameController,
+    required this.phoneNumberController,
+    required this.houseNumberController,
+    required this.flatNumberController,
+    required this.streetController,
+    required this.region,
+    required this.city,
   }) : super(key: key);
+  final TextEditingController nameController;
+  final TextEditingController surnameController;
+  final TextEditingController phoneNumberController;
+  final TextEditingController houseNumberController;
+  final TextEditingController flatNumberController;
+  final TextEditingController streetController;
+  final String region;
+  final String city;
 
-
-  Widget regionDropdownButton(state,stateRegion, BuildContext context) {
+  Widget regionDropdownButton(state, stateRegion, BuildContext context) {
     List<DropdownMenuItem<String>> dropdownItem = [];
 
-    for (String delivery in stateRegion.region ) {
+    for (String delivery in stateRegion.region) {
       var newItem = DropdownMenuItem(
         child: Text(
           delivery,
@@ -258,19 +387,16 @@ class AddressDelivery extends StatelessWidget {
             value: state.region,
             onChanged: (value) {
               context.read<ProfileRecipientBloc>().add(
-              ProfileRecipientEvent(
-                region: value,
-              ),
-            );
+                    ProfileRecipientEvent(
+                      region: value,
+                    ),
+                  );
               context.read<CityBloc>().add(
-                LoadCityEvent(
-                  city: value,
-                ),
-              );
-    },
-
-
-
+                    LoadCityEvent(
+                      city: value,
+                    ),
+                  );
+            },
             items: dropdownItem,
           ),
         ),
@@ -278,7 +404,7 @@ class AddressDelivery extends StatelessWidget {
     );
   }
 
-  Widget cityDropdownButton(state, stateCity,BuildContext context) {
+  Widget cityDropdownButton(state, stateCity, BuildContext context) {
     List<DropdownMenuItem<String>> dropdownItem = [];
 
     for (String delivery in stateCity.city) {
@@ -331,23 +457,184 @@ class AddressDelivery extends StatelessWidget {
     );
   }
 
-  // Widget streetDropdownButton(state, BuildContext context) {
-  //
-  //
-  //   List<DropdownMenuItem<String>> dropdownItem = [];
-  //
-  //   for (String delivery in departmentNP) {
-  //     var newItem = DropdownMenuItem(
-  //       child: Text(
-  //         delivery,
-  //         style: const TextStyle(
-  //           color: AppColors.text,
-  //         ),
-  //       ),
-  //       value: delivery,
-  //     );
-  //     dropdownItem.add(newItem);
-  //   }
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<CityBloc, CityState>(
+      builder: (_, stateCity) {
+        return BlocBuilder<RegionBloc, RegionState>(
+          builder: (_, stateRegion) {
+            return BlocBuilder<ProfileRecipientBloc, ProfileRecipientState>(
+              builder: (context, state) {
+                region != ''
+                    ? context
+                        .read<ProfileRecipientBloc>()
+                        .add(ProfileRecipientEvent(
+                          region: region,
+                        ))
+                    : context
+                        .read<ProfileRecipientBloc>()
+                        .add(const ProfileRecipientEvent(
+                          region: null,
+                        ));
+
+                city != ''
+                    ? context
+                        .read<ProfileRecipientBloc>()
+                        .add(ProfileRecipientEvent(
+                          city: city,
+                        ))
+                    : context
+                        .read<ProfileRecipientBloc>()
+                        .add(const ProfileRecipientEvent(
+                          city: null,
+                        ));
+
+                return SizedBox(
+                  width: double.infinity,
+                  height: 420.0,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      TextFieldInputTextNumber(
+                        controller: nameController,
+                        onEditingComplete: () {
+                          FocusScope.of(context).nextFocus();
+                        },
+                        textInputType: TextInputType.text,
+                        onChanged: (data) {
+                          context.read<ProfileRecipientBloc>().add(
+                                ProfileRecipientEvent(
+                                  name: data,
+                                ),
+                              );
+                        },
+                        hintText: 'Имя',
+                        widget: const SizedBox.expand(),
+                      ),
+                      TextFieldInputTextNumber(
+                        controller: surnameController,
+                        onEditingComplete: () {
+                          FocusScope.of(context).nextFocus();
+                        },
+                        textInputType: TextInputType.text,
+                        onChanged: (data) {
+                          context.read<ProfileRecipientBloc>().add(
+                                ProfileRecipientEvent(
+                                  surname: data,
+                                ),
+                              );
+                        },
+                        hintText: 'Фамилия',
+                        widget: const SizedBox.expand(),
+                      ),
+                      TextFieldInputTextNumber(
+                        controller: phoneNumberController,
+                        inputFormatters: [
+                          MaskedInputFormatter('+## (###) ### ## ##'),
+                        ],
+                        onEditingComplete: () {
+                          FocusScope.of(context).nextFocus();
+                        },
+                        textInputType: TextInputType.phone,
+                        onChanged: (data) {
+                          context.read<ProfileRecipientBloc>().add(
+                                ProfileRecipientEvent(
+                                  phoneNumber: data,
+                                ),
+                              );
+                        },
+                        hintText: 'Номер телефона',
+                        widget: const SizedBox.expand(),
+                      ),
+                      regionDropdownButton(state, stateRegion, context),
+                      cityDropdownButton(state, stateCity, context),
+                      TextFieldInputTextNumber(
+                        controller: streetController,
+                        onEditingComplete: () {
+                          FocusScope.of(context).nextFocus();
+                        },
+                        textInputType: TextInputType.text,
+                        onChanged: (data) =>
+                            context.read<ProfileRecipientBloc>().add(
+                                  ProfileRecipientEvent(
+                                    street: data,
+                                  ),
+                                ),
+                        hintText: 'Улица',
+                        widget: const SizedBox.expand(),
+                      ),
+                      Row(
+                        children: [
+                          Expanded(
+                            child: TextFieldInputTextNumber(
+                              controller: houseNumberController,
+                              onEditingComplete: () {
+                                FocusScope.of(context).nextFocus();
+                              },
+                              onChanged: (data) =>
+                                  context.read<ProfileRecipientBloc>().add(
+                                        ProfileRecipientEvent(
+                                          houseNumber: data,
+                                        ),
+                                      ),
+                              textInputType: TextInputType.text,
+                              hintText: 'Номер дома',
+                              widget: const SizedBox.expand(),
+                            ),
+                          ),
+                          const SizedBox(
+                            width: 5.0,
+                          ),
+                          Expanded(
+                            child: TextFieldInputTextNumber(
+                              controller: flatNumberController,
+                              onEditingComplete: () {
+                                FocusScope.of(context).nextFocus();
+                              },
+                              onChanged: (data) =>
+                                  context.read<ProfileRecipientBloc>().add(
+                                        ProfileRecipientEvent(
+                                          flatNumber: data,
+                                        ),
+                                      ),
+                              textInputType: TextInputType.number,
+                              hintText: 'Номер квартиры',
+                              widget: const SizedBox.expand(),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                );
+              },
+            );
+          },
+        );
+      },
+    );
+  }
+}
+
+class DepartmentPost extends StatelessWidget {
+  DepartmentPost({
+    Key? key,
+    required this.nameController,
+    required this.surnameController,
+    required this.phoneNumberController,
+    required this.region,
+    required this.city,
+    required this.departmentNP,
+  }) : super(key: key);
+  final TextEditingController nameController;
+  final TextEditingController surnameController;
+  final TextEditingController phoneNumberController;
+  final String region;
+  final String city;
+  final String departmentNP;
+
+
+  // Widget Button(state, stateRegion, BuildContext context) {
   //   return Container(
   //     width: double.infinity,
   //     height: 50.0,
@@ -356,165 +643,52 @@ class AddressDelivery extends StatelessWidget {
   //         borderRadius: const BorderRadius.all(
   //           Radius.circular(15.0),
   //         )),
-  //     child: Padding(
-  //       padding: const EdgeInsets.symmetric(
-  //         horizontal: 14.0,
-  //       ),
-  //       child: DropdownButtonHideUnderline(
-  //         child: DropdownButton<String>(
-  //           isExpanded: true,
-  //           hint: const Text(
-  //             'Улича',
-  //             style: TextStyle(
-  //               color: AppColors.noActive,
-  //               fontSize: 14.0,
-  //               fontWeight: FontWeight.w600,
-  //             ),
+  //     child: DropdownButtonHideUnderline(
+  //       child: DropdownButton2(
+  //         hint: Text(
+  //           'Select Item',
+  //           style: TextStyle(
+  //             fontSize: 14,
+  //             color: Theme
+  //                 .of(context)
+  //                 .hintColor,
   //           ),
-  //           value: state.street,
-  //           onChanged: (value) => context.read<ProfileRecipientBloc>().add(
-  //                 ProfileRecipientEvent(
-  //                   street: value,
+  //         ),
+  //         items: stateRegion.region
+  //             .map((item) =>
+  //             DropdownMenuItem<String>(
+  //               value: item,
+  //               child: Text(
+  //                 item,
+  //                 style: const TextStyle(
+  //                   fontSize: 14,
   //                 ),
   //               ),
-  //           items: dropdownItem,
-  //         ),
+  //             ))
+  //             .toList() as List<DropdownMenuItem<Object>>?,
+  //         value: state.region,
+  //     onChanged: (value) {
+  //
+  //             context.read<ProfileRecipientBloc>().add(
+  //               ProfileRecipientEvent(
+  //                 region: value as String,
+  //               ),
+  //             );
+  //             context.read<CityBloc>().add(
+  //               LoadCityEvent(
+  //                 city: value,
+  //               ),
+  //             );
+  //
+  //         },
+  //         buttonHeight: 50,
+  //         buttonWidth: double.infinity,
+  //         itemHeight: stateRegion.region.length,
   //       ),
   //     ),
   //   );
   // }
 
-  @override
-  Widget build(BuildContext context) {
-    return BlocBuilder<CityBloc, CityState>(
-  builder: (_, stateCity) {
-    return BlocBuilder<RegionBloc, RegionState>(
-  builder: (_, stateRegion) {
-    return BlocBuilder<ProfileRecipientBloc, ProfileRecipientState>(
-      builder: (context, state) {
-       
-        return SizedBox(
-          width: double.infinity,
-          height: 420.0,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              // DropdownButtonCustom(
-              //   region: FilesDB.regions,
-              //   hint: 'Улица',
-              //   value: state.street ?? FilesDB.regions.first,
-              //   onChanged: (data) => context.read<ProfileRecipientBloc>().add(
-              //     ProfileRecipientEvent(
-              //       street: data,
-              //     ),
-              //   ),
-              // ),
-              TextFieldInputTextNumber(
-                onEditingComplete: () {
-                  FocusScope.of(context).nextFocus();
-                },
-                textInputType: TextInputType.text,
-                onChanged: (data) {
-                  context.read<ProfileRecipientBloc>().add(
-                        ProfileRecipientEvent(
-                          name: data,
-                        ),
-                      );
-                },
-                hintText: 'Имя',
-                widget: const SizedBox.expand(),
-              ),
-              TextFieldInputTextNumber(
-                onEditingComplete: () {
-                  FocusScope.of(context).nextFocus();
-                },
-                textInputType: TextInputType.text,
-                onChanged: (data) {
-                  context.read<ProfileRecipientBloc>().add(
-                        ProfileRecipientEvent(
-                          surname: data,
-                        ),
-                      );
-                },
-                hintText: 'Фамилия',
-                widget: const SizedBox.expand(),
-              ),
-              TextFieldInputTextNumber(
-                inputFormatters: [
-                  MaskedInputFormatter('#### #### #### ####'),
-                ],
-                onEditingComplete: () {
-                  FocusScope.of(context).nextFocus();
-                },
-                textInputType: TextInputType.phone,
-                onChanged: (data) {
-                  context.read<ProfileRecipientBloc>().add(
-                        ProfileRecipientEvent(
-                          phoneNumber: data,
-                        ),
-                      );
-                },
-                hintText: 'Номер телефона',
-                widget: const SizedBox.expand(),
-              ),
-              regionDropdownButton(state,stateRegion, context),
-              cityDropdownButton(state,stateCity, context),
-              // streetDropdownButton(state, context),
-              Row(
-                children: [
-                  Expanded(
-                    child: TextFieldInputTextNumber(
-                      onEditingComplete: () {
-                        FocusScope.of(context).nextFocus();
-                      },
-                      onChanged: (data) =>
-                          context.read<ProfileRecipientBloc>().add(
-                                ProfileRecipientEvent(
-                                  houseNumber: data,
-                                ),
-                              ),
-                      textInputType: TextInputType.text,
-                      hintText: 'Номер дома',
-                      widget: const SizedBox.expand(),
-                    ),
-                  ),
-                  const SizedBox(
-                    width: 5.0,
-                  ),
-                  Expanded(
-                    child: TextFieldInputTextNumber(
-                      onEditingComplete: () {
-                        FocusScope.of(context).nextFocus();
-                      },
-                      onChanged: (data) =>
-                          context.read<ProfileRecipientBloc>().add(
-                                ProfileRecipientEvent(
-                                  flatNumber: data,
-                                ),
-                              ),
-                      textInputType: TextInputType.number,
-                      hintText: 'Номер квартиры',
-                      widget: const SizedBox.expand(),
-                    ),
-                  ),
-                ],
-              ),
-            ],
-          ),
-        );
-      },
-    );
-  },
-);
-  },
-);
-  }
-}
-
-class DepartmentPost extends StatelessWidget {
-  DepartmentPost({
-    Key? key,
-  }) : super(key: key);
 
   Widget regionDropdownButton(state, stateRegion, BuildContext context) {
     List<DropdownMenuItem<String>> dropdownItem = [];
@@ -556,19 +730,41 @@ class DepartmentPost extends StatelessWidget {
             ),
             value: state.region,
             onChanged: (value) {
-              context.read<ProfileRecipientBloc>().add(
-                ProfileRecipientEvent(
-                  region: value,
-                ),
-              );
+
               context.read<CityBloc>().add(
-                LoadCityEvent(
-                  city: value,
+                UpdateCityEvent(
+                  city: [],
                 ),
               );
+              context.read<NewPostBloc>().add(
+                UpdateNewPostEvent(
+                  department: [],
+                ),
+              );
+
+              context.read<ProfileRecipientBloc>().add(
+                const ProfileRecipientEvent(
+                  city: null,
+                ),
+              );
+              context.read<ProfileRecipientBloc>().add(
+                const ProfileRecipientEvent(
+                  departmentNP: null,
+                ),
+              );
+
+
+              context.read<ProfileRecipientBloc>().add(
+                    ProfileRecipientEvent(
+                      region: value,
+                    ),
+                  );
+              context.read<CityBloc>().add(
+                    LoadCityEvent(
+                      city: value,
+                    ),
+                  );
             },
-
-
             items: dropdownItem,
           ),
         ),
@@ -617,17 +813,29 @@ class DepartmentPost extends StatelessWidget {
             value: state.city,
             onChanged: (value) {
 
-              context.read<ProfileRecipientBloc>().add(
-                ProfileRecipientEvent(
-                  city: value,
-                ),
-              );
               context.read<NewPostBloc>().add(
-                LoadNewPostEvent(
-                  department: value,
+                UpdateNewPostEvent(
+                  department: [],
                 ),
               );
-            } ,
+
+              context.read<ProfileRecipientBloc>().add(
+                const ProfileRecipientEvent(
+                  departmentNP: null,
+                ),
+              );
+
+              context.read<ProfileRecipientBloc>().add(
+                    ProfileRecipientEvent(
+                      city: value,
+                    ),
+                  );
+              context.read<NewPostBloc>().add(
+                    LoadNewPostEvent(
+                      department: value,
+                    ),
+                  );
+            },
             items: dropdownItem,
           ),
         ),
@@ -635,7 +843,7 @@ class DepartmentPost extends StatelessWidget {
     );
   }
 
-  Widget departmentDropdownButton(state,stateNewPost, BuildContext context) {
+  Widget departmentDropdownButton(state, stateNewPost, BuildContext context) {
     List<DropdownMenuItem<String>> dropdownItem = [];
 
     for (String delivery in stateNewPost.department ?? []) {
@@ -689,78 +897,118 @@ class DepartmentPost extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<NewPostBloc, NewPostState>(
-  builder: (context, stateNewPost) {
-    return BlocBuilder<CityBloc, CityState>(
-  builder: (_, stateCity) {
-    return BlocBuilder<RegionBloc, RegionState>(
-  builder: (_, stateRegion) {
-    return BlocBuilder<ProfileRecipientBloc, ProfileRecipientState>(
-      builder: (context, state) {
-        print('lklklklklklklklk${state.departmentNP}');
-        print('lklk444444444klk${stateNewPost.department}');
+      builder: (context, stateNewPost) {
+        return BlocBuilder<CityBloc, CityState>(
+          builder: (_, stateCity) {
+            return BlocBuilder<RegionBloc, RegionState>(
+              builder: (_, stateRegion) {
+                return BlocBuilder<ProfileRecipientBloc, ProfileRecipientState>(
+                  builder: (context, state) {
 
-        return SizedBox(
-          width: double.infinity,
-          height: 380.0,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              TextFieldInputTextNumber(
-                onEditingComplete: () {
-                  FocusScope.of(context).nextFocus();
-                },
-                textInputType: TextInputType.text,
-                onChanged: (data) => context.read<ProfileRecipientBloc>().add(
-                      ProfileRecipientEvent(
-                        name: data,
+                    region != ''
+                        ? context
+                            .read<ProfileRecipientBloc>()
+                            .add(ProfileRecipientEvent(
+                              region: region,
+                            ))
+                        : context
+                            .read<ProfileRecipientBloc>()
+                            .add(const ProfileRecipientEvent(
+                              region: null,
+                            ));
+
+                    city != ''
+                        ? context
+                            .read<ProfileRecipientBloc>()
+                            .add(ProfileRecipientEvent(
+                              city: city,
+                            ))
+                        : context
+                            .read<ProfileRecipientBloc>()
+                            .add(const ProfileRecipientEvent(
+                              city: null,
+                            ));
+
+                    departmentNP != ''
+                        ? context
+                            .read<ProfileRecipientBloc>()
+                            .add(ProfileRecipientEvent(
+                              departmentNP: departmentNP,
+                            ))
+                        : context
+                            .read<ProfileRecipientBloc>()
+                            .add(const ProfileRecipientEvent(
+                              departmentNP: null,
+                            ));
+                    return SizedBox(
+                      width: double.infinity,
+                      height: 380.0,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          TextFieldInputTextNumber(
+                            controller: nameController,
+                            onEditingComplete: () {
+                              FocusScope.of(context).nextFocus();
+                            },
+                            textInputType: TextInputType.text,
+                            onChanged: (data) =>
+                                context.read<ProfileRecipientBloc>().add(
+                                      ProfileRecipientEvent(
+                                        name: data,
+                                      ),
+                                    ),
+                            hintText: 'Имя',
+                            widget: const SizedBox.expand(),
+                          ),
+                          TextFieldInputTextNumber(
+                            controller: surnameController,
+                            onEditingComplete: () {
+                              FocusScope.of(context).nextFocus();
+                            },
+                            textInputType: TextInputType.text,
+                            onChanged: (data) =>
+                                context.read<ProfileRecipientBloc>().add(
+                                      ProfileRecipientEvent(
+                                        surname: data,
+                                      ),
+                                    ),
+                            hintText: 'Фамилия',
+                            widget: const SizedBox.expand(),
+                          ),
+                          TextFieldInputTextNumber(
+                            controller: phoneNumberController,
+                            inputFormatters: [
+                              MaskedInputFormatter('+## (###) ### ## ##'),
+                            ],
+                            onEditingComplete: () {
+                              FocusScope.of(context).nextFocus();
+                            },
+                            textInputType: TextInputType.phone,
+                            onChanged: (data) =>
+                                context.read<ProfileRecipientBloc>().add(
+                                      ProfileRecipientEvent(
+                                        phoneNumber: data,
+                                      ),
+                                    ),
+                            hintText: 'Номер телефона',
+                            widget: const SizedBox.expand(),
+                          ),
+                          regionDropdownButton(state, stateRegion, context),
+                          cityDropdownButton(state, stateCity, context),
+                          departmentDropdownButton(
+                              state, stateNewPost, context),
+                        ],
                       ),
-                    ),
-                hintText: 'Имя',
-                widget: const SizedBox.expand(),
-              ),
-              TextFieldInputTextNumber(
-                onEditingComplete: () {
-                  FocusScope.of(context).nextFocus();
-                },
-                textInputType: TextInputType.text,
-                onChanged: (data) => context.read<ProfileRecipientBloc>().add(
-                      ProfileRecipientEvent(
-                        surname: data,
-                      ),
-                    ),
-                hintText: 'Фамилия',
-                widget: const SizedBox.expand(),
-              ),
-              TextFieldInputTextNumber(
-                inputFormatters: [
-                  MaskedInputFormatter('#### #### #### ####'),
-                ],
-                onEditingComplete: () {
-                  FocusScope.of(context).nextFocus();
-                },
-                textInputType: TextInputType.phone,
-                onChanged: (data) => context.read<ProfileRecipientBloc>().add(
-                      ProfileRecipientEvent(
-                        phoneNumber: data,
-                      ),
-                    ),
-                hintText: 'Номер телефона',
-                widget: const SizedBox.expand(),
-              ),
-              regionDropdownButton(state, stateRegion, context),
-              cityDropdownButton(state, stateCity,context),
-              departmentDropdownButton(state,stateNewPost, context),
-            ],
-          ),
+                    );
+                  },
+                );
+              },
+            );
+          },
         );
       },
     );
-  },
-);
-  },
-);
-  },
-);
   }
 }
 
@@ -824,7 +1072,7 @@ class SaveButton extends StatelessWidget {
             onPressed: () async {
               if (_saveLogic(state)) {
                 final Future<List<RecipientModel>>? isGet =
-                await RecipientRepositories.instance.getRecipient();
+                    await RecipientRepositories.instance.getRecipient();
                 isGet?.then((value) {
                   RecipientRepositories.instance.add(
                     state.region ?? '',
@@ -835,6 +1083,9 @@ class SaveButton extends StatelessWidget {
                     state.phoneNumber ?? '',
                     state.departmentNP ?? '',
                     state.addressName ?? '',
+                    state.flatNumber ?? '',
+                    state.houseNumber ?? '',
+                    state.country ?? '',
                     isSwish,
                     _isUsedCard(value),
                   );
