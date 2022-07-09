@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -16,7 +15,10 @@ class ProfileWarehouseAddress extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider<WarehouseBloc>(
-      create: (context) => WarehouseBloc()..add(LoadLWarehouseEvent(),),
+      create: (context) => WarehouseBloc()
+        ..add(
+          LoadLWarehouseEvent(),
+        ),
       child: Scaffold(
         appBar: AppBar(
           backgroundColor: Colors.white,
@@ -62,7 +64,7 @@ class ProfileWarehouseAddress extends StatelessWidget {
                             final data = state.list[index];
                             return _LinkModel(
                               street: data.street ?? '',
-                             warehouseTitle: data.warehouseTitle ?? '',
+                              warehouseTitle: data.warehouseTitle ?? '',
                               state: data.state ?? '',
                               phoneNumber: data.phoneNumber ?? '',
                               name: data.name ?? '',
@@ -116,7 +118,7 @@ class _LinkModel extends StatelessWidget {
   }) : super(key: key);
   final String city;
   final String index;
-  final String  name;
+  final String name;
   final String phoneNumber;
   final String state;
   final String street;
@@ -138,46 +140,54 @@ class _LinkModel extends StatelessWidget {
         child: Padding(
           padding: const EdgeInsets.all(10.0),
           child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-               SizedBox(
-                 height: 100.0,
-                 child: Text(
+              SizedBox(
+                height: 100.0,
+                child: Text(
                   warehouseTitle,
                   style: const TextStyle(
                     fontSize: 30.0,
                     fontWeight: FontWeight.w700,
                   ),
+                ),
               ),
-               ),
-              Padding(
-                padding: const EdgeInsets.symmetric(
-                  vertical: 10.0,
-                ),
-                child: SizedBox(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children:  [
-                      const Text('ФИО'),
-                      Text(
-                        name,
-                        style: const TextStyle(
-                          fontSize: 16.0,
-                          fontWeight: FontWeight.w700,
-                        ),
+              SizedBox(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text('ФИО'),
+                    Text(
+                      name,
+                      style: const TextStyle(
+                        fontSize: 16.0,
+                        fontWeight: FontWeight.w700,
                       ),
-                      _LinkCopy(
-                          title: 'Улица',
-                          dataTitle:
-                              street,),
-                      _LinkCopy(title: 'Город', dataTitle: city,),
-                      _LinkCopy(title: 'Штат', dataTitle: state,),
-                      _LinkCopy(title: 'Индекс', dataTitle: index,),
-                      _LinkCopy(title: 'Телефон', dataTitle: phoneNumber,),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
-              )
+              ),
+              _LinkCopy(
+                title: 'Улица',
+                dataTitle: street,
+              ),
+              _LinkCopy(
+                title: 'Город',
+                dataTitle: city,
+              ),
+              _LinkCopy(
+                title: 'Штат',
+                dataTitle: state,
+              ),
+              _LinkCopy(
+                title: 'Индекс',
+                dataTitle: index,
+              ),
+              _LinkCopy(
+                title: 'Телефон',
+                dataTitle: phoneNumber,
+              ),
             ],
           ),
         ),
@@ -225,52 +235,47 @@ class _LinkCopyState extends State<_LinkCopy> {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(
-        vertical: 6.0,
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        crossAxisAlignment: CrossAxisAlignment.end,
-        children: [
-          Flexible(
-            flex: 10,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(widget.title),
-                Text(
-                  widget.dataTitle,
-                  overflow: TextOverflow.ellipsis,
-                  style: const TextStyle(
-                    fontSize: 16.0,
-                    fontWeight: FontWeight.w700,
-                  ),
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      crossAxisAlignment: CrossAxisAlignment.end,
+      children: [
+        Flexible(
+          flex: 10,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(widget.title),
+              Text(
+                widget.dataTitle,
+                overflow: TextOverflow.ellipsis,
+                style: const TextStyle(
+                  fontSize: 16.0,
+                  fontWeight: FontWeight.w700,
                 ),
-              ],
-            ),
-          ),
-          Flexible(
-            flex: 3,
-            child: InkWell(
-              onTap: () {
-                Clipboard.setData(ClipboardData(text: widget.dataTitle))
-                    .then((_) {
-                  fToast.showToast(
-                    child: toast('${widget.title} скопировано'),
-                    gravity: ToastGravity.BOTTOM,
-                    toastDuration: const Duration(seconds: 2),
-                  );
-                });
-              },
-              child: SvgPicture.asset(
-                AppIcons.copy,
-                color: AppColors.blue,
               ),
+            ],
+          ),
+        ),
+        Flexible(
+          flex: 3,
+          child: InkWell(
+            onTap: () {
+              Clipboard.setData(ClipboardData(text: widget.dataTitle))
+                  .then((_) {
+                fToast.showToast(
+                  child: toast('${widget.title} скопировано'),
+                  gravity: ToastGravity.BOTTOM,
+                  toastDuration: const Duration(seconds: 2),
+                );
+              });
+            },
+            child: SvgPicture.asset(
+              AppIcons.copy,
+              color: AppColors.blue,
             ),
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }

@@ -13,6 +13,7 @@ import '../pages/main_page.dart';
 import '../pages/presentation_page/presentation_page.dart';
 import '../pages/profile_pages/profile_bank_cards_pages/profile_add_cards_page/profile_add_cards_page.dart';
 import '../pages/profile_pages/profile_bank_cards_pages/profile_bank_cards_page.dart';
+import '../pages/profile_pages/profile_earn_with_us_page/profile_earn_with_us_page.dart';
 import '../pages/profile_pages/profile_edit_person_data_page/profile_edit_person_data_page.dart';
 import '../pages/profile_pages/profile_finance_page/profile_finance_page.dart';
 import '../pages/profile_pages/profile_google_maps_page/profile_google_maps_page.dart';
@@ -96,6 +97,11 @@ class AppRouter {
       // profile_add_cards_page
       case ProfileAddCardsPage.routeName:
         builder = (_) => ProfileAddCardsPage();
+        break;
+
+    // profile_earn_with_us_page
+      case ProfileEarnWithUsPage.routeName:
+        builder = (_) => ProfileEarnWithUsPage();
         break;
 
       // profile_bank_cards_page

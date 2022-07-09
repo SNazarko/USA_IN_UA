@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:usa_in_ua/pages/profile_pages/profile_bank_cards_pages/profile_bank_cards_page.dart';
+import 'package:usa_in_ua/pages/profile_pages/profile_earn_with_us_page/profile_earn_with_us_page.dart';
 import 'package:usa_in_ua/pages/profile_pages/profile_edit_person_data_page/profile_edit_person_data_page.dart';
 import 'package:usa_in_ua/pages/profile_pages/profile_finance_page/profile_finance_page.dart';
 import 'package:usa_in_ua/pages/profile_pages/profile_warehouse%20_add/profile_warehouse%20_add.dart';
@@ -397,16 +398,19 @@ class _ProfileLinks extends StatelessWidget {
                 ),
               ),
             ),
-            const Padding(
-              padding: EdgeInsets.symmetric(
+             Padding(
+              padding: const EdgeInsets.symmetric(
                 vertical: 5.0,
               ),
-              child: IconLink(
-                color: AppColors.blue,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                icon: AppIcons.makeMoneyWithUs,
-                text: 'Зарабатывайте c нами',
-                fontWeight: FontWeight.w700,
+              child: InkWell(
+                onTap: () => Navigator.pushNamed(context, ProfileEarnWithUsPage.routeName,),
+                child: const IconLink(
+                  color: AppColors.blue,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  icon: AppIcons.makeMoneyWithUs,
+                  text: 'Зарабатывайте c нами',
+                  fontWeight: FontWeight.w700,
+                ),
               ),
             ),
             Padding(

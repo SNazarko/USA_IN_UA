@@ -25,5 +25,9 @@ class AppImages {
   static const String testGoodsImage = '$_path/test_goods_image_.png';
   static const String cardMaster = '$_path/card_master.png';
   static const String cardVisa = '$_path/card_visa.png';
+  static const String manyBoy = '$_path/many_boy.png';
+  static const String surprise = '$_path/surprise.png';
+  static const String walletRafiki = '$_path/wallet_rafiki.png';
+  static const String walletRafiki2 = '$_path/wallet_rafiki2.png';
 
 }
