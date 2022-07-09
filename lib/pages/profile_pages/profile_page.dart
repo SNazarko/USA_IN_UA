@@ -4,6 +4,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:usa_in_ua/pages/profile_pages/profile_bank_cards_pages/profile_bank_cards_page.dart';
 import 'package:usa_in_ua/pages/profile_pages/profile_edit_person_data_page/profile_edit_person_data_page.dart';
 import 'package:usa_in_ua/pages/profile_pages/profile_finance_page/profile_finance_page.dart';
+import 'package:usa_in_ua/pages/profile_pages/profile_warehouse%20_add/profile_warehouse%20_add.dart';
 import 'package:usa_in_ua/resources/app_icons.dart';
 import 'package:usa_in_ua/resources/app_images.dart';
 import 'package:usa_in_ua/widgets/button_enter.dart';
@@ -28,8 +29,8 @@ class ProfilePage extends StatelessWidget {
         elevation: 0.0,
         actions: [
           InkWell(
-              onTap: ()=> Navigator.pushNamed(context,
-                  ProfileRecipientAddressFormPage.routeName),
+              onTap: () => Navigator.pushNamed(
+                  context, ProfileRecipientAddressFormPage.routeName),
               child: SvgPicture.asset(AppIcons.notification)),
           Padding(
             padding: const EdgeInsets.symmetric(
@@ -360,7 +361,7 @@ class _ProfileLinks extends StatelessWidget {
                 ),
               ),
             ),
-             Padding(
+            Padding(
               padding: const EdgeInsets.symmetric(
                 vertical: 5.0,
               ),
@@ -378,12 +379,15 @@ class _ProfileLinks extends StatelessWidget {
                 ),
               ),
             ),
-             Padding(
+            Padding(
               padding: const EdgeInsets.symmetric(
                 vertical: 5.0,
               ),
               child: InkWell(
-                onTap: () {},
+                onTap: () => Navigator.pushNamed(
+                  context,
+                  ProfileWarehouseAddress.routeName,
+                ),
                 child: const IconLink(
                   color: AppColors.blue,
                   crossAxisAlignment: CrossAxisAlignment.center,
@@ -405,7 +409,7 @@ class _ProfileLinks extends StatelessWidget {
                 fontWeight: FontWeight.w700,
               ),
             ),
-             Padding(
+            Padding(
               padding: const EdgeInsets.symmetric(
                 vertical: 5.0,
               ),

@@ -101,7 +101,7 @@ class _ProfileRecipientAddressesPageState
   final TextEditingController houseNumberController = TextEditingController();
   final TextEditingController flatNumberController = TextEditingController();
   final TextEditingController streetController = TextEditingController();
-  late bool isSwish;
+  late bool isSwish = true;
   late FToast fToast;
 
   @override
@@ -117,7 +117,6 @@ class _ProfileRecipientAddressesPageState
     houseNumberController.text = widget.houseNumber;
     flatNumberController.text = widget.flatNumber;
     streetController.text = widget.street;
-    isSwish = widget.userCard;
   }
 
   @override

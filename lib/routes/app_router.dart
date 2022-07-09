@@ -17,6 +17,7 @@ import '../pages/profile_pages/profile_edit_person_data_page/profile_edit_person
 import '../pages/profile_pages/profile_finance_page/profile_finance_page.dart';
 import '../pages/profile_pages/profile_google_maps_page/profile_google_maps_page.dart';
 import '../pages/profile_pages/profile_page.dart';
+import '../pages/profile_pages/profile_warehouse _add/profile_warehouse _add.dart';
 import '../pages/purchase_page/purchase_page.dart';
 import '../pages/test.dart';
 
@@ -141,6 +142,11 @@ class AppRouter {
         builder = (_) =>  const ProfileGoogleMapsPage();
         break;
 
+
+        // profile_warehouse _add
+      case ProfileWarehouseAddress.routeName:
+        builder = (_) =>  const ProfileWarehouseAddress();
+        break;
 
 
       // profile_page
