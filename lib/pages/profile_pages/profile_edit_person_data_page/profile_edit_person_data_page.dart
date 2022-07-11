@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -142,7 +145,8 @@ class ProfileEditPersonDataPage extends StatelessWidget {
                           ),
                           child: InkWell(
                             onTap: () {
-                              ProfileRepositories.instance.getProfile();
+                              FirebaseAuth.instance.signOut();
+                              exit(0);
                             },
                             child: const IconLink(
                               fontWeight: FontWeight.w600,

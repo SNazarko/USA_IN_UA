@@ -13,7 +13,7 @@ class LoadCityEvent extends CityEvent {
   @override
   // TODO: implement props
   List<Object?> get props => [
-    city,
+    city
   ];
 }
 
@@ -30,6 +30,6 @@ class UpdateCityEvent extends CityEvent {
   @override
   // TODO: implement props
   List<Object?> get props => [
-    city,
+    city
   ];
 }

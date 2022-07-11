@@ -40,7 +40,7 @@ class TextFieldInputTextNumber extends StatelessWidget {
           color: Colors.grey.shade100,
           borderRadius: const BorderRadius.all(
             Radius.circular(15.0),
-          )),
+          ),),
       child: Row(
         children: [
           Flexible(

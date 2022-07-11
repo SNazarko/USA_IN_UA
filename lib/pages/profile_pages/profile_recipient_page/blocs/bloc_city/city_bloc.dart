@@ -13,10 +13,12 @@ class CityBloc extends Bloc<CityEvent, CityState> {
   CityBloc() : super(const CityState()) {
     on<LoadCityEvent>((event, emit) async{
       try {
+        print('CityBlo${event.city}');
         final listRegion = await LocatedRepositories.instance.getRegion();
         final int? index = listRegion?.city?.indexOf(event.city);
         final getRef = listRegion?.ref![index ?? 0];
         final city = await LocatedRepositories.instance.getCity(getRef);
+        print('CityBloc    citi$city');
         add(UpdateCityEvent(city:city));
 
       } on Exception catch (e) {

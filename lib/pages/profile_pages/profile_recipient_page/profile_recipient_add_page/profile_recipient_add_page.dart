@@ -633,61 +633,6 @@ class DepartmentPost extends StatelessWidget {
   final String departmentNP;
 
 
-  // Widget Button(state, stateRegion, BuildContext context) {
-  //   return Container(
-  //     width: double.infinity,
-  //     height: 50.0,
-  //     decoration: BoxDecoration(
-  //         color: Colors.grey.shade100,
-  //         borderRadius: const BorderRadius.all(
-  //           Radius.circular(15.0),
-  //         )),
-  //     child: DropdownButtonHideUnderline(
-  //       child: DropdownButton2(
-  //         hint: Text(
-  //           'Select Item',
-  //           style: TextStyle(
-  //             fontSize: 14,
-  //             color: Theme
-  //                 .of(context)
-  //                 .hintColor,
-  //           ),
-  //         ),
-  //         items: stateRegion.region
-  //             .map((item) =>
-  //             DropdownMenuItem<String>(
-  //               value: item,
-  //               child: Text(
-  //                 item,
-  //                 style: const TextStyle(
-  //                   fontSize: 14,
-  //                 ),
-  //               ),
-  //             ))
-  //             .toList() as List<DropdownMenuItem<Object>>?,
-  //         value: state.region,
-  //     onChanged: (value) {
-  //
-  //             context.read<ProfileRecipientBloc>().add(
-  //               ProfileRecipientEvent(
-  //                 region: value as String,
-  //               ),
-  //             );
-  //             context.read<CityBloc>().add(
-  //               LoadCityEvent(
-  //                 city: value,
-  //               ),
-  //             );
-  //
-  //         },
-  //         buttonHeight: 50,
-  //         buttonWidth: double.infinity,
-  //         itemHeight: stateRegion.region.length,
-  //       ),
-  //     ),
-  //   );
-  // }
-
 
   Widget regionDropdownButton(state, stateRegion, BuildContext context) {
     List<DropdownMenuItem<String>> dropdownItem = [];
@@ -729,40 +674,16 @@ class DepartmentPost extends StatelessWidget {
             ),
             value: state.region,
             onChanged: (value) {
-
-              context.read<CityBloc>().add(
-                UpdateCityEvent(
-                  city: [],
-                ),
-              );
-              context.read<NewPostBloc>().add(
-                UpdateNewPostEvent(
-                  department: [],
-                ),
-              );
-
-              context.read<ProfileRecipientBloc>().add(
-                const ProfileRecipientEvent(
-                  city: null,
-                ),
-              );
-              context.read<ProfileRecipientBloc>().add(
-                const ProfileRecipientEvent(
-                  departmentNP: null,
-                ),
-              );
-
-
               context.read<ProfileRecipientBloc>().add(
                     ProfileRecipientEvent(
                       region: value,
                     ),
                   );
               context.read<CityBloc>().add(
-                    LoadCityEvent(
-                      city: value,
-                    ),
-                  );
+                LoadCityEvent(
+                  city: value,
+                ),
+              );
             },
             items: dropdownItem,
           ),
@@ -811,19 +732,6 @@ class DepartmentPost extends StatelessWidget {
             ),
             value: state.city,
             onChanged: (value) {
-
-              context.read<NewPostBloc>().add(
-                UpdateNewPostEvent(
-                  department: [],
-                ),
-              );
-
-              context.read<ProfileRecipientBloc>().add(
-                const ProfileRecipientEvent(
-                  departmentNP: null,
-                ),
-              );
-
               context.read<ProfileRecipientBloc>().add(
                     ProfileRecipientEvent(
                       city: value,
@@ -903,6 +811,7 @@ class DepartmentPost extends StatelessWidget {
               builder: (_, stateRegion) {
                 return BlocBuilder<ProfileRecipientBloc, ProfileRecipientState>(
                   builder: (context, state) {
+                    print(state.region);
 
                     region != ''
                         ? context
@@ -945,6 +854,10 @@ class DepartmentPost extends StatelessWidget {
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
+
+                          // DropdownButtonCustom(),
+
+
                           TextFieldInputTextNumber(
                             controller: nameController,
                             onEditingComplete: () {
@@ -993,7 +906,7 @@ class DepartmentPost extends StatelessWidget {
                             hintText: 'Номер телефона',
                             widget: const SizedBox.expand(),
                           ),
-                          regionDropdownButton(state, stateRegion, context),
+                          regionDropdownButton(state,  stateRegion, context),
                           cityDropdownButton(state, stateCity, context),
                           departmentDropdownButton(
                               state, stateNewPost, context),
@@ -1108,67 +1021,40 @@ class SaveButton extends StatelessWidget {
     );
   }
 }
-// class DropdownButtonCustom extends StatelessWidget {
-//   DropdownButtonCustom({
-//     Key? key,
-//     required this.onChanged,
-//     required this.value,
-//     required this.hint,
-//     required this.region,
-//   }) : super(key: key);
-//   final void Function(String?) onChanged;
-//   final String value;
-//   final String hint;
-//   final List<String> region;
-//   List<DropdownMenuItem<String>> dropdownItem = [];
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     for (String delivery in region) {
-//       var newItem = DropdownMenuItem(
-//         child: Text(
-//           delivery,
-//           style: const TextStyle(
-//             color: AppColors.text,
-//           ),
-//         ),
-//         value: delivery,
-//       );
-//       dropdownItem.add(newItem);
-//     }
-//     return BlocBuilder<ProfileRecipientBloc, ProfileRecipientState>(
-//       builder: (context, state) {
-//         return Container(
-//           width: double.infinity,
-//           height: 50.0,
-//           decoration: BoxDecoration(
-//               color: Colors.grey.shade100,
-//               borderRadius: const BorderRadius.all(
-//                 Radius.circular(15.0),
-//               )),
-//           child: Padding(
-//             padding: const EdgeInsets.symmetric(
-//               horizontal: 14.0,
-//             ),
-//             child: DropdownButtonHideUnderline(
-//               child: DropdownButton<String>(
-//                 isExpanded: true,
-//                 hint: Text(
-//                   hint,
-//                   style: const TextStyle(
-//                     color: AppColors.noActive,
-//                     fontSize: 14.0,
-//                     fontWeight: FontWeight.w600,
-//                   ),
-//                 ),
-//                 value: value,
-//                 onChanged: onChanged,
-//                 items: dropdownItem,
-//               ),
-//             ),
-//           ),
-//         );
-//       },
-//     );
-//   }
-// }
+class DropdownButtonCustom extends StatelessWidget {
+  const DropdownButtonCustom({
+    Key? key,
+    // required this.onChanged,
+    // required this.value,
+    // required this.hint,
+    // required this.region,
+  }) : super(key: key);
+  // final void Function(String?) onChanged;
+  // final String value;
+  // final String hint;
+  // final List<String> region;
+
+
+  @override
+  Widget build(BuildContext context) {
+    return Stack(children: [
+      Container(
+        width: double.infinity,
+        height: 50.0,
+        decoration: BoxDecoration(
+          color: Colors.grey.shade100,
+          borderRadius: const BorderRadius.all(
+            Radius.circular(15.0),
+          ),),
+
+      ),
+      Container(
+        width:100,
+        height: 10.0,
+        color: Colors.amberAccent,
+      )
+
+    ],);
+
+  }
+}

@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:usa_in_ua/pages/profile_pages/profile_bank_cards_pages/profile_bank_cards_page.dart';
 import 'package:usa_in_ua/pages/profile_pages/profile_earn_with_us_page/profile_earn_with_us_page.dart';
 import 'package:usa_in_ua/pages/profile_pages/profile_edit_person_data_page/profile_edit_person_data_page.dart';
@@ -438,33 +439,49 @@ class _ProfileLinks extends StatelessWidget {
 class _UsefulLinks extends StatelessWidget {
   const _UsefulLinks({Key? key}) : super(key: key);
 
+  Future<void> _launchUrl(String link) async {
+    final Uri _url = Uri.parse(
+      link,
+    );
+    if (await launchUrl(_url)) throw 'Could not launch $_url';
+  }
+  
+  
   @override
   Widget build(BuildContext context) {
     return Align(
       alignment: Alignment.centerLeft,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-        children: const [
+        children:  [
           Padding(
-            padding: EdgeInsets.symmetric(
+            padding: const EdgeInsets.symmetric(
               vertical: 5.0,
             ),
-            child: Text('Справочник'),
+            child: InkWell(
+                onTap: ()=> _launchUrl('https://docs.google.com/document/d/12GOYv-rG8domDIiVTFVoU10j02ZSd5ztQJAaw9xp_3E/edit'),
+                child: const Text('Справочник')),
           ),
           Padding(
-            padding: EdgeInsets.symmetric(
+            padding: const EdgeInsets.symmetric(
               vertical: 5.0,
             ),
-            child: Text(
-              'Правила и условия',
+            child: InkWell(
+              onTap: ()=> _launchUrl('https://docs.google.com/document/d/12GOYv-rG8domDIiVTFVoU10j02ZSd5ztQJAaw9xp_3E/edit'),
+              child: const Text(
+                'Правила и условия',
+              ),
             ),
           ),
           Padding(
-            padding: EdgeInsets.symmetric(
+            padding: const EdgeInsets.symmetric(
               vertical: 5.0,
             ),
-            child: Text(
-              'Политика конфиденциальности',
+            child: InkWell(
+              onTap: () => _launchUrl('https://docs.google.com/document/d/12GOYv-rG8domDIiVTFVoU10j02ZSd5ztQJAaw9xp_3E/edit'),
+              child: const Text(
+                'Политика конфиденциальности',
+              ),
             ),
           ),
         ],

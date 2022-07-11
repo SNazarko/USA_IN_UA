@@ -106,6 +106,46 @@ class ProfileEarnWithUsPage extends StatelessWidget {
 }
 
 
+
+
+class _Link extends StatelessWidget {
+  const _Link({Key? key, this.onTap, required this.title, this.image}) : super(key: key);
+final void Function()? onTap;
+final String title;
+final Widget? image;
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: onTap,
+      child: Container(
+        width: double.infinity,
+        height: 85.0,
+        decoration: BoxDecoration(
+          color: Colors.grey.shade100,
+          borderRadius: const BorderRadius.all(
+            Radius.circular(15.0),
+          ),
+        ),
+        child: Row(children: [
+          Flexible(flex: 3,
+            child: image ?? const SizedBox(width: 125.0,),),
+           Flexible(flex: 5,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 15.0,),
+              child: Text(title,
+                style: const TextStyle(
+                  fontSize: 14.0,
+                  fontWeight: FontWeight.w700,
+                ),),
+            ) ,),
+        ],),
+
+      ),
+    );
+  }
+}
+
 class _RefLink extends StatefulWidget {
   const _RefLink({Key? key}) : super(key: key);
 
@@ -165,14 +205,14 @@ class _RefLinkState extends State<_RefLink> {
                 flex: 6,
                 child: InkWell(
                   onTap: () =>
-                    Clipboard.setData(const ClipboardData(text: 'https://www.figma.com/file/hU39NrYC/jt15usZNQ/1LNF2/USAINUA?no/de-id=475%3A284'))
-                        .then((_) {
-                      fToast.showToast(
-                        child: toast('Реферальная ссидка скопирована'),
-                        gravity: ToastGravity.BOTTOM,
-                        toastDuration: const Duration(seconds: 2),
-                      );
-                    }),
+                      Clipboard.setData(const ClipboardData(text: 'https://www.figma.com/file/hU39NrYC/jt15usZNQ/1LNF2/USAINUA?no/de-id=475%3A284'))
+                          .then((_) {
+                        fToast.showToast(
+                          child: toast('Реферальная ссидка скопирована'),
+                          gravity: ToastGravity.BOTTOM,
+                          toastDuration: const Duration(seconds: 2),
+                        );
+                      }),
 
                   child: Container(
                     width: 130.0,
@@ -192,45 +232,6 @@ class _RefLinkState extends State<_RefLink> {
                   ),
                 )),
           ],)
-    );
-  }
-}
-
-
-class _Link extends StatelessWidget {
-  const _Link({Key? key, this.onTap, required this.title, this.image}) : super(key: key);
-final void Function()? onTap;
-final String title;
-final Widget? image;
-
-  @override
-  Widget build(BuildContext context) {
-    return InkWell(
-      onTap: onTap,
-      child: Container(
-        width: double.infinity,
-        height: 85.0,
-        decoration: BoxDecoration(
-          color: Colors.grey.shade100,
-          borderRadius: const BorderRadius.all(
-            Radius.circular(15.0),
-          ),
-        ),
-        child: Row(children: [
-          Flexible(flex: 3,
-            child: image ?? const SizedBox(width: 125.0,),),
-           Flexible(flex: 5,
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 15.0,),
-              child: Text(title,
-                style: const TextStyle(
-                  fontSize: 14.0,
-                  fontWeight: FontWeight.w700,
-                ),),
-            ) ,),
-        ],),
-
-      ),
     );
   }
 }

@@ -74,7 +74,7 @@ class ProfileRecipientAddressFormPage extends StatelessWidget {
                 InkWell(
                   onTap: () {
                     Navigator.push(context, MaterialPageRoute(builder: (context) {
-                      return  ProfileRecipientAddressesPage(
+                      return  const ProfileRecipientAddressesPage(
                         name: '',
                         phoneNumber: '',
                         departmentNP: '',
