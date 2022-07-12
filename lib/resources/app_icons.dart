@@ -43,4 +43,5 @@ class AppIcons {
   static const String calendar = '$_path/calendar.svg';
   static const String copy = '$_path/copy.svg';
   static const String star = '$_path/star.svg';
+  static const String arrowDown = '$_path/arrow_down.svg';
 }

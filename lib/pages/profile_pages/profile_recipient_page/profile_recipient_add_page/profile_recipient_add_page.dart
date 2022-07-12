@@ -11,9 +11,11 @@ import '../../../../repositories/located_repositories.dart';
 import '../../../../repositories/recipient_repositories.dart';
 import '../../../../resources/app_colors.dart';
 import '../../../../resources/app_icons.dart';
+import '../../../../widgets/button/alert_dialog.dart';
 import '../../../../widgets/button_enter.dart';
 import '../../../../widgets/swish_link.dart';
 import '../../../../widgets/text_field_input_text_number.dart';
+import '../../../test.dart';
 import '../../profile_google_maps_page/profile_google_maps_page.dart';
 import '../blocs/bloc_city/city_bloc.dart';
 import '../blocs/bloc_data/profile_recipient_bloc.dart';
@@ -263,9 +265,19 @@ class Header extends StatelessWidget {
   final TextEditingController countryController;
   @override
   Widget build(BuildContext context) {
+    context.read<ProfileRecipientBloc>().add(
+      ProfileRecipientEvent(
+        addressName: addressNameController.text,
+      ),
+    );
+    context.read<ProfileRecipientBloc>().add(
+      ProfileRecipientEvent(
+        country: countryController.text,
+      ),
+    );
     return SizedBox(
       width: double.infinity,
-      height: 250.0,
+      height: 160.0,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -274,20 +286,6 @@ class Header extends StatelessWidget {
             style: TextStyle(
               fontSize: 14.0,
               fontWeight: FontWeight.w400,
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(
-              top: 20.0,
-            ),
-            child: ButtonEnter(
-              onPressed: () => Navigator.pushNamed(
-                context,
-                ProfileGoogleMapsPage.routeName,
-              ),
-              color: AppColors.green,
-              colorText: Colors.white,
-              text: 'ВЫБРАТЬ АДРЕС НА КАРТЕ',
             ),
           ),
           TextFieldInputTextNumber(
@@ -345,116 +343,6 @@ class AddressDelivery extends StatelessWidget {
   final String region;
   final String city;
 
-  Widget regionDropdownButton(state, stateRegion, BuildContext context) {
-    List<DropdownMenuItem<String>> dropdownItem = [];
-
-    for (String delivery in stateRegion.region) {
-      var newItem = DropdownMenuItem(
-        child: Text(
-          delivery,
-          style: const TextStyle(
-            color: AppColors.text,
-          ),
-        ),
-        value: delivery,
-      );
-      dropdownItem.add(newItem);
-    }
-    return Container(
-      width: double.infinity,
-      height: 50.0,
-      decoration: BoxDecoration(
-          color: Colors.grey.shade100,
-          borderRadius: const BorderRadius.all(
-            Radius.circular(15.0),
-          )),
-      child: Padding(
-        padding: const EdgeInsets.symmetric(
-          horizontal: 14.0,
-        ),
-        child: DropdownButtonHideUnderline(
-          child: DropdownButton<String>(
-            isExpanded: true,
-            hint: const Text(
-              'Регион',
-              style: TextStyle(
-                color: AppColors.noActive,
-                fontSize: 14.0,
-                fontWeight: FontWeight.w600,
-              ),
-            ),
-            value: state.region,
-            onChanged: (value) {
-              context.read<ProfileRecipientBloc>().add(
-                    ProfileRecipientEvent(
-                      region: value,
-                    ),
-                  );
-              context.read<CityBloc>().add(
-                    LoadCityEvent(
-                      city: value,
-                    ),
-                  );
-            },
-            items: dropdownItem,
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget cityDropdownButton(state, stateCity, BuildContext context) {
-    List<DropdownMenuItem<String>> dropdownItem = [];
-
-    for (String delivery in stateCity.city) {
-      var newItem = DropdownMenuItem(
-        child: Text(
-          delivery,
-          style: const TextStyle(
-            color: AppColors.text,
-          ),
-        ),
-        value: delivery,
-      );
-      dropdownItem.add(newItem);
-    }
-    return Container(
-      width: double.infinity,
-      height: 50.0,
-      decoration: BoxDecoration(
-          color: Colors.grey.shade100,
-          borderRadius: const BorderRadius.all(
-            Radius.circular(15.0),
-          )),
-      child: Padding(
-        padding: const EdgeInsets.symmetric(
-          horizontal: 14.0,
-        ),
-        child: DropdownButtonHideUnderline(
-          child: DropdownButton<String>(
-            isExpanded: true,
-            hint: const Text(
-              'Город',
-              style: TextStyle(
-                color: AppColors.noActive,
-                fontSize: 14.0,
-                fontWeight: FontWeight.w600,
-              ),
-            ),
-            value: state.city,
-            onChanged: (value) {
-              context.read<ProfileRecipientBloc>().add(
-                    ProfileRecipientEvent(
-                      city: value,
-                    ),
-                  );
-            },
-            items: dropdownItem,
-          ),
-        ),
-      ),
-    );
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -464,6 +352,39 @@ class AddressDelivery extends StatelessWidget {
           builder: (_, stateRegion) {
             return BlocBuilder<ProfileRecipientBloc, ProfileRecipientState>(
               builder: (context, state) {
+
+                context.read<ProfileRecipientBloc>().add(
+                  ProfileRecipientEvent(
+                    street:  streetController.text,
+                  ),
+                );
+
+                context.read<ProfileRecipientBloc>().add(
+                  ProfileRecipientEvent(
+                    flatNumber:  flatNumberController.text,
+                  ),
+                );
+
+                context.read<ProfileRecipientBloc>().add(
+                  ProfileRecipientEvent(
+                    houseNumber:  houseNumberController.text,
+                  ),
+                );
+                context.read<ProfileRecipientBloc>().add(
+                  ProfileRecipientEvent(
+                    name: nameController.text,
+                  ),
+                );
+                context.read<ProfileRecipientBloc>().add(
+                  ProfileRecipientEvent(
+                    surname: surnameController.text,
+                  ),
+                );
+                context.read<ProfileRecipientBloc>().add(
+                  ProfileRecipientEvent(
+                    phoneNumber: phoneNumberController.text,
+                  ),
+                );
                 region != ''
                     ? context
                         .read<ProfileRecipientBloc>()
@@ -545,8 +466,39 @@ class AddressDelivery extends StatelessWidget {
                         hintText: 'Номер телефона',
                         widget: const SizedBox.expand(),
                       ),
-                      regionDropdownButton(state, stateRegion, context),
-                      cityDropdownButton(state, stateCity, context),
+                      DropAlertButton(
+                        list: stateRegion.region ?? [],
+                        defaultValue: 'Регион',
+                        onTap: (value){
+                          context.read<ProfileRecipientBloc>().add(
+                            ProfileRecipientEvent(
+                              region: value,
+                            ),
+                          );
+                          context.read<CityBloc>().add(
+                            LoadCityEvent(
+                              city: value,
+                            ),
+                          );
+
+                        }, editValue: region,
+                      ),
+                      DropAlertButton(
+                        list: stateCity.city ?? [],
+                        defaultValue: 'Город',
+                        onTap: (value){
+                          context.read<ProfileRecipientBloc>().add(
+                            ProfileRecipientEvent(
+                              city: value,
+                            ),
+                          );
+                          context.read<NewPostBloc>().add(
+                            LoadNewPostEvent(
+                              department: value,
+                            ),
+                          );
+                        }, editValue: city,
+                      ),
                       TextFieldInputTextNumber(
                         controller: streetController,
                         onEditingComplete: () {
@@ -629,177 +581,9 @@ class DepartmentPost extends StatelessWidget {
   final TextEditingController surnameController;
   final TextEditingController phoneNumberController;
   final String region;
-  final String city;
-  final String departmentNP;
+  String city;
+   String departmentNP;
 
-
-
-  Widget regionDropdownButton(state, stateRegion, BuildContext context) {
-    List<DropdownMenuItem<String>> dropdownItem = [];
-
-    for (String delivery in stateRegion.region ?? []) {
-      var newItem = DropdownMenuItem(
-        child: Text(
-          delivery,
-          style: const TextStyle(
-            color: AppColors.text,
-          ),
-        ),
-        value: delivery,
-      );
-      dropdownItem.add(newItem);
-    }
-    return Container(
-      width: double.infinity,
-      height: 50.0,
-      decoration: BoxDecoration(
-          color: Colors.grey.shade100,
-          borderRadius: const BorderRadius.all(
-            Radius.circular(15.0),
-          )),
-      child: Padding(
-        padding: const EdgeInsets.symmetric(
-          horizontal: 14.0,
-        ),
-        child: DropdownButtonHideUnderline(
-          child: DropdownButton<String>(
-            isExpanded: true,
-            hint: const Text(
-              'Регион',
-              style: TextStyle(
-                color: AppColors.noActive,
-                fontSize: 14.0,
-                fontWeight: FontWeight.w600,
-              ),
-            ),
-            value: state.region,
-            onChanged: (value) {
-              context.read<ProfileRecipientBloc>().add(
-                    ProfileRecipientEvent(
-                      region: value,
-                    ),
-                  );
-              context.read<CityBloc>().add(
-                LoadCityEvent(
-                  city: value,
-                ),
-              );
-            },
-            items: dropdownItem,
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget cityDropdownButton(state, stateCity, BuildContext context) {
-    List<DropdownMenuItem<String>> dropdownItem = [];
-
-    for (String delivery in stateCity.city ?? []) {
-      var newItem = DropdownMenuItem(
-        child: Text(
-          delivery,
-          style: const TextStyle(
-            color: AppColors.text,
-          ),
-        ),
-        value: delivery,
-      );
-      dropdownItem.add(newItem);
-    }
-    return Container(
-      width: double.infinity,
-      height: 50.0,
-      decoration: BoxDecoration(
-          color: Colors.grey.shade100,
-          borderRadius: const BorderRadius.all(
-            Radius.circular(15.0),
-          )),
-      child: Padding(
-        padding: const EdgeInsets.symmetric(
-          horizontal: 14.0,
-        ),
-        child: DropdownButtonHideUnderline(
-          child: DropdownButton<String>(
-            isExpanded: true,
-            hint: const Text(
-              'Город',
-              style: TextStyle(
-                color: AppColors.noActive,
-                fontSize: 14.0,
-                fontWeight: FontWeight.w600,
-              ),
-            ),
-            value: state.city,
-            onChanged: (value) {
-              context.read<ProfileRecipientBloc>().add(
-                    ProfileRecipientEvent(
-                      city: value,
-                    ),
-                  );
-              context.read<NewPostBloc>().add(
-                    LoadNewPostEvent(
-                      department: value,
-                    ),
-                  );
-            },
-            items: dropdownItem,
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget departmentDropdownButton(state, stateNewPost, BuildContext context) {
-    List<DropdownMenuItem<String>> dropdownItem = [];
-
-    for (String delivery in stateNewPost.department ?? []) {
-      var newItem = DropdownMenuItem(
-        child: Text(
-          delivery,
-          style: const TextStyle(
-            color: AppColors.text,
-          ),
-        ),
-        value: delivery,
-      );
-      dropdownItem.add(newItem);
-    }
-    return Container(
-      width: double.infinity,
-      height: 50.0,
-      decoration: BoxDecoration(
-          color: Colors.grey.shade100,
-          borderRadius: const BorderRadius.all(
-            Radius.circular(15.0),
-          )),
-      child: Padding(
-        padding: const EdgeInsets.symmetric(
-          horizontal: 14.0,
-        ),
-        child: DropdownButtonHideUnderline(
-          child: DropdownButton<String>(
-            isExpanded: true,
-            hint: const Text(
-              'Отделение Новой Почты',
-              style: TextStyle(
-                color: AppColors.noActive,
-                fontSize: 14.0,
-                fontWeight: FontWeight.w600,
-              ),
-            ),
-            value: state.departmentNP,
-            onChanged: (value) => context.read<ProfileRecipientBloc>().add(
-                  ProfileRecipientEvent(
-                    departmentNP: value,
-                  ),
-                ),
-            items: dropdownItem,
-          ),
-        ),
-      ),
-    );
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -811,8 +595,21 @@ class DepartmentPost extends StatelessWidget {
               builder: (_, stateRegion) {
                 return BlocBuilder<ProfileRecipientBloc, ProfileRecipientState>(
                   builder: (context, state) {
-                    print(state.region);
-
+                    context.read<ProfileRecipientBloc>().add(
+                      ProfileRecipientEvent(
+                        name: nameController.text,
+                      ),
+                    );
+                    context.read<ProfileRecipientBloc>().add(
+                      ProfileRecipientEvent(
+                        surname: surnameController.text,
+                      ),
+                    );
+                    context.read<ProfileRecipientBloc>().add(
+                      ProfileRecipientEvent(
+                        phoneNumber: phoneNumberController.text,
+                      ),
+                    );
                     region != ''
                         ? context
                             .read<ProfileRecipientBloc>()
@@ -854,10 +651,6 @@ class DepartmentPost extends StatelessWidget {
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-
-                          // DropdownButtonCustom(),
-
-
                           TextFieldInputTextNumber(
                             controller: nameController,
                             onEditingComplete: () {
@@ -906,10 +699,49 @@ class DepartmentPost extends StatelessWidget {
                             hintText: 'Номер телефона',
                             widget: const SizedBox.expand(),
                           ),
-                          regionDropdownButton(state,  stateRegion, context),
-                          cityDropdownButton(state, stateCity, context),
-                          departmentDropdownButton(
-                              state, stateNewPost, context),
+                          DropAlertButton(
+                            list: stateRegion.region ?? [],
+                            defaultValue: 'Регион',
+                            onTap: (value){
+
+                              context.read<ProfileRecipientBloc>().add(
+                                ProfileRecipientEvent(
+                                  region: value,
+                                ),
+                              );
+                              context.read<CityBloc>().add(
+                                LoadCityEvent(
+                                  city: value,
+                                ),
+                              );
+
+                            }, editValue: region,
+                          ),
+                          DropAlertButton(
+                            list: stateCity.city ?? [],
+                            defaultValue: 'Город',
+                            onTap: (value){
+                              context.read<ProfileRecipientBloc>().add(
+                                ProfileRecipientEvent(
+                                  city: value,
+                                ),
+                              );
+                              context.read<NewPostBloc>().add(
+                                LoadNewPostEvent(
+                                  department: value,
+                                ),
+                              );
+                            }, editValue: city,
+                          ),
+                          DropAlertButton(
+                            list: stateNewPost.department ?? [],
+                            defaultValue: 'Отделение Новой Почты',
+                            onTap: (value) => context.read<ProfileRecipientBloc>().add(
+                              ProfileRecipientEvent(
+                                departmentNP: value,
+                              ),
+                            ), editValue: departmentNP,
+                          ),
                         ],
                       ),
                     );
@@ -1021,40 +853,131 @@ class SaveButton extends StatelessWidget {
     );
   }
 }
-class DropdownButtonCustom extends StatelessWidget {
-  const DropdownButtonCustom({
+
+class AlertDialogCustom extends StatelessWidget {
+  const AlertDialogCustom({
     Key? key,
-    // required this.onChanged,
-    // required this.value,
-    // required this.hint,
-    // required this.region,
+    required this.list,
   }) : super(key: key);
-  // final void Function(String?) onChanged;
-  // final String value;
-  // final String hint;
-  // final List<String> region;
+  final List list;
+
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      clipBehavior: Clip.antiAlias,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.all(
+          Radius.circular(20.0),
+        ),
+      ),
+      actions: <Widget>[
+        Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: SizedBox(
+            width: 300,
+            height: 400,
+            child: ListView.builder(
+                itemCount: list.length,
+                itemBuilder: (BuildContext context, int index) {
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 5.0),
+                    child: InkWell(
+                      onTap: () async {
+                        final data = await list[index];
+                        Navigator.pop(context, data);
+                      },
+                      child: Text(
+                        '${list[index]}',
+                        style: const TextStyle(
+                          fontSize: 20.0,
+                        ),
+                      ),
+                    ),
+                  );
+                }),
+          ),
+        )
+      ],
+    );
+  }
+}
+
+class DropAlertButton extends StatefulWidget {
+  const DropAlertButton({Key? key, required this.list, required this.defaultValue, this.onTap, required this.editValue}) : super(key: key);
+  final List list;
+  final String defaultValue;
+  final String editValue;
+  final void Function(String data)? onTap;
+  @override
+  State<DropAlertButton> createState() => _DropAlertButtonState();
+}
+
+class _DropAlertButtonState extends State<DropAlertButton> {
+  String? value;
+
+  @override
+  void initState() {
+    if(widget.editValue != ''){
+      value = widget.editValue;
+    }
+    super.initState();
+  }
 
 
   @override
   Widget build(BuildContext context) {
-    return Stack(children: [
-      Container(
+    if(!widget.list.contains(value) && widget.editValue == ''){
+      value = null;
+    }
+    return InkWell(
+      onTap: () async {
+        value = await showDialog<String>(
+          context: context,
+          builder: (context) => AlertDialogCustom(
+            list: widget.list,
+          ),
+        );
+        widget.onTap!(value!);
+        setState(() {});
+      },
+      child: Container(
         width: double.infinity,
         height: 50.0,
         decoration: BoxDecoration(
           color: Colors.grey.shade100,
           borderRadius: const BorderRadius.all(
             Radius.circular(15.0),
-          ),),
+          ),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 15.0,),
+          child: Align(
+            alignment:Alignment.centerLeft,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Flexible(
+                  flex: 10,
+                  child: Text(value ?? widget.defaultValue,
+                  style: TextStyle(
+                    fontSize: 14.0,
+                    fontWeight: value == null
+                        ? FontWeight.w700
+                      : FontWeight.w400,
+                    color: value == null ?
+                   AppColors.noActive
+                        : AppColors.text,
 
+                  ),),
+                ),
+                Flexible(
+                  flex: 2,
+                    child: SvgPicture.asset(AppIcons.arrowDown,)),
+              ],
+            ),
+          ),
+        ),
       ),
-      Container(
-        width:100,
-        height: 10.0,
-        color: Colors.amberAccent,
-      )
-
-    ],);
-
+    );
   }
 }

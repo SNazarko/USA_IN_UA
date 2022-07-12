@@ -17,26 +17,25 @@ class Test extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<AnimBloc, AnimState>(
-      builder: (context, state) {
-        return Container(
-          color: Colors.blueGrey,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Container(
-                child: const Text('Test'),
-              ),
-              FloatingActionButton(
-                onPressed: () {
-                  FirebaseAuth.instance.signOut();
-                },
-                child: const Text('Out'),
-              )
-            ],
-          ),
-        );
-      },
+    return Scaffold(
+      backgroundColor: Colors.blueGrey,
+     body: Stack(children: [
+
+            Align(
+              alignment: Alignment.bottomCenter,
+              child: Container(
+                width: double.infinity,
+                height: 400.0,
+                decoration: const BoxDecoration(
+                  color: Colors.amberAccent,
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(15.0),
+                    topRight: Radius.circular(15.0),
+                    // Radius.circular(15.0),
+                  ),),
+            )
+        )
+      ],),
     );
-  }
+      }
 }

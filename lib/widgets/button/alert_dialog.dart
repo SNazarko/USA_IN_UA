@@ -28,18 +28,19 @@ class AlertDialogApp {
           title: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Flexible(
-                flex: 2,
-                  child: SvgPicture.asset(AppIcons.star)),
-              const SizedBox(width: 10.0,),
+              Flexible(flex: 2, child: SvgPicture.asset(AppIcons.star)),
+              const SizedBox(
+                width: 10.0,
+              ),
               Flexible(
                 flex: 8,
                 child: Text(
                   title,
                   style: const TextStyle(
-                      color: AppColors.text,
-                      fontSize: 16.0,
-                      fontWeight: FontWeight.w700,),
+                    color: AppColors.text,
+                    fontSize: 16.0,
+                    fontWeight: FontWeight.w700,
+                  ),
                 ),
               )
             ],
@@ -57,4 +58,46 @@ class AlertDialogApp {
           ],
         ),
       );
+
+  void  alertDropdown(BuildContext context, List list) {
+    showDialog<String>(
+      context: context,
+      builder: (BuildContext context) => AlertDialog(
+        clipBehavior: Clip.antiAlias,
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(
+            Radius.circular(20.0),
+          ),
+        ),
+        actions: <Widget>[
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: SizedBox(
+              width: 300,
+              height: 400,
+              child: ListView.builder(
+                  itemCount: list.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    return Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 5.0),
+                      child: InkWell(
+                        onTap: () async{
+                         // final data = await list[index];
+                         Navigator.pop(context);
+                        },
+                        child: Text(
+                          '${list[index]}',
+                          style: const TextStyle(
+                            fontSize: 20.0,
+                          ),
+                        ),
+                      ),
+                    );
+                  }),
+            ),
+          )
+        ],
+      ),
+    );
+  }
 }
