@@ -38,9 +38,10 @@ class LocatedRepositories {
             }
           }
       );
-      if(response.statusCode == 200){
-        var data = response.data;
-        var addressList = data['data'] as List;
+      var data = response.data;
+      bool success = data['success'];
+      if(success == true){
+        List addressList = data['data'] as List;
         List addressNP = addressList.map((addressJson) => addressJson['ShortAddressRu']).toList();
 return addressNP;
       }
@@ -61,12 +62,13 @@ return addressNP;
           "methodProperties": {   }
           }
       );
-      if(response.statusCode == 200){
-        var data = response.data;
-        var addressList = data['data'] as List;
+      var data = response.data;
+      bool success = data['success'];
+      if(success == true){
+        List addressList = data['data'] as List;
         List cityNP = addressList.map((addressJson) => addressJson['DescriptionRu']).toList();
         List cityRef = addressList.map((addressJson) => addressJson['Ref']).toList();
-        final address = RegionModel(city: cityNP,ref: cityRef, );
+        final RegionModel address = RegionModel(city: cityNP,ref: cityRef, );
         return address;
       }
     } catch (e) {
@@ -74,7 +76,7 @@ return addressNP;
     }
   }
 
-  Future<List?> getCity(
+  Future<RegionModel?> getCity(
       String region
       ) async {
     try {
@@ -89,12 +91,52 @@ return addressNP;
           }
           }
       );
-      if(response.statusCode == 200){
-        var data = response.data;
-        var addressList = data['data'] as List;
-        List city = addressList.map((addressJson) => addressJson["DescriptionRu"]).toList();
-        return city;
+
+      var data = response.data;
+      bool success = data['success'];
+      if(success == true) {
+        List addressList = data['data'] as List;
+        List city = addressList.map((
+            addressJson) => addressJson["DescriptionRu"]).toList();
+        List cityRef = addressList.map((addressJson) => addressJson['Ref'])
+            .toList();
+        final RegionModel address = RegionModel(city: city, ref: cityRef,);
+        return address;
       }
+
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  Future<List?> getStreet(
+      String city,
+      String ref,
+      ) async {
+    try {
+      var response = await dio.post(_baseUrl,
+          data:
+          {
+          "apiKey": "$newPostApiKey",
+          "modelName": "Address",
+          "calledMethod": "getStreet",
+          "methodProperties": {
+          "CityRef" : ref,
+          "FindByString" : city,
+            "Page" : "1",
+            "Limit" : ""
+
+          }
+          }
+      );
+        var data = response.data;
+        bool success = data['success'];
+        if(success == true){
+          var addressList = data['data'] as List;
+          List street = addressList.map((addressJson) => addressJson["Description"]).toList();
+          return street;
+
+        }
 
     } catch (e) {
       print(e);

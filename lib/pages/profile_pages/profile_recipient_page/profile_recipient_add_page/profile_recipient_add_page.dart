@@ -23,6 +23,7 @@ import '../blocs/bloc_data/profile_recipient_event.dart';
 import '../blocs/bloc_list_form/list_form_bloc.dart';
 import '../blocs/bloc_new_post/new_post_bloc.dart';
 import '../blocs/bloc_region/region_bloc.dart';
+import '../blocs/bloc_street/bloc_street_bloc.dart';
 
 class ProfileRecipientAddressesPageArguments {
   ProfileRecipientAddressesPageArguments(
@@ -118,7 +119,6 @@ class _ProfileRecipientAddressesPageState
     phoneNumberController.text = widget.phoneNumber;
     houseNumberController.text = widget.houseNumber;
     flatNumberController.text = widget.flatNumber;
-    streetController.text = widget.street;
   }
 
   @override
@@ -142,6 +142,9 @@ class _ProfileRecipientAddressesPageState
         ),
         BlocProvider<NewPostBloc>(
           create: (context) => NewPostBloc(),
+        ),
+        BlocProvider<StreetBloc>(
+          create: (context) => StreetBloc(),
         ),
       ],
       child: Scaffold(
@@ -203,8 +206,8 @@ class _ProfileRecipientAddressesPageState
                       fontSize: 16.0,
                       onTap: () {
                         isSwish = !isSwish;
-                        RecipientRepositories.instance
-                            .doneAddress(addressNameController.text, isSwish);
+                        // RecipientRepositories.instance
+                        //     .doneAddress(addressNameController.text, isSwish);
                         setState(() {});
                       },
                     ),
@@ -215,9 +218,8 @@ class _ProfileRecipientAddressesPageState
                       fontSize: 16.0,
                       onTap: () {
                         isSwish = !isSwish;
-                        RecipientRepositories.instance
-                            .doneAddress(addressNameController.text, isSwish);
-                        isSwish = !isSwish;
+                        // RecipientRepositories.instance
+                        //     .doneAddress(addressNameController.text, isSwish);
                         setState(() {});
                       },
                     ),
@@ -242,6 +244,7 @@ class _ProfileRecipientAddressesPageState
                       nameController: nameController,
                       city: widget.city,
                       region: widget.region,
+                street: widget.street,
                     ),
               SaveButton(
                 isSwish: isSwish,
@@ -333,6 +336,7 @@ class AddressDelivery extends StatelessWidget {
     required this.streetController,
     required this.region,
     required this.city,
+    required this.street,
   }) : super(key: key);
   final TextEditingController nameController;
   final TextEditingController surnameController;
@@ -342,10 +346,13 @@ class AddressDelivery extends StatelessWidget {
   final TextEditingController streetController;
   final String region;
   final String city;
+  final String street;
 
 
   @override
   Widget build(BuildContext context) {
+    return BlocBuilder<StreetBloc, StreetState>(
+  builder: (context, stateStreet) {
     return BlocBuilder<CityBloc, CityState>(
       builder: (_, stateCity) {
         return BlocBuilder<RegionBloc, RegionState>(
@@ -408,6 +415,17 @@ class AddressDelivery extends StatelessWidget {
                         .add(const ProfileRecipientEvent(
                           city: null,
                         ));
+                street != ''
+                    ? context
+                    .read<ProfileRecipientBloc>()
+                    .add(ProfileRecipientEvent(
+                  street: street,
+                ))
+                    : context
+                    .read<ProfileRecipientBloc>()
+                    .add(const ProfileRecipientEvent(
+                  street: null,
+                ));
 
                 return SizedBox(
                   width: double.infinity,
@@ -480,7 +498,6 @@ class AddressDelivery extends StatelessWidget {
                               city: value,
                             ),
                           );
-
                         }, editValue: region,
                       ),
                       DropAlertButton(
@@ -492,27 +509,26 @@ class AddressDelivery extends StatelessWidget {
                               city: value,
                             ),
                           );
-                          context.read<NewPostBloc>().add(
-                            LoadNewPostEvent(
-                              department: value,
-                            ),
+                          context.read<StreetBloc>().add(
+                       LoadStreetEvent(
+                         listCity: stateCity.city,
+                         listRef: stateCity.ref,
+                         city: value,
+                       )
                           );
+
                         }, editValue: city,
                       ),
-                      TextFieldInputTextNumber(
-                        controller: streetController,
-                        onEditingComplete: () {
-                          FocusScope.of(context).nextFocus();
-                        },
-                        textInputType: TextInputType.text,
-                        onChanged: (data) =>
-                            context.read<ProfileRecipientBloc>().add(
-                                  ProfileRecipientEvent(
-                                    street: data,
-                                  ),
-                                ),
-                        hintText: 'Улица',
-                        widget: const SizedBox.expand(),
+                      DropAlertButton(
+                        list: stateStreet.street ?? [],
+                        defaultValue: 'Улица',
+                        onTap: (value){
+                          context.read<ProfileRecipientBloc>().add(
+                            ProfileRecipientEvent(
+                              street: value,
+                            ),
+                          );
+                        }, editValue: street,
                       ),
                       Row(
                         children: [
@@ -564,6 +580,8 @@ class AddressDelivery extends StatelessWidget {
         );
       },
     );
+  },
+);
   }
 }
 
@@ -937,7 +955,7 @@ class _DropAlertButtonState extends State<DropAlertButton> {
             list: widget.list,
           ),
         );
-        widget.onTap!(value!);
+        widget.onTap!(value ?? '');
         setState(() {});
       },
       child: Container(

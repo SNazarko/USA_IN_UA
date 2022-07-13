@@ -13,13 +13,11 @@ class CityBloc extends Bloc<CityEvent, CityState> {
   CityBloc() : super(const CityState()) {
     on<LoadCityEvent>((event, emit) async{
       try {
-        print('CityBlo${event.city}');
         final listRegion = await LocatedRepositories.instance.getRegion();
         final int? index = listRegion?.city?.indexOf(event.city);
         final getRef = listRegion?.ref![index ?? 0];
         final city = await LocatedRepositories.instance.getCity(getRef);
-        print('CityBloc    citi$city');
-        add(UpdateCityEvent(city:city));
+        add(UpdateCityEvent(city:city?.city,ref: city?.ref));
 
       } on Exception catch (e) {
         emit(state.copyWith(
@@ -35,6 +33,7 @@ class CityBloc extends Bloc<CityEvent, CityState> {
         state.copyWith(
           status: CityStatus.success,
           city: event.city,
+          ref: event.ref,
         ),
       );
     });
