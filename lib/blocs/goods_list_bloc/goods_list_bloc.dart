@@ -14,19 +14,11 @@ class ListItemBloc extends Bloc<ListItemEvent, ListItemState> {
     on<LoadListItemEvent>((
       LoadListItemEvent event,
       Emitter<ListItemState> emit,
-    ) {
+    ) async {
       try {
-        _audioSubscription?.cancel();
-        _audioSubscription = GoodsRepositories.instance
-            .readAudio(
-          event.sort ?? 'topGoods',
-        )
-            .listen((audioList) {
-          add(
-            UpdateListItemEvent(
-              list: audioList,
-            ),
-          );
+        final list = await GoodsRepositories.instance.getGoods(event.sort!);
+        list.then((value) => {
+          add(UpdateListItemEvent(list: value))
         });
       } on Exception {
         emit(state.copyWith(
@@ -47,11 +39,5 @@ class ListItemBloc extends Bloc<ListItemEvent, ListItemState> {
       );
     });
   }
-  StreamSubscription? _audioSubscription;
 
-  @override
-  Future<void> close() {
-    _audioSubscription?.cancel();
-    return super.close();
-  }
 }

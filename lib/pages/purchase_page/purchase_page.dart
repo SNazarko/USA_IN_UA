@@ -19,7 +19,9 @@ class PurchasePage extends StatelessWidget {
     return BlocProvider<ListItemBloc>(
       create: (context) => ListItemBloc()
         ..add(
-          LoadListItemEvent(),
+          LoadListItemEvent(
+            sort: 'topGoods',
+          ),
         ),
       child: Scaffold(
         appBar: AppBar(
@@ -52,39 +54,7 @@ class PurchasePage extends StatelessWidget {
                   ),
                 ),
               ),
-              SizedBox(
-                width: double.infinity,
-                height: 50.0,
-                child: ListView(
-                  scrollDirection: Axis.horizontal,
-                  children: [
-                    _Links(
-                      text: 'Топ товары',
-                      onTap: () => context.read<ListItemBloc>().add(
-                            LoadListItemEvent(sort: 'topGoods'),
-                          ),
-                    ),
-                    _Links(
-                      text: 'Обувь',
-                      onTap: () => context.read<ListItemBloc>().add(
-                            LoadListItemEvent(sort: 'shoes'),
-                          ),
-                    ),
-                    _Links(
-                      text: 'Одежда',
-                      onTap: () => context.read<ListItemBloc>().add(
-                            LoadListItemEvent(sort: 'clothing'),
-                          ),
-                    ),
-                    _Links(
-                      text: 'Электроника',
-                      onTap: () => context.read<ListItemBloc>().add(
-                            LoadListItemEvent(sort: 'electronics'),
-                          ),
-                    ),
-                  ],
-                ),
-              ),
+              const _LinksButton(),
               const SizedBox(
                 width: double.infinity,
                 height: 200.0,
@@ -124,6 +94,49 @@ class PurchasePage extends StatelessWidget {
   }
 }
 
+
+class _LinksButton extends StatelessWidget {
+  const _LinksButton({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: double.infinity,
+      height: 50.0,
+      child: ListView(
+        scrollDirection: Axis.horizontal,
+        children: [
+          _Links(
+            text: 'Топ товары',
+            onTap: () => context.read<ListItemBloc>().add(
+              LoadListItemEvent(sort: 'topGoods'),
+            ),
+          ),
+          _Links(
+            text: 'Обувь',
+            onTap: () => context.read<ListItemBloc>().add(
+              LoadListItemEvent(sort: 'shoes'),
+            ),
+          ),
+          _Links(
+            text: 'Одежда',
+            onTap: () => context.read<ListItemBloc>().add(
+              LoadListItemEvent(sort: 'clothing'),
+            ),
+          ),
+          _Links(
+            text: 'Электроника',
+            onTap: () => context.read<ListItemBloc>().add(
+              LoadListItemEvent(sort: 'electronics'),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+
 class _Links extends StatelessWidget {
   const _Links({
     Key? key,
@@ -143,7 +156,7 @@ class _Links extends StatelessWidget {
         child: Center(
           child: Text(
             text,
-            style: TextStyle(
+            style: const TextStyle(
               fontSize: 16.0,
               fontWeight: FontWeight.w700,
               color: AppColors.text,

@@ -23,16 +23,15 @@ class GoodsRepositories {
           snapshot.docs.map((doc) => GoodsModel.fromJson(doc.data())).toList());
 
 
-
-  Future<void> getGoods(String sort)async{
-    final docRef = FirebaseFirestore.instance.collection('goods')
+  Future<Future<List<GoodsModel>>> getGoods(String sort)async{
+    var recipient = FirebaseFirestore.instance
+        .collection('goods')
         .where('category', arrayContains: sort)
-    .get().then(
-          (res) => res.docs.map((doc) => GoodsModel.fromJson(doc.data())).toList());
-
-
-
-
+        .get()
+        .then((res) => res.docs
+        .map((doc) => GoodsModel.fromJson(doc.data()))
+        .toList());
+    return recipient;
   }
 
 
