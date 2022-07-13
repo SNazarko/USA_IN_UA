@@ -106,13 +106,6 @@ class _PurchaseAndDeliveryScreenState extends State<PurchaseAndDeliveryScreen> {
             ),
           ),
         ),
-        Flexible(
-          flex: 1,
-          child: BackAndForthButton(
-            screen4: true,
-            controller: widget.controller,
-          ),
-        ),
       ],
     );
   }

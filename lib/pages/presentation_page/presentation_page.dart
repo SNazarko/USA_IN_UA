@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:usa_in_ua/pages/presentation_page/widgets/back_and_forth_button.dart';
 import 'package:usa_in_ua/pages/presentation_page/widgets/delivery_screen.dart';
 import 'package:usa_in_ua/pages/presentation_page/widgets/finish_screen.dart';
 import 'package:usa_in_ua/pages/presentation_page/widgets/first_screen.dart';
@@ -9,6 +10,7 @@ import 'package:usa_in_ua/pages/presentation_page/widgets/second_screen.dart';
 
 import '../../blocs/goods_list_bloc/goods_list_bloc.dart';
 import '../../blocs/goods_list_bloc/goods_list_event.dart';
+import '../../resources/app_colors.dart';
 
 class PresentationPage extends StatefulWidget {
   const PresentationPage({Key? key}) : super(key: key);
@@ -40,22 +42,32 @@ class _PresentationPageState extends State<PresentationPage> {
         ),
       child: Scaffold(
         body: SafeArea(
-          child: PageView(
-            controller: controller,
+          child: Column(
             children: [
-              FirstScreen(
-                controller: controller,
+              Flexible(
+                flex: 10,
+                child: PageView(
+                  controller: controller,
+                  children: [
+                    FirstScreen(
+                      controller: controller,
+                    ),
+                    SecondScreen(
+                      controller: controller,
+                    ),
+                    DeliveryScreen(
+                      controller: controller,
+                    ),
+                    PurchaseAndDeliveryScreen(
+                      controller: controller,
+                    ),
+                  ],
+                ),
               ),
-              SecondScreen(
-                controller: controller,
-              ),
-              DeliveryScreen(
-                controller: controller,
-              ),
-              PurchaseAndDeliveryScreen(
-                controller: controller,
-              ),
-              FinishScreen(),
+              Flexible(
+                flex: 1,
+                child: BackAndForthButton(controller: controller,),
+              )
             ],
           ),
         ),

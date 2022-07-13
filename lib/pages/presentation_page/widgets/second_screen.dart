@@ -64,13 +64,6 @@ class SecondScreen extends StatelessWidget {
                   ),
                 ),
               ),
-              Flexible(
-                flex: 1,
-                child: BackAndForthButton(
-                  screen2: true,
-                  controller: controller,
-                ),
-              ),
             ],
           );
         }
@@ -157,7 +150,7 @@ class _ListGoods extends StatelessWidget {
                               ? const SizedBox.shrink()
                               : InkWell(
                                   onTap: () => controller
-                                      .jumpTo(controller.offset - 360.0),
+                                      .jumpTo(controller.offset - 403.0),
                                   child: SvgPicture.asset(
                                     AppIcons.arrowLeft,
                                     color: AppColors.text,
@@ -184,7 +177,7 @@ class _ListGoods extends StatelessWidget {
                               ? const SizedBox.shrink()
                               : InkWell(
                                   onTap: () => controller
-                                      .jumpTo(controller.offset + 360.0),
+                                      .jumpTo(controller.offset + 403.0),
                                   child: SvgPicture.asset(
                                     AppIcons.arrowRight,
                                     color: AppColors.text,

@@ -69,13 +69,6 @@ class FirstScreen extends StatelessWidget {
             ),
           ),
         ),
-        Flexible(
-          flex: 1,
-          child: BackAndForthButton(
-            screen1: true,
-            controller: controller,
-          ),
-        ),
       ],
     );
   }

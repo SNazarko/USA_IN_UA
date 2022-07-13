@@ -58,13 +58,6 @@ class DeliveryScreen extends StatelessWidget {
                 ),
               ),
             ),
-            Flexible(
-              flex: 1,
-              child: BackAndForthButton(
-                screen3: true,
-                controller: controller,
-              ),
-            ),
           ],
         ),
       ),

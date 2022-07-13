@@ -13,83 +13,85 @@ class FinishScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Flexible(
-          flex: 7,
-          child: SizedBox(
-            child: Padding(
-              padding: const EdgeInsets.only(
-                top: 50.0,
-                left: 16.0,
-                right: 16.0,
-              ),
-              child: Center(
-                child: Image.asset(
-                  AppImages.tree,
-                  fit: BoxFit.fitHeight,
+    return Scaffold(
+      body: Column(
+        children: [
+          Flexible(
+            flex: 7,
+            child: SizedBox(
+              child: Padding(
+                padding: const EdgeInsets.only(
+                  top: 50.0,
+                  left: 16.0,
+                  right: 16.0,
+                ),
+                child: Center(
+                  child: Image.asset(
+                    AppImages.tree,
+                    fit: BoxFit.fitHeight,
+                  ),
                 ),
               ),
             ),
           ),
-        ),
-        Flexible(
-          flex: 4,
-          child: Padding(
-            padding: const EdgeInsets.only(top: 50.0),
-            child: SizedBox(
-              child: Column(
-                children: [
-                  const Text(
-                    'Наша плантация деревьев ежегодно:',
-                    style: TextStyle(
-                      fontWeight: FontWeight.w400,
+          Flexible(
+            flex: 4,
+            child: Padding(
+              padding: const EdgeInsets.only(top: 50.0),
+              child: SizedBox(
+                child: Column(
+                  children: [
+                    const Text(
+                      'Наша плантация деревьев ежегодно:',
+                      style: TextStyle(
+                        fontWeight: FontWeight.w400,
+                      ),
                     ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(25.0),
-                    child: Column(
-                      children: const [
-                        _IconsLink(
-                          icon: AppIcons.carbonDioxide_1,
-                          text1: 'Поглощено',
-                          text2: ' 130 тон ',
-                          text3: 'углекислого газа',
-                        ),
-                        _IconsLink(
-                          icon: AppIcons.carbonDioxide_2,
-                          text1: 'Произведено',
-                          text2: ' 36 тон ',
-                          text3: 'кислород',
-                        ),
-                      ],
+                    Padding(
+                      padding: const EdgeInsets.all(25.0),
+                      child: Column(
+                        children: const [
+                          _IconsLink(
+                            icon: AppIcons.carbonDioxide_1,
+                            text1: 'Поглощено',
+                            text2: ' 130 тон ',
+                            text3: 'углекислого газа',
+                          ),
+                          _IconsLink(
+                            icon: AppIcons.carbonDioxide_2,
+                            text1: 'Произведено',
+                            text2: ' 36 тон ',
+                            text3: 'кислород',
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           ),
-        ),
-        Flexible(
-          flex: 2,
-          child: Padding(
-            padding: const EdgeInsets.only(
-              left: 25.0,
-              right: 25.0,
-              bottom: 20.0,
-            ),
-            child: ButtonEnter(
-              onPressed: () => Navigator.pushNamed(
-                context,
-                MainPage.routeName,
+          Flexible(
+            flex: 2,
+            child: Padding(
+              padding: const EdgeInsets.only(
+                left: 25.0,
+                right: 25.0,
+                bottom: 20.0,
               ),
-              color: AppColors.green,
-              text: 'НАЧАТЬ',
-              colorText: AppColors.brown,
+              child: ButtonEnter(
+                onPressed: () => Navigator.pushNamed(
+                  context,
+                  MainPage.routeName,
+                ),
+                color: AppColors.green,
+                text: 'НАЧАТЬ',
+                colorText: AppColors.brown,
+              ),
             ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }

@@ -88,7 +88,7 @@ class ProfileRecipientAddressFormPage extends StatelessWidget {
                         region: '',
                         country: '',
                         userCard: true,);
-                    }));
+                    }),);
 
                   },
                   child: const IconLink(

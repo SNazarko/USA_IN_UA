@@ -2,21 +2,22 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../../../resources/app_colors.dart';
+import 'finish_screen.dart';
 
-class BackAndForthButton extends StatelessWidget {
-  BackAndForthButton({
+class BackAndForthButton extends StatefulWidget {
+  const BackAndForthButton({
     Key? key,
     required this.controller,
-    this.screen1,
-    this.screen2,
-    this.screen3,
-    this.screen4,
   }) : super(key: key);
   final PageController controller;
-  final bool? screen1;
-  final bool? screen2;
-  final bool? screen3;
-  final bool? screen4;
+
+
+  @override
+  State<BackAndForthButton> createState() => _BackAndForthButtonState();
+}
+
+class _BackAndForthButtonState extends State<BackAndForthButton> {
+   int _counter = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -28,9 +29,13 @@ class BackAndForthButton extends StatelessWidget {
           children: [
             TextButton(
               onPressed: () {
-                controller.previousPage(
+                _counter--;
+                if(_counter < 0) _counter =0;
+                widget.controller.previousPage(
                     duration: const Duration(milliseconds: 400),
                     curve: Curves.easeIn);
+                setState((){});
+
               },
               child: Text('Назад'),
             ),
@@ -39,7 +44,7 @@ class BackAndForthButton extends StatelessWidget {
                 width: 25.0,
                 height: 5,
                 decoration: BoxDecoration(
-                  color: screen1 != null ? AppColors.blue : Colors.transparent,
+                  color: _counter == 0 ? AppColors.blue : Colors.transparent,
                   borderRadius: const BorderRadius.all(
                     Radius.circular(10.0),
                   ),
@@ -49,7 +54,7 @@ class BackAndForthButton extends StatelessWidget {
                 width: 25.0,
                 height: 5,
                 decoration: BoxDecoration(
-                  color: screen2 != null ? AppColors.blue : Colors.transparent,
+                  color: _counter == 1 ? AppColors.blue : Colors.transparent,
                   borderRadius: const BorderRadius.all(
                     Radius.circular(10.0),
                   ),
@@ -59,7 +64,7 @@ class BackAndForthButton extends StatelessWidget {
                 width: 25.0,
                 height: 5,
                 decoration: BoxDecoration(
-                  color: screen3 != null ? AppColors.blue : Colors.transparent,
+                  color: _counter == 2 ? AppColors.blue : Colors.transparent,
                   borderRadius: const BorderRadius.all(
                     Radius.circular(10.0),
                   ),
@@ -69,7 +74,7 @@ class BackAndForthButton extends StatelessWidget {
                 width: 25.0,
                 height: 5,
                 decoration: BoxDecoration(
-                  color: screen4 != null ? AppColors.blue : Colors.transparent,
+                  color: _counter == 3 ? AppColors.blue : Colors.transparent,
                   borderRadius: const BorderRadius.all(
                     Radius.circular(10.0),
                   ),
@@ -78,9 +83,18 @@ class BackAndForthButton extends StatelessWidget {
             ]),
             TextButton(
               onPressed: () {
-                controller.nextPage(
+                if(_counter == 3){
+                  Navigator.push(context, MaterialPageRoute(builder: (context) {
+                    return  const FinishScreen();
+                  }));
+
+                }
+                _counter++;
+                if(_counter > 3) _counter =3;
+                widget.controller.nextPage(
                     duration: const Duration(milliseconds: 400),
                     curve: Curves.easeIn);
+                setState((){});
               },
               child: Text('Далее'),
             ),
@@ -91,20 +105,4 @@ class BackAndForthButton extends StatelessWidget {
   }
 }
 
-class _Screen extends StatelessWidget {
-  const _Screen({Key? key}) : super(key: key);
 
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: 20.0,
-      height: 5,
-      decoration: const BoxDecoration(
-        color: AppColors.blue,
-        borderRadius: BorderRadius.all(
-          Radius.circular(10.0),
-        ),
-      ),
-    );
-  }
-}
