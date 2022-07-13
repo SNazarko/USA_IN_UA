@@ -103,7 +103,9 @@ class RecipientRepositories {
         .doc('recipient')
         .collection('recipient')
         .doc(addressName)
-        .update({'isCard': done});
+        .update({'userCard': done});
+
+
   }
 
 }

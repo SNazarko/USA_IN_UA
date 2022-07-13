@@ -73,23 +73,26 @@ class ProfileRecipientAddressFormPage extends StatelessWidget {
                 const _ListItem(),
                 InkWell(
                   onTap: () {
-                    Navigator.push(context, MaterialPageRoute(builder: (context) {
-                      return  const ProfileRecipientAddressesPage(
-                        name: '',
-                        phoneNumber: '',
-                        departmentNP: '',
-                        street: '',
-                        houseNumber: '',
-                        isCard: true,
-                        city: '',
-                        surname: '',
-                        addressName: '',
-                        flatNumber: '',
-                        region: '',
-                        country: '',
-                        userCard: true,);
-                    }),);
-
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) {
+                        return const ProfileRecipientAddressesPage(
+                          name: '',
+                          phoneNumber: '',
+                          departmentNP: '',
+                          street: '',
+                          houseNumber: '',
+                          isCard: true,
+                          city: '',
+                          surname: '',
+                          addressName: '',
+                          flatNumber: '',
+                          region: '',
+                          country: '',
+                          userCard: true,
+                        );
+                      }),
+                    );
                   },
                   child: const IconLink(
                     text: 'Добавить еще карту',
@@ -173,7 +176,7 @@ class _ListItem extends StatelessWidget {
 }
 
 class _RecipientAddressFormModel extends StatelessWidget {
-  const _RecipientAddressFormModel({
+   _RecipientAddressFormModel({
     Key? key,
     this.region,
     this.city,
@@ -183,8 +186,12 @@ class _RecipientAddressFormModel extends StatelessWidget {
     this.phoneNumber,
     this.departmentNP,
     this.addressName,
-    this.isCard, this.houseNumber, this.flatNumber, this.country, this.userCard,
-  }) :  super(key: key);
+    this.isCard,
+    this.houseNumber,
+    this.flatNumber,
+    this.country,
+    this.userCard,
+  }) : super(key: key);
   final String? region;
   final String? city;
   final String? street;
@@ -197,86 +204,98 @@ class _RecipientAddressFormModel extends StatelessWidget {
   final String? flatNumber;
   final String? country;
   final bool? isCard;
-  final bool? userCard;
+  bool? userCard;
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      height: 260.0,
-      decoration: BoxDecoration(
-        color: Colors.grey.shade100,
-        borderRadius: const BorderRadius.all(
-          Radius.circular(15.0),
-        ),
+    return Padding(
+      padding: const EdgeInsets.symmetric(
+        vertical: 5.0,
       ),
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Column(
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Flexible(
-                  flex: 10,
-                  child: Swish(
-                    text: addressName!,
-                    contour: true,
-                    color: AppColors.blue,
-                    onTap: () {},
+      child: Container(
+        width: double.infinity,
+        height: 290.0,
+        decoration: BoxDecoration(
+          color: Colors.grey.shade100,
+          borderRadius: const BorderRadius.all(
+            Radius.circular(15.0),
+          ),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Flexible(
+                    flex: 10,
+                    child: Swish(
+                      colorText: true,
+                      text: addressName!,
+                      contour: userCard!,
+                      color: AppColors.blue,
+                      onTap: () =>
+
+                        RecipientRepositories.instance.doneAddress(addressName!, !userCard!),
+
+
+
+                    ),
                   ),
-                ),
-                Flexible(
-                  flex: 2,
-                  child: InkWell(
-                    onTap: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (context) {
-                        return  ProfileRecipientAddressesPage(
-                          name: addressName ?? '',
-                          phoneNumber: phoneNumber ?? '',
-                          departmentNP: departmentNP ?? '',
-                          street: street ?? '',
-                          houseNumber: houseNumber ?? '',
-                          isCard: isCard ?? false,
-                          city: city ?? '',
-                          surname: surname ?? '',
-                          addressName: addressName ?? '',
-                          flatNumber: flatNumber ?? '',
-                          region: region ?? '',
-                          country: country ?? '',
-                          userCard: userCard ?? true,
-                        );
-                      }));
-                    },
-                    child: Padding(
-                      padding: const EdgeInsets.only(
-                        right: 16.0,
-                        left: 10.0,
-                      ),
-                      child: SvgPicture.asset(
-                        AppIcons.editSquare,
-                        width: 25.0,
-                        height: 25.0,
-                        color: AppColors.noActive,
+                  Flexible(
+                    flex: 2,
+                    child: InkWell(
+                      onTap: () {
+                        Navigator.push(context,
+                            MaterialPageRoute(builder: (context) {
+                          return ProfileRecipientAddressesPage(
+                            name: addressName ?? '',
+                            phoneNumber: phoneNumber ?? '',
+                            departmentNP: departmentNP ?? '',
+                            street: street ?? '',
+                            houseNumber: houseNumber ?? '',
+                            isCard: isCard ?? false,
+                            city: city ?? '',
+                            surname: surname ?? '',
+                            addressName: addressName ?? '',
+                            flatNumber: flatNumber ?? '',
+                            region: region ?? '',
+                            country: country ?? '',
+                            userCard: userCard ?? true,
+                          );
+                        }));
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.only(
+                          right: 16.0,
+                          left: 10.0,
+                        ),
+                        child: SvgPicture.asset(
+                          AppIcons.editSquare,
+                          width: 25.0,
+                          height: 25.0,
+                          color: AppColors.noActive,
+                        ),
                       ),
                     ),
                   ),
-                ),
-              ],
-            ),
-            _Link(
-                text1: 'Способ доставки',
-                text2:
-                    isCard! ? 'НП (до отделения)' : 'НП (адресная доставка)'),
-            _Link(text1: 'Область', text2: region!),
-            _Link(text1: 'Город', text2: city!),
-            isCard!
-                ? _Link(text1: 'Отделение', text2: departmentNP!)
-                : _Link(text1: 'Адрес', text2: street!),
-            _Link(text1: 'Имя', text2: name!),
-            _Link(text1: 'Фамилия', text2: surname!),
-            _Link(text1: 'Номер телефона', text2: phoneNumber!),
-          ],
+                ],
+              ),
+              _Link(
+                  text1: 'Способ доставки',
+                  text2:
+                      isCard! ? 'НП (до отделения)' : 'НП (адресная доставка)'),
+              _Link(text1: 'Область', text2: region!),
+              _Link(text1: 'Город', text2: city!),
+              isCard!
+                  ? _Link(text1: 'Отделение', text2: departmentNP!)
+                  : _Link(text1: 'Адрес', text2: street!),
+              _Link(text1: 'Имя', text2: name!),
+              _Link(text1: 'Фамилия', text2: surname!),
+              _Link(text1: 'Номер телефона', text2: phoneNumber!),
+            ],
+          ),
         ),
       ),
     );
