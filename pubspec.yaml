@@ -33,7 +33,7 @@ dependencies:
   google_maps_webservice: ^0.0.20-nullsafety.5
   location: ^4.4.0
   dio: ^4.0.6
-  dropdown_button2: ^1.6.3
+  rflutter_alert: ^2.0.4
 
 
 

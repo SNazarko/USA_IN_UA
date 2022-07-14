@@ -44,4 +44,6 @@ class AppIcons {
   static const String copy = '$_path/copy.svg';
   static const String star = '$_path/star.svg';
   static const String arrowDown = '$_path/arrow_down.svg';
+  static const String camera = '$_path/camera.svg';
+  static const String cub = '$_path/cub.svg';
 }
