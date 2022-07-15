@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:usa_in_ua/pages/profile_pages/profile_page.dart';
 import 'package:usa_in_ua/pages/purchase_page/purchase_page.dart';
+import 'package:usa_in_ua/pages/test.dart';
 import 'package:usa_in_ua/resources/app_icons.dart';
 import '../blocs/navigation_bloc/navigation_bloc.dart';
 import '../blocs/navigation_bloc/navigation_event.dart';
@@ -14,6 +15,7 @@ import '../widgets/navigation/bloc/anim_bloc.dart';
 import '../widgets/navigation/custom_bottom_nav_bar.dart';
 import 'delivery_page/delivery_page.dart';
 import 'home_pages/home_page.dart';
+import 'order_page/order_pur_del_page/order_pur_del_page.dart';
 
 class MainPage extends StatefulWidget {
   const MainPage({Key? key}) : super(key: key);
@@ -109,10 +111,6 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
                     initialRoute: HomePage.routeName,
                     onGenerateRoute: AppRouter.generateRoute,
                   ),
-                  // Container(
-                  //   width: MediaQuery.of(context).size.width,
-                  //   height: MediaQuery.of(context).size.height,
-                  // ),
                   Align(
                     alignment: Alignment.bottomCenter,
                     child: Visibility(
@@ -130,14 +128,16 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
                         child: Padding(
                           padding: const EdgeInsets.all(16.0),
                           child: Column(
-                            children: const [
+                            children:  [
                               _LinkButton(
+                                onTap: () => Navigator.pushNamed(context, OrderPurDelPage.routeName,),
                                 title: 'Заказать покупку и доставку',
                                 icon: AppIcons.buy,
                                 iconColor: AppColors.brown,
                                 backgroundColor: AppColors.green,
                               ),
                               _LinkButton(
+                                onTap: () =>Navigator.pushNamed(context, Test.routeName),
                                 title: 'Заказать только доставку',
                                 icon: AppIcons.cub,
                                 iconColor: AppColors.bass,
@@ -168,16 +168,14 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
                               route: HomePage.routeName,
                             ),
                           );
-                    }
-                    if (index == 1) {
+                    }if (index == 1) {
                       context.read<NavigationBloc>().add(
                             NavigateTab(
                               tabIndex: index,
                               route: PurchasePage.routeName,
                             ),
                           );
-                    }
-                    if (index == 2) {
+                    }if (index == 2) {
                       _visible = !_visible;
                       if (_visible) {
                         _animPlus();
@@ -193,25 +191,21 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
                             );
                       });
                       setState(() {});
-                    }
-                    if (index == 3) {
+                    }if (index == 3) {
                       context.read<NavigationBloc>().add(
                             NavigateTab(
                               tabIndex: index,
                               route: DeliveryPage.routeName,
                             ),
                           );
-                    }
-                    if (index == 4) {
+                    }if (index == 4) {
                       context.read<NavigationBloc>().add(
                             NavigateTab(
                               tabIndex: index,
                               route: ProfilePage.routeName,
                             ),
                           );
-                    }
-
-                    if (state.currentIndex != index) {
+                    }if (state.currentIndex != index) {
                       _timerAmplitude = Timer.periodic(
                           const Duration(milliseconds: 1), (_) async {
                         context.read<AnimBloc>().add(
@@ -220,7 +214,6 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
                               ),
                             );
                       });
-                      setState(() {});
                     }
                   }),
             ),

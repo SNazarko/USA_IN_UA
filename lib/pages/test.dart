@@ -20,13 +20,10 @@ class Test extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: ElevatedButton(child: const Text('2222222222'),
-          onPressed: () {
-
-          },
-        ),
+        child: CustomPaint(
+          child: Container(),
+        )
       ),
     );
   }
 }
-// backgroundColor: Colors.blue.withOpacity(.5),

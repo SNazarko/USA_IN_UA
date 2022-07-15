@@ -10,6 +10,8 @@ import '../pages/home_pages/home_page.dart';
 import '../pages/home_pages/home_pur_del_page/home_pur_del_page.dart';
 import '../pages/home_pages/home_tariff_page/home_tariff_page.dart';
 import '../pages/main_page.dart';
+import '../pages/order_page/order_pur_del_page/order_add_pur_del_page/order_add_pur_del_page.dart';
+import '../pages/order_page/order_pur_del_page/order_pur_del_page.dart';
 import '../pages/presentation_page/presentation_page.dart';
 import '../pages/profile_pages/profile_bank_cards_pages/profile_add_cards_page/profile_add_cards_page.dart';
 import '../pages/profile_pages/profile_bank_cards_pages/profile_bank_cards_page.dart';
@@ -79,6 +81,19 @@ class AppRouter {
       case HomePage.routeName:
         builder = (_) => HomePage();
         break;
+
+
+        // order_page
+      case OrderPurDelPage.routeName:
+        builder = (_) => OrderPurDelPage();
+        break;
+
+        //order_pur_del_page/order_add_pur_del_page';
+      case OrderAddPurDelPage.routeName:
+        builder = (_) => OrderAddPurDelPage();
+        break;
+
+
 
       // PresentationPage
       case PresentationPage.routeName:

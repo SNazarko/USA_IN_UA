@@ -7,16 +7,6 @@ class NavigationBloc extends Bloc<NavigationEvent, NavigationState> {
       : super(
           const NavigationState(),
         ) {
-    // on<NavigateMenu>((event, emit) {
-    //   emit(
-    //     state.copyWith(
-    //       status: NavigationStateStatus.menu,
-    //       currentIndex: event.menuIndex,
-    //       route: event.route,
-    //     ),
-    //   );
-    // });
-
     on<NavigateTab>((
       event,
       emit,

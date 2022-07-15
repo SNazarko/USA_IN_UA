@@ -46,4 +46,9 @@ class AppIcons {
   static const String arrowDown = '$_path/arrow_down.svg';
   static const String camera = '$_path/camera.svg';
   static const String cub = '$_path/cub.svg';
+  static const String camera2 = '$_path/camera2.svg';
+  static const String ship = '$_path/ship.svg';
+  static const String aeroplane = '$_path/aeroplane.svg';
+  static const String additionalInformation = '$_path/additional_information.svg';
+  static const String questions = '$_path/questions.svg';
 }
