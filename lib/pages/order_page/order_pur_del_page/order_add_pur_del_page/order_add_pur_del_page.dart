@@ -1,182 +1,230 @@
-import 'dart:async';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
-
 import '../../../../blocs/bloc_anim/anim_bloc.dart';
 import '../../../../repositories/add_link_goods_repositories.dart';
 import '../../../../resources/app_colors.dart';
 import '../../../../resources/app_icons.dart';
 import '../../../../widgets/button/dropAlertButton.dart';
 import '../../../../widgets/button_enter.dart';
-import '../../../../widgets/icon_link.dart';
+import '../../../../widgets/prise_dollar.dart';
 import '../../../../widgets/swish_link.dart';
 import '../../../../widgets/text_field_input_text_number.dart';
+import '../blocs/bloc_data/data_bloc.dart';
 
 class OrderAddPurDelPage extends StatelessWidget {
-   OrderAddPurDelPage({Key? key}) : super(key: key);
+  OrderAddPurDelPage({Key? key}) : super(key: key);
   static const routeName = '/order_pur_del_page/order_add_pur_del_page';
   final TextEditingController lincController = TextEditingController();
   final TextEditingController qualityController = TextEditingController();
   final TextEditingController priceController = TextEditingController();
   final TextEditingController weightController = TextEditingController();
   final TextEditingController detailsController = TextEditingController();
-  bool isSwish = true;
-   String? additionalServicesController;
-   final List<String> list = [
-     'Дополнительна услуга 1',
-     'Дополнительна услуга 2',
-     'Дополнительна услуга 3',
-     'Дополнительна услуга 4',
-     'Дополнительна услуга 5',
-     'Дополнительна услуга 6',
-   ];
-
+  final bool _isSwish = true;
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider<AnimBloc>(
-  create: (context) => AnimBloc(),
-  child: Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        elevation: 0.0,
-        centerTitle: true,
-        leading: InkWell(
-          onTap: () => Navigator.pop(context),
-          child: Padding(
-            padding: const EdgeInsets.all(
-              15.0,
-            ),
-            child: SvgPicture.asset(
-              AppIcons.arrowLeft,
-            ),
-          ),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider<AnimBloc>(
+          create: (context) => AnimBloc(),
         ),
-        title: const Text(
-          'Покупка и доставка',
-          style: TextStyle(
-            color: AppColors.text,
-            fontSize: 20.0,
-            fontWeight: FontWeight.w600,
-          ),
+        BlocProvider<OrderDataBloc>(
+          create: (context) => OrderDataBloc(),
         ),
-        actions: [
-          Padding(
-            padding: const EdgeInsets.only(
-              right: 16.0,
-            ),
-            child: InkWell(
-              onTap: () async {},
+      ],
+      child: Scaffold(
+        appBar: AppBar(
+          backgroundColor: Colors.white,
+          elevation: 0.0,
+          centerTitle: true,
+          leading: InkWell(
+            onTap: () => Navigator.pop(context),
+            child: Padding(
+              padding: const EdgeInsets.all(
+                15.0,
+              ),
               child: SvgPicture.asset(
-                AppIcons.camera2,
+                AppIcons.arrowLeft,
               ),
             ),
           ),
-        ],
-      ),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(
-          horizontal: 16.0,
-          vertical: 20.0,
-        ),
-        child: SingleChildScrollView(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              _Swish(isSwish: isSwish,),
-              Padding(
-                padding: const EdgeInsets.symmetric(
-                  vertical: 15.0,
-                ),
-                child: SizedBox(
-                  height: 450.0,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      _LinksGoods(lincController: lincController,),
-                      TextFieldInputTextNumber(
-                        textInputType:TextInputType.number,
-                        controller: qualityController,
-                        onEditingComplete: () {
-                          FocusScope.of(context).nextFocus();
-                        },
-                        hintText: 'Количество (шт.)',
-                        widget: const SizedBox.expand(),
-                      ),
-                      TextFieldInputTextNumber(
-                        controller: priceController,
-                        onEditingComplete: () {
-                          FocusScope.of(context).nextFocus();
-                        },
-                        textInputType: TextInputType.number,
-                        hintText: 'Цена (дол.)',
-                        widget: const SizedBox.expand(),
-                      ),
-                      TextFieldInputTextNumber(
-                        controller: weightController,
-                        onEditingComplete: () {
-                          FocusScope.of(context).nextFocus();
-                        },
-                        textInputType: TextInputType.number,
-                        hintText: 'Примерный вес (кг)',
-                        widget: const SizedBox.expand(),
-                      ),
-                      DropAlertButton(
-                        onTap: (data){
-                          additionalServicesController = data;
-                        },
-                        list: list,
-                        defaultValue: 'Дополнительные услуги',
-                        editValue: '',),
-
-                      _AdditionalInformation(
-                        controller: detailsController,
-                      ),
-                    ],
-                  ),
+          title: const Text(
+            'Покупка и доставка',
+            style: TextStyle(
+              color: AppColors.text,
+              fontSize: 20.0,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+          actions: [
+            Padding(
+              padding: const EdgeInsets.only(
+                right: 16.0,
+              ),
+              child: InkWell(
+                onTap: () async {},
+                child: SvgPicture.asset(
+                  AppIcons.camera2,
                 ),
               ),
-               ButtonEnter(
-                onPressed: (){
+            ),
+          ],
+        ),
+        body: Padding(
+          padding: const EdgeInsets.symmetric(
+            horizontal: 16.0,
+            vertical: 20.0,
+          ),
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                _Swish(
+                  isSwish: _isSwish,
+                ),
+                _DataForm(
+                  lincController: lincController,
+                  weightController: weightController,
+                  qualityController: qualityController,
+                  detailsController: detailsController,
+                  priceController: priceController,
+                ),
+                const _Price(),
+                BlocBuilder<OrderDataBloc, OrderDataState>(
+                  builder: (context, state) {
 
-                 final bool isSave = lincController.text != '';
-                  if(isSave){
-                    AddLinkGoodsRepositories.instance.add(
-                        lincController.text,
-                        qualityController.text,
-                        priceController.text,
-                        weightController.text,
-                        additionalServicesController ?? '',
-                        detailsController.text,
-                        isSwish,);
-                  }
-                },
-                text: 'ДАЛЕ',
-                color: lincController.text != '' ? AppColors.green : AppColors.noActive,
-                colorText: AppColors.brown,
-              )
-            ],
+                    return ButtonEnter(
+                      onPressed: () {
+                        final bool isSave = lincController.text != '';
+                        if (isSave) {
+                          AddLinkGoodsRepositories.instance.add(
+                            lincController.text,
+                            qualityController.text,
+                            priceController.text,
+                            weightController.text,
+                            state.additionalServices ?? '',
+                            detailsController.text,
+                            _isSwish,
+                          );
+                          Navigator.pop(context);
+                        }
+                      },
+                      text: 'ДАЛЕ',
+                      color: state.link == '' || state.link == null
+                      ? AppColors.noActive
+                          :AppColors.green,
+                      colorText: AppColors.brown,
+                    );
+                  },
+                )
+              ],
+            ),
           ),
         ),
       ),
-    ),
-);
+    );
+  }
+}
+
+class _DataForm extends StatelessWidget {
+  _DataForm({
+    Key? key,
+    required this.lincController,
+    required this.qualityController,
+    required this.priceController,
+    required this.weightController,
+    required this.detailsController,
+  }) : super(key: key);
+  final TextEditingController lincController;
+  final TextEditingController qualityController;
+  final TextEditingController priceController;
+  final TextEditingController weightController;
+  final TextEditingController detailsController;
+  final List<String> _list = [
+    'Дополнительна услуга 1',
+    'Дополнительна услуга 2',
+    'Дополнительна услуга 3',
+    'Дополнительна услуга 4',
+    'Дополнительна услуга 5',
+    'Дополнительна услуга 6',
+  ];
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(
+        vertical: 15.0,
+      ),
+      child: SizedBox(
+        height: 450.0,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            _LinksGoods(
+              lincController: lincController,
+            ),
+            TextFieldInputTextNumber(
+              textInputType: TextInputType.number,
+              controller: qualityController,
+              onEditingComplete: () {
+                FocusScope.of(context).nextFocus();
+              },
+              hintText: 'Количество (шт.)',
+              widget: const SizedBox.expand(),
+            ),
+            TextFieldInputTextNumber(
+              onChanged: (data) => context.read<OrderDataBloc>().add(
+                    OrderDataEvent(
+                      price: data,
+                    ),
+                  ),
+              controller: priceController,
+              onEditingComplete: () {
+                FocusScope.of(context).nextFocus();
+              },
+              textInputType: TextInputType.number,
+              hintText: 'Цена (дол.)',
+              widget: const SizedBox.expand(),
+            ),
+            TextFieldInputTextNumber(
+              controller: weightController,
+              onEditingComplete: () {
+                FocusScope.of(context).nextFocus();
+              },
+              textInputType: TextInputType.number,
+              hintText: 'Примерный вес (кг)',
+              widget: const SizedBox.expand(),
+            ),
+            DropAlertButton(
+              onTap: (data) => context.read<OrderDataBloc>().add(
+                    OrderDataEvent(
+                      additionalServices: data,
+                    ),
+                  ),
+              list: _list,
+              defaultValue: 'Дополнительные услуги',
+              editValue: '',
+            ),
+            _AdditionalInformation(
+              controller: detailsController,
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }
 
 class _Swish extends StatefulWidget {
-   _Swish({Key? key, required this.isSwish}) : super(key: key);
- bool isSwish;
+  _Swish({Key? key, required this.isSwish}) : super(key: key);
+  bool isSwish;
   @override
   State<_Swish> createState() => _SwishState();
 }
 
 class _SwishState extends State<_Swish> {
-
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -264,16 +312,11 @@ class _SwishState extends State<_Swish> {
   }
 }
 
-
 class _AdditionalInformation extends StatelessWidget {
   const _AdditionalInformation({
     Key? key,
-    this.onChanged,
     this.controller,
-    this.onEditingComplete,
   }) : super(key: key);
-  final void Function(String)? onChanged;
-  final void Function()? onEditingComplete;
   final TextEditingController? controller;
 
   @override
@@ -295,7 +338,6 @@ class _AdditionalInformation extends StatelessWidget {
             flex: 8,
             child: TextField(
               maxLines: 5,
-              onEditingComplete: onEditingComplete,
               textAlign: TextAlign.start,
               keyboardType: TextInputType.text,
               controller: controller,
@@ -323,7 +365,6 @@ class _AdditionalInformation extends StatelessWidget {
                   borderSide: BorderSide.none,
                 ),
               ),
-              onChanged: onChanged,
             ),
           ),
           Flexible(
@@ -338,16 +379,19 @@ class _AdditionalInformation extends StatelessWidget {
   }
 }
 
-
 class _LinksGoods extends StatefulWidget {
-  _LinksGoods({Key? key, required this.lincController,}) : super(key: key);
+  const _LinksGoods({
+    Key? key,
+    required this.lincController,
+  }) : super(key: key);
   final TextEditingController lincController;
 
   @override
   State<_LinksGoods> createState() => _LinksGoodsState();
 }
 
-class _LinksGoodsState extends State<_LinksGoods> with TickerProviderStateMixin{
+class _LinksGoodsState extends State<_LinksGoods>
+    with TickerProviderStateMixin {
   late bool isHintShown = false;
 
   OverlayEntry? overlayEntry;
@@ -392,8 +436,8 @@ class _LinksGoodsState extends State<_LinksGoods> with TickerProviderStateMixin{
               }
             },
             child: Container(
-                height:  MediaQuery.of(context).size.height,
-                width:  MediaQuery.of(context).size.width,
+                height: MediaQuery.of(context).size.height,
+                width: MediaQuery.of(context).size.width,
                 color: Colors.transparent,
                 child: Stack(children: [
                   Positioned(
@@ -403,8 +447,10 @@ class _LinksGoodsState extends State<_LinksGoods> with TickerProviderStateMixin{
                         color: Colors.transparent,
                         child: Stack(
                           children: [
-                            SvgPicture.asset(AppIcons.questions,
-                              width:MediaQuery.of(context).size.width -10,),
+                            SvgPicture.asset(
+                              AppIcons.questions,
+                              width: MediaQuery.of(context).size.width - 10,
+                            ),
                             Positioned(
                               top: 75.0,
                               right: 20.0,
@@ -415,13 +461,18 @@ class _LinksGoodsState extends State<_LinksGoods> with TickerProviderStateMixin{
                                   children: [
                                     const Flexible(
                                       flex: 5,
-                                      child: Text('Ссылка на выбранный товар для доставки из магазина США / Европы, по этой ссылке будет произведен расчет стоимости доставки груза в Украину.',
+                                      child: Text(
+                                        'Ссылка на выбранный товар для доставки из магазина США / Европы, по этой ссылке будет произведен расчет стоимости доставки груза в Украину.',
                                         style: TextStyle(
                                           fontSize: 14.0,
                                           fontWeight: FontWeight.w400,
                                           color: AppColors.white,
-                                        ),),),
-                                    const SizedBox(width: 10.0,),
+                                        ),
+                                      ),
+                                    ),
+                                    const SizedBox(
+                                      width: 10.0,
+                                    ),
                                     Flexible(
                                       flex: 2,
                                       child: Container(
@@ -436,7 +487,8 @@ class _LinksGoodsState extends State<_LinksGoods> with TickerProviderStateMixin{
                                           ),
                                         ),
                                         child: const Center(
-                                          child: Text('?',
+                                          child: Text(
+                                            '?',
                                             style: TextStyle(
                                               fontSize: 25.0,
                                             ),
@@ -451,9 +503,7 @@ class _LinksGoodsState extends State<_LinksGoods> with TickerProviderStateMixin{
                           ],
                         )),
                   )
-                ]))
-
-);
+                ])));
       },
     );
   }
@@ -461,9 +511,11 @@ class _LinksGoodsState extends State<_LinksGoods> with TickerProviderStateMixin{
   @override
   Widget build(BuildContext context) {
     return TextFieldInputTextNumber(
-      onChanged: (data){
-        setState((){});
-      },
+      onChanged: (data) => context.read<OrderDataBloc>().add(
+            OrderDataEvent(
+              link: data,
+            ),
+          ),
       controller: widget.lincController,
       onEditingComplete: () {
         FocusScope.of(context).nextFocus();
@@ -474,7 +526,7 @@ class _LinksGoodsState extends State<_LinksGoods> with TickerProviderStateMixin{
         onTap: () {
           _showHint(context);
           _animPlus();
-          } ,
+        },
         child: const Text(
           '?',
           style: TextStyle(
@@ -483,6 +535,29 @@ class _LinksGoodsState extends State<_LinksGoods> with TickerProviderStateMixin{
           ),
         ),
       ),
+    );
+  }
+}
+
+class _Price extends StatelessWidget {
+  const _Price({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<OrderDataBloc, OrderDataState>(
+      builder: (context, state) {
+        return Padding(
+          padding: const EdgeInsets.symmetric(
+            horizontal: 30.0,
+            vertical: 5.0,
+          ),
+          child: PriceDollar(
+            iconSize: 30.0,
+            textNumber: state.price ?? '0',
+            fontSize: 30.0,
+          ),
+        );
+      },
     );
   }
 }

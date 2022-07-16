@@ -16,38 +16,20 @@ class AddLinkGoodsRepositories {
     _phoneNumber = AuthRepositories.instance.user?.phoneNumber!;
   }
   final _uuid = const Uuid();
-  //
-  // Stream<List<RecipientModel>> readAudio() => FirebaseFirestore.instance
-  //     .collection(phoneNumber!)
-  //     .doc('recipient')
-  //     .collection('recipient')
-  //     .snapshots()
-  //     .map((snapshot) =>
-  //     snapshot.docs.map((doc) => RecipientModel.fromJson(doc.data())).toList());
-  //
-  // Future<Future<List<RecipientModel>>?> getRecipient() async {
-  //   var isExists = await FirebaseFirestore.instance
-  //       .collection(phoneNumber!)
-  //       .doc('recipient')
-  //       .get()
-  //       .then((value) {
-  //     return value.exists;
-  //   });
-  //   if (!isExists) {
-  //     var recipient = FirebaseFirestore.instance
-  //         .collection(phoneNumber!)
-  //         .doc('recipient')
-  //         .collection('recipient')
-  //         .get()
-  //         .then((res) => res.docs
-  //         .map((doc) => RecipientModel.fromJson(doc.data()))
-  //         .toList());
-  //     return recipient;
-  //   } else {
-  //     return null;
-  //   }
-  // }
-  //
+
+
+
+  Stream<List<AddLinkGoodsModel>> read() => FirebaseFirestore.instance
+      .collection(_phoneNumber!)
+      .doc('addLinkGoods')
+      .collection('addLinkGoods')
+      .snapshots()
+      .map((snapshot) =>
+      snapshot.docs.map((doc) => AddLinkGoodsModel.fromJson(doc.data())).toList());
+
+
+
+
   Future<void> add(
       String link,
       String quality,

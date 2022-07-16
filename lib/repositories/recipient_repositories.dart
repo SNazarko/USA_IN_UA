@@ -15,7 +15,7 @@ class RecipientRepositories {
     phoneNumber = AuthRepositories.instance.user?.phoneNumber!;
   }
 
-  Stream<List<RecipientModel>> readAudio() => FirebaseFirestore.instance
+  Stream<List<RecipientModel>> read() => FirebaseFirestore.instance
       .collection(phoneNumber!)
       .doc('recipient')
       .collection('recipient')

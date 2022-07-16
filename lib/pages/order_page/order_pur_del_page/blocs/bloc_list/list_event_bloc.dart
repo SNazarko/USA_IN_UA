@@ -4,40 +4,41 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
 
-import '../../../../../models/recipient_model.dart';
-import '../../../../../repositories/recipient_repositories.dart';
+import '../../../../../repositories/add_link_goods_repositories.dart';
 
-part 'list_form_event.dart';
-part 'list_form_state.dart';
 
-class ListFormBloc extends Bloc<ListFormEvent, ListFormState> {
 
-  ListFormBloc() : super(const ListFormState()) {
-    on<LoadListFormEvent>((event, emit) async{
+part 'list_event_event.dart';
+part 'list_event_state.dart';
+
+class ListEventBloc extends Bloc<ListEventEvent, ListEventState> {
+
+  ListEventBloc() : super(const ListEventState()) {
+    on<LoadListEventEvent>((event, emit) async{
       try {
         _audioSubscription?.cancel();
-        _audioSubscription = RecipientRepositories.instance
+        _audioSubscription = AddLinkGoodsRepositories.instance
             .read()
             .listen((audioList) {
           add(
-            UpdateListFormEvent(
+            UpdateListEventEvent(
               list: audioList,
             ),
           );
         });
       } on Exception catch (e) {
         emit(state.copyWith(
-          status: ListFormStatus.failed,
+          status: ListEventStatus.failed,
         ));
       }
     });
-    on<UpdateListFormEvent>((
-        UpdateListFormEvent event,
-        Emitter<ListFormState> emit,
+    on<UpdateListEventEvent>((
+        UpdateListEventEvent event,
+        Emitter<ListEventState> emit,
         ) {
       emit(
         state.copyWith(
-          status: ListFormStatus.success,
+          status: ListEventStatus.success,
           list: event.list,
         ),
       );
