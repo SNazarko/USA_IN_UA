@@ -10,4 +10,5 @@ class AppColors {
   static const Color blue = Color(0xFF0066FF);
   static const Color contour = Color(0xFFEEF1F5);
   static const Color bass = Color(0xFFF8FAFD);
+  static const Color white = Color(0xFFFFFFFF);
 }

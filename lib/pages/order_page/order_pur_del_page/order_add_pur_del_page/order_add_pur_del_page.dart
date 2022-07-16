@@ -1,63 +1,46 @@
+import 'dart:async';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 
+import '../../../../blocs/bloc_anim/anim_bloc.dart';
+import '../../../../repositories/add_link_goods_repositories.dart';
 import '../../../../resources/app_colors.dart';
 import '../../../../resources/app_icons.dart';
+import '../../../../widgets/button/dropAlertButton.dart';
 import '../../../../widgets/button_enter.dart';
 import '../../../../widgets/icon_link.dart';
 import '../../../../widgets/swish_link.dart';
 import '../../../../widgets/text_field_input_text_number.dart';
 
 class OrderAddPurDelPage extends StatelessWidget {
-  OrderAddPurDelPage({Key? key}) : super(key: key);
+   OrderAddPurDelPage({Key? key}) : super(key: key);
   static const routeName = '/order_pur_del_page/order_add_pur_del_page';
-  late bool isHintShown = false;
-  OverlayEntry? overlayEntry;
+  final TextEditingController lincController = TextEditingController();
+  final TextEditingController qualityController = TextEditingController();
+  final TextEditingController priceController = TextEditingController();
+  final TextEditingController weightController = TextEditingController();
+  final TextEditingController detailsController = TextEditingController();
+  bool isSwish = true;
+   String? additionalServicesController;
+   final List<String> list = [
+     'Дополнительна услуга 1',
+     'Дополнительна услуга 2',
+     'Дополнительна услуга 3',
+     'Дополнительна услуга 4',
+     'Дополнительна услуга 5',
+     'Дополнительна услуга 6',
+   ];
 
-  void closeHint() {
-    overlayEntry?.remove();
-    isHintShown = false;
-  }
-
-  void showHint(BuildContext context) {
-    overlayEntry = _overlayEntryBuilder();
-    Overlay.of(context)?.insert(overlayEntry!);
-    isHintShown = true;
-  }
-
-  OverlayEntry _overlayEntryBuilder() {
-    return OverlayEntry(
-      maintainState: true,
-      builder: (context) {
-        return GestureDetector(
-            onTap: () {
-              if (isHintShown) {
-                closeHint();
-              }
-            },
-            child: Container(
-                height: MediaQuery.of(context).size.height,
-                width: MediaQuery.of(context).size.width,
-                color: Colors.transparent,
-                child: Stack(children: [
-                  Positioned(
-                    top: 0,
-                    right: 0,
-                    child: Material(
-                      color: Colors.transparent,
-                      child: SvgPicture.asset(AppIcons.questions)
-                    ),
-                  )
-                ])));
-      },
-    );
-  }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return BlocProvider<AnimBloc>(
+  create: (context) => AnimBloc(),
+  child: Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 0.0,
@@ -104,7 +87,7 @@ class OrderAddPurDelPage extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const _Swish(),
+              _Swish(isSwish: isSwish,),
               Padding(
                 padding: const EdgeInsets.symmetric(
                   vertical: 15.0,
@@ -114,75 +97,86 @@ class OrderAddPurDelPage extends StatelessWidget {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
+                      _LinksGoods(lincController: lincController,),
                       TextFieldInputTextNumber(
+                        textInputType:TextInputType.number,
+                        controller: qualityController,
                         onEditingComplete: () {
                           FocusScope.of(context).nextFocus();
                         },
-                        textInputType: TextInputType.text,
-                        hintText: 'Укажите ссылку на товар*',
-                        widget: InkWell(
-                          onTap: () => showHint(context),
-                          child: const Text(
-                            '?',
-                            style: TextStyle(
-                              fontSize: 25.0,
-                              color: AppColors.blue,
-                            ),
-                          ),
-                        ),
-                      ),
-                      TextFieldInputTextNumber(
-                        onEditingComplete: () {
-                          FocusScope.of(context).nextFocus();
-                        },
-                        textInputType: TextInputType.text,
                         hintText: 'Количество (шт.)',
                         widget: const SizedBox.expand(),
                       ),
                       TextFieldInputTextNumber(
+                        controller: priceController,
                         onEditingComplete: () {
                           FocusScope.of(context).nextFocus();
                         },
-                        textInputType: TextInputType.text,
+                        textInputType: TextInputType.number,
                         hintText: 'Цена (дол.)',
                         widget: const SizedBox.expand(),
                       ),
                       TextFieldInputTextNumber(
+                        controller: weightController,
                         onEditingComplete: () {
                           FocusScope.of(context).nextFocus();
                         },
-                        textInputType: TextInputType.text,
+                        textInputType: TextInputType.number,
                         hintText: 'Примерный вес (кг)',
                         widget: const SizedBox.expand(),
                       ),
-                      const _DropDownButton(),
-                      _AdditionalInformation(),
+                      DropAlertButton(
+                        onTap: (data){
+                          additionalServicesController = data;
+                        },
+                        list: list,
+                        defaultValue: 'Дополнительные услуги',
+                        editValue: '',),
+
+                      _AdditionalInformation(
+                        controller: detailsController,
+                      ),
                     ],
                   ),
                 ),
               ),
-              const ButtonEnter(
+               ButtonEnter(
+                onPressed: (){
+
+                 final bool isSave = lincController.text != '';
+                  if(isSave){
+                    AddLinkGoodsRepositories.instance.add(
+                        lincController.text,
+                        qualityController.text,
+                        priceController.text,
+                        weightController.text,
+                        additionalServicesController ?? '',
+                        detailsController.text,
+                        isSwish,);
+                  }
+                },
                 text: 'ДАЛЕ',
-                color: AppColors.green,
+                color: lincController.text != '' ? AppColors.green : AppColors.noActive,
                 colorText: AppColors.brown,
               )
             ],
           ),
         ),
       ),
-    );
+    ),
+);
   }
 }
 
 class _Swish extends StatefulWidget {
-  const _Swish({Key? key}) : super(key: key);
-
+   _Swish({Key? key, required this.isSwish}) : super(key: key);
+ bool isSwish;
   @override
   State<_Swish> createState() => _SwishState();
 }
 
 class _SwishState extends State<_Swish> {
-  bool isSwish = true;
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -192,10 +186,10 @@ class _SwishState extends State<_Swish> {
             Swish(
               color: AppColors.blue,
               onTap: () {
-                isSwish = !isSwish;
+                widget.isSwish = !widget.isSwish;
                 setState(() {});
               },
-              contour: isSwish ? true : false,
+              contour: widget.isSwish ? true : false,
               text: '',
             ),
             SvgPicture.asset(
@@ -232,10 +226,10 @@ class _SwishState extends State<_Swish> {
             Swish(
               color: AppColors.blue,
               onTap: () {
-                isSwish = !isSwish;
+                widget.isSwish = !widget.isSwish;
                 setState(() {});
               },
-              contour: isSwish ? false : true,
+              contour: widget.isSwish ? false : true,
               text: '',
             ),
             SvgPicture.asset(AppIcons.ship),
@@ -270,80 +264,6 @@ class _SwishState extends State<_Swish> {
   }
 }
 
-class _DropDownButton extends StatefulWidget {
-  const _DropDownButton({Key? key}) : super(key: key);
-
-  @override
-  State<_DropDownButton> createState() => _DropDownButtonState();
-}
-
-class _DropDownButtonState extends State<_DropDownButton> {
-  String? value;
-  List<String> list = [
-    'Дополнительна услуга 1',
-    'Дополнительна услуга 2',
-    'Дополнительна услуга 3',
-    'Дополнительна услуга 4',
-    'Дополнительна услуга 5',
-    'Дополнительна услуга 6',
-  ];
-
-  Widget getDropdownButton() {
-    List<DropdownMenuItem<String>> dropdownItem = [];
-
-    for (String delivery in list) {
-      var newItem = DropdownMenuItem(
-        child: Text(
-          delivery,
-          style: const TextStyle(
-            color: AppColors.text,
-          ),
-        ),
-        value: delivery,
-      );
-      dropdownItem.add(newItem);
-    }
-    return Container(
-      width: double.infinity,
-      height: 50.0,
-      decoration: BoxDecoration(
-          color: Colors.grey.shade100,
-          borderRadius: const BorderRadius.all(
-            Radius.circular(15.0),
-          )),
-      child: Padding(
-        padding: const EdgeInsets.symmetric(
-          horizontal: 14.0,
-        ),
-        child: DropdownButtonHideUnderline(
-          child: DropdownButton<String>(
-            isExpanded: true,
-            hint: const Text(
-              'Дополнительные услуги',
-              style: TextStyle(
-                color: AppColors.noActive,
-                fontSize: 14.0,
-                fontWeight: FontWeight.w600,
-              ),
-            ),
-            value: value,
-            onChanged: (data) {
-              setState(() {
-                value = data as String;
-              });
-            },
-            items: dropdownItem,
-          ),
-        ),
-      ),
-    );
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return getDropdownButton();
-  }
-}
 
 class _AdditionalInformation extends StatelessWidget {
   const _AdditionalInformation({
@@ -419,3 +339,150 @@ class _AdditionalInformation extends StatelessWidget {
 }
 
 
+class _LinksGoods extends StatefulWidget {
+  _LinksGoods({Key? key, required this.lincController,}) : super(key: key);
+  final TextEditingController lincController;
+
+  @override
+  State<_LinksGoods> createState() => _LinksGoodsState();
+}
+
+class _LinksGoodsState extends State<_LinksGoods> with TickerProviderStateMixin{
+  late bool isHintShown = false;
+
+  OverlayEntry? overlayEntry;
+
+  late AnimationController controller;
+
+  late Animation animation;
+
+  void _animPlus() {
+    controller = AnimationController(
+      duration: const Duration(seconds: 3),
+      vsync: this,
+    );
+    animation = CurvedAnimation(
+      parent: controller,
+      curve: Curves.decelerate,
+    );
+    controller.forward();
+    controller.addListener(() {
+      setState(() {});
+    });
+  }
+
+  void _closeHint() {
+    overlayEntry?.remove();
+    isHintShown = false;
+  }
+
+  void _showHint(BuildContext context) {
+    overlayEntry = _overlayEntryBuilder();
+    Overlay.of(context)?.insert(overlayEntry!);
+    isHintShown = true;
+  }
+
+  OverlayEntry _overlayEntryBuilder() {
+    return OverlayEntry(
+      builder: (context) {
+        return GestureDetector(
+            onTap: () {
+              if (isHintShown) {
+                _closeHint();
+              }
+            },
+            child: Container(
+                height:  MediaQuery.of(context).size.height,
+                width:  MediaQuery.of(context).size.width,
+                color: Colors.transparent,
+                child: Stack(children: [
+                  Positioned(
+                    top: 0,
+                    right: 0,
+                    child: Material(
+                        color: Colors.transparent,
+                        child: Stack(
+                          children: [
+                            SvgPicture.asset(AppIcons.questions,
+                              width:MediaQuery.of(context).size.width -10,),
+                            Positioned(
+                              top: 75.0,
+                              right: 20.0,
+                              child: SizedBox(
+                                width: 280.0,
+                                height: 150.0,
+                                child: Row(
+                                  children: [
+                                    const Flexible(
+                                      flex: 5,
+                                      child: Text('Ссылка на выбранный товар для доставки из магазина США / Европы, по этой ссылке будет произведен расчет стоимости доставки груза в Украину.',
+                                        style: TextStyle(
+                                          fontSize: 14.0,
+                                          fontWeight: FontWeight.w400,
+                                          color: AppColors.white,
+                                        ),),),
+                                    const SizedBox(width: 10.0,),
+                                    Flexible(
+                                      flex: 2,
+                                      child: Container(
+                                        width: 60.0,
+                                        height: 60.0,
+                                        decoration: const BoxDecoration(
+                                          color: Colors.white,
+                                          borderRadius: BorderRadius.all(
+                                            Radius.circular(
+                                              30.0,
+                                            ),
+                                          ),
+                                        ),
+                                        child: const Center(
+                                          child: Text('?',
+                                            style: TextStyle(
+                                              fontSize: 25.0,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              ),
+                            )
+                          ],
+                        )),
+                  )
+                ]))
+
+);
+      },
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return TextFieldInputTextNumber(
+      onChanged: (data){
+        setState((){});
+      },
+      controller: widget.lincController,
+      onEditingComplete: () {
+        FocusScope.of(context).nextFocus();
+      },
+      textInputType: TextInputType.text,
+      hintText: 'Укажите ссылку на товар*',
+      widget: InkWell(
+        onTap: () {
+          _showHint(context);
+          _animPlus();
+          } ,
+        child: const Text(
+          '?',
+          style: TextStyle(
+            fontSize: 25.0,
+            color: AppColors.blue,
+          ),
+        ),
+      ),
+    );
+  }
+}

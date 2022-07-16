@@ -4,11 +4,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:usa_in_ua/blocs/bloc_anim/anim_bloc.dart';
 import 'package:usa_in_ua/resources/app_images.dart';
 
 import '../../resources/app_colors.dart';
 import '../../resources/app_icons.dart';
-import 'bloc/anim_bloc.dart';
+
 
 class CustomBottomNavBar extends StatelessWidget {
   const CustomBottomNavBar(

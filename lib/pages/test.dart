@@ -10,7 +10,6 @@ import '../resources/app_colors.dart';
 import '../resources/app_icons.dart';
 import '../resources/app_images.dart';
 import '../widgets/button/alert_dialog.dart';
-import '../widgets/navigation/bloc/anim_bloc.dart';
 
 class Test extends StatelessWidget {
   const Test({Key? key}) : super(key: key);
