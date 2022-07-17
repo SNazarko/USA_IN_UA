@@ -10,7 +10,7 @@ import 'bloc_warehouse/bloc_warehouse_bloc.dart';
 
 class ProfileWarehouseAddress extends StatelessWidget {
   const ProfileWarehouseAddress({Key? key}) : super(key: key);
-  static const routeName = '/profile_warehouse _add';
+  static const routeName = '/profile_warehouse_add';
 
   @override
   Widget build(BuildContext context) {

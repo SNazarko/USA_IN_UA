@@ -15,6 +15,7 @@ import '../routes/app_router.dart';
 import '../widgets/navigation/custom_bottom_nav_bar.dart';
 import 'delivery_page/delivery_page.dart';
 import 'home_pages/home_page.dart';
+import 'order_page/order_delivery_page/order_delivery_page.dart';
 import 'order_page/order_pur_del_page/order_pur_del_page.dart';
 
 class MainPage extends StatefulWidget {
@@ -137,7 +138,7 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
                                 backgroundColor: AppColors.green,
                               ),
                               _LinkButton(
-                                onTap: () =>Navigator.pushNamed(context, Test.routeName),
+                                onTap: () =>Navigator.pushNamed(context, OrderDeliveryPage.routeName),
                                 title: 'Заказать только доставку',
                                 icon: AppIcons.cub,
                                 iconColor: AppColors.bass,

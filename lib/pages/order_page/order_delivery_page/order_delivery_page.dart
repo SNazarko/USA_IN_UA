@@ -1,24 +1,23 @@
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:usa_in_ua/pages/order_page/order_pur_del_page/blocs/bloc_list/list_event_bloc.dart';
-import 'package:usa_in_ua/widgets/button_enter.dart';
 
 import '../../../models/add_link_goods_model.dart';
 import '../../../repositories/add_link_goods_repositories.dart';
 import '../../../resources/app_colors.dart';
 import '../../../resources/app_icons.dart';
+import '../../../widgets/button_enter.dart';
 import '../../../widgets/icon_link.dart';
-
 import '../../profile_pages/profile_bank_cards_pages/profile_bank_cards_page.dart';
+import '../order_pur_del_page/blocs/bloc_list/list_event_bloc.dart';
+import '../order_pur_del_page/order_add_pur_del_page/order_add_pur_del_page.dart';
+import 'order_add_delivery_page/order_add_delivery_page.dart';
 
-
-import 'order_add_pur_del_page/order_add_pur_del_page.dart';
-
-class OrderPurDelPage extends StatelessWidget {
-  const OrderPurDelPage({Key? key}) : super(key: key);
-  static const routeName = '/order_pur_del_page';
+class OrderDeliveryPage extends StatelessWidget {
+  const OrderDeliveryPage ({Key? key}) : super(key: key);
+  static const routeName = '/order_delivery_page';
 
   @override
   Widget build(BuildContext context) {
@@ -44,7 +43,7 @@ class OrderPurDelPage extends StatelessWidget {
             ),
           ),
           title: const Text(
-            'Покупка и доставка',
+            'Только доставка',
             style: TextStyle(
               color: AppColors.text,
               fontSize: 20.0,
@@ -80,7 +79,7 @@ class OrderPurDelPage extends StatelessWidget {
                     onTap: () {
                       Navigator.pushNamed(
                         context,
-                        OrderAddPurDelPage.routeName,
+                        OrderAddDeliveryPage.routeName,
                       );
                     },
                     child: const Padding(
@@ -88,7 +87,7 @@ class OrderPurDelPage extends StatelessWidget {
                         vertical: 15.0,
                       ),
                       child: IconLink(
-                        text: 'Добавить еще один товар',
+                        text: 'Добавить еще одну покупку',
                         fontWeight: FontWeight.w700,
                         icon: AppIcons.plus,
                         color: AppColors.blue,
@@ -104,7 +103,7 @@ class OrderPurDelPage extends StatelessWidget {
               ButtonEnter(
                 onPressed: () {},
                 text: 'ДАЛЕ',
-                color: AppColors.green,
+                color: AppColors.blue,
                 colorText: AppColors.brown,
               ),
             ],
@@ -139,8 +138,8 @@ class _ListItem extends StatelessWidget {
                 return DismissibleWidget(
                     item: list,
                     onResize: () => AddLinkGoodsRepositories.instance.delete(
-                          list.id!,
-                        ),
+                      list.id!,
+                    ),
                     child: _LinkModel(
                       quality: list.quality!,
                       price: list.price!,

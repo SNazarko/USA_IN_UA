@@ -10,6 +10,8 @@ import '../pages/home_pages/home_page.dart';
 import '../pages/home_pages/home_pur_del_page/home_pur_del_page.dart';
 import '../pages/home_pages/home_tariff_page/home_tariff_page.dart';
 import '../pages/main_page.dart';
+import '../pages/order_page/order_delivery_page/order_add_delivery_page/order_add_delivery_page.dart';
+import '../pages/order_page/order_delivery_page/order_delivery_page.dart';
 import '../pages/order_page/order_pur_del_page/order_add_pur_del_page/order_add_pur_del_page.dart';
 import '../pages/order_page/order_pur_del_page/order_pur_del_page.dart';
 import '../pages/presentation_page/presentation_page.dart';
@@ -84,9 +86,24 @@ class AppRouter {
 
 
         // order_page
+
+        //order_delivery_page
+      case OrderDeliveryPage.routeName:
+        builder = (_) => OrderDeliveryPage();
+        break;
+
+
+        //order_delivery_page/order_add_delivery_page';
+      case OrderAddDeliveryPage.routeName:
+        builder = (_) => OrderAddDeliveryPage();
+        break;
+
+
+        // order_pur_del_page
       case OrderPurDelPage.routeName:
         builder = (_) => OrderPurDelPage();
         break;
+
 
         //order_pur_del_page/order_add_pur_del_page';
       case OrderAddPurDelPage.routeName:

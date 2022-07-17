@@ -51,4 +51,5 @@ class AppIcons {
   static const String aeroplane = '$_path/aeroplane.svg';
   static const String additionalInformation = '$_path/additional_information.svg';
   static const String questions = '$_path/questions.svg';
+  static const String invoice = '$_path/invoice.svg';
 }
