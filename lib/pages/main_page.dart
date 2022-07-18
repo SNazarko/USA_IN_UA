@@ -31,7 +31,8 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
   late AnimationController controller;
   late Animation animation;
   Timer? _timerAmplitude;
-
+  static final GlobalKey<NavigatorState> _navigatorKey =
+  GlobalKey<NavigatorState>();
   void _animPlus() {
     controller = AnimationController(
       duration: const Duration(seconds: 1),
@@ -65,9 +66,6 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
       }
     });
   }
-
-  static final GlobalKey<NavigatorState> _navigatorKey =
-      GlobalKey<NavigatorState>();
 
   void _onSelectTab(String route) {
     if (_navigatorKey.currentState != null) {
@@ -112,6 +110,13 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
                     initialRoute: HomePage.routeName,
                     onGenerateRoute: AppRouter.generateRoute,
                   ),
+                  Visibility(
+                    visible: _visible,
+                    child: Container(
+                      color: Colors.white.withOpacity(0.6),
+                      width: MediaQuery.of(context).size.width,
+                      height: MediaQuery.of(context).size.height,),
+                  ),
                   Align(
                     alignment: Alignment.bottomCenter,
                     child: Visibility(
@@ -144,7 +149,7 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
                                 iconColor: AppColors.bass,
                                 backgroundColor: AppColors.blue,
                               ),
-                              _LinkButton(
+                              const _LinkButton(
                                 title: 'Заказать по фотографии',
                                 icon: AppIcons.camera,
                                 iconColor: AppColors.bass,
@@ -156,6 +161,8 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
                       ),
                     ),
                   ),
+
+
                 ],
               ),
               drawerEnableOpenDragGesture: false,

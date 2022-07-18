@@ -153,7 +153,7 @@ detailsController.dispose();
                       },
                       text: 'ДАЛЕ',
                       color: state.link == '' || state.link != null || stateGetImage.image != null
-                          ? AppColors.green
+                          ? AppColors.blue
                           : AppColors.noActive,
                       colorText: AppColors.brown,
                     );
