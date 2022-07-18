@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:uuid/uuid.dart';
 
 import '../models/add_link_goods_model.dart';
@@ -19,7 +20,7 @@ class AddLinkGoodsRepositories {
 
 
 
-  Stream<List<AddLinkGoodsModel>> read() => FirebaseFirestore.instance
+  Stream<List<AddLinkGoodsModel>> readLinkGoods() => FirebaseFirestore.instance
       .collection(_phoneNumber!)
       .doc('addLinkGoods')
       .collection('addLinkGoods')
@@ -27,10 +28,56 @@ class AddLinkGoodsRepositories {
       .map((snapshot) =>
       snapshot.docs.map((doc) => AddLinkGoodsModel.fromJson(doc.data())).toList());
 
+  Stream<List<AddLinkGoodsModel>> readLinkDelivery() => FirebaseFirestore.instance
+      .collection(_phoneNumber!)
+      .doc('addLinkGoods')
+      .collection('addLinkDelivery')
+      .snapshots()
+      .map((snapshot) =>
+      snapshot.docs.map((doc) => AddLinkGoodsModel.fromJson(doc.data())).toList());
 
 
 
-  Future<void> add(
+  Future<void> addLinkDelivery(
+      String price,
+      String weight,
+      String details,
+      String track,
+      bool isSwish,
+      String image,
+
+      ) async {
+    var id = _uuid.v1();
+    final data = AddLinkGoodsModel(
+      id: id,
+      track: track,
+      price: price,
+      weight: weight,
+      details: details,
+      isSwish: isSwish,
+      image: image,
+    );
+    final json = data.toJson();
+    FirebaseFirestore.instance
+        .collection(_phoneNumber!)
+        .doc('addLinkGoods')
+        .collection('addLinkDelivery')
+        .doc(id)
+        .set(json);
+
+  }
+  Future<void> deleteLinkDelivery(
+      String id,
+      ) async {
+    FirebaseFirestore.instance
+        .collection(_phoneNumber!)
+        .doc('addLinkGoods')
+        .collection('addLinkDelivery')
+        .doc(id)
+        .delete();
+  }
+
+  Future<void> addLinkGoods(
       String link,
       String quality,
       String price,
@@ -60,7 +107,7 @@ class AddLinkGoodsRepositories {
         .set(json);
 
   }
-  Future<void> delete(
+  Future<void> deleteLinkGoods(
       String id,
       ) async {
     FirebaseFirestore.instance

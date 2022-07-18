@@ -17,15 +17,28 @@ class ListEventBloc extends Bloc<ListEventEvent, ListEventState> {
     on<LoadListEventEvent>((event, emit) async{
       try {
         _audioSubscription?.cancel();
-        _audioSubscription = AddLinkGoodsRepositories.instance
-            .read()
-            .listen((audioList) {
-          add(
-            UpdateListEventEvent(
-              list: audioList,
-            ),
-          );
-        });
+        if(event.order){
+          _audioSubscription = AddLinkGoodsRepositories.instance
+              .readLinkGoods()
+              .listen((list) {
+            add(
+              UpdateListEventEvent(
+                list: list,
+              ),
+            );
+          });
+        }else{
+          _audioSubscription = AddLinkGoodsRepositories.instance
+              .readLinkDelivery()
+              .listen((list) {
+            add(
+              UpdateListEventEvent(
+                list: list,
+              ),
+            );
+          });
+        }
+
       } on Exception catch (e) {
         emit(state.copyWith(
           status: ListEventStatus.failed,

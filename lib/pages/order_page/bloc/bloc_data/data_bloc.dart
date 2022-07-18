@@ -23,6 +23,7 @@ class OrderDataBloc
         price: event.price,
           additionalServices: event.additionalServices,
           link: event.link,
+          isSwish: event.isSwish,
 
 
         ),

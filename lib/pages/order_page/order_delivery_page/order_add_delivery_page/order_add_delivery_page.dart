@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:usa_in_ua/pages/order_page/bloc/bloc_data/data_bloc.dart';
 
 import '../../../../repositories/add_link_goods_repositories.dart';
 import '../../../../resources/app_colors.dart';
@@ -13,12 +14,17 @@ import '../../../../widgets/prise_dollar.dart';
 import '../../../../widgets/swish_link.dart';
 import '../../../../widgets/text_field_input_text_number.dart';
 import '../../../profile_pages/profile_warehouse _add/profile_warehouse _add.dart';
-import '../../order_pur_del_page/blocs/bloc_data/data_bloc.dart';
-import '../../order_pur_del_page/order_add_pur_del_page/order_add_pur_del_page.dart';
+import '../blocs/get_image_cubit/get_image_cubit.dart';
 
-class OrderAddDeliveryPage extends StatelessWidget {
+class OrderAddDeliveryPage extends StatefulWidget {
   OrderAddDeliveryPage({Key? key}) : super(key: key);
   static const routeName = '/order_delivery_page/order_add_delivery_page';
+
+  @override
+  State<OrderAddDeliveryPage> createState() => _OrderAddDeliveryPageState();
+}
+
+class _OrderAddDeliveryPageState extends State<OrderAddDeliveryPage> {
   final TextEditingController trekNumberController = TextEditingController();
   final TextEditingController qualityController = TextEditingController();
   final TextEditingController priceController = TextEditingController();
@@ -26,12 +32,26 @@ class OrderAddDeliveryPage extends StatelessWidget {
   final TextEditingController detailsController = TextEditingController();
   final bool _isSwish = true;
 
+
+  @override
+  void dispose() {
+   trekNumberController.dispose();
+qualityController.dispose();
+priceController.dispose();
+weightController.dispose();
+detailsController.dispose();
+    super.dispose();
+
+  }
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
         BlocProvider<OrderDataBloc>(
           create: (context) => OrderDataBloc(),
+        ),
+        BlocProvider<GetImageCubit>(
+          create: (context) => GetImageCubit(),
         ),
       ],
       child: Scaffold(
@@ -114,28 +134,31 @@ class OrderAddDeliveryPage extends StatelessWidget {
                 const _Price(),
                 BlocBuilder<OrderDataBloc, OrderDataState>(
                   builder: (context, state) {
-                    return ButtonEnter(
+                    return BlocBuilder<GetImageCubit, GetImageState>(
+  builder: (context, stateGetImage) {
+    return ButtonEnter(
                       onPressed: () {
-                        final bool isSave = trekNumberController.text != '';
+                        final bool isSave = state.link == '' || state.link != null || stateGetImage.image != null;
                         if (isSave) {
-                          AddLinkGoodsRepositories.instance.add(
-                            trekNumberController.text,
-                            qualityController.text,
-                            priceController.text,
-                            weightController.text,
-                            state.additionalServices ?? '',
-                            detailsController.text,
-                            _isSwish,
+                          AddLinkGoodsRepositories.instance.addLinkDelivery(
+                             priceController.text,
+                              weightController.text,
+                              detailsController.text,
+                              state.link ?? '',
+                              _isSwish,
+                              stateGetImage.image ?? '',
                           );
                           Navigator.pop(context);
                         }
                       },
                       text: 'ДАЛЕ',
-                      color: state.link == '' || state.link == null
-                          ? AppColors.noActive
-                          : AppColors.green,
+                      color: state.link == '' || state.link != null || stateGetImage.image != null
+                          ? AppColors.green
+                          : AppColors.noActive,
                       colorText: AppColors.brown,
                     );
+  },
+);
                   },
                 )
               ],
@@ -177,7 +200,7 @@ class _DataForm extends StatelessWidget {
         vertical: 15.0,
       ),
       child: SizedBox(
-        height: 400.0,
+        height: 540.0,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -218,13 +241,79 @@ class _DataForm extends StatelessWidget {
               trekNumberController: trekNumberController,
             ),
             _InvoicesGoods(),
+            _AdditionalInformation(controller: detailsController,),
           ],
         ),
       ),
     );
   }
 }
+class _AdditionalInformation extends StatelessWidget {
+  const _AdditionalInformation({
+    Key? key,
+    this.controller,
+  }) : super(key: key);
+  final TextEditingController? controller;
 
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: double.infinity,
+      height: 130.0,
+      decoration: BoxDecoration(
+        color: Colors.grey.shade100,
+        borderRadius: const BorderRadius.all(
+          Radius.circular(15.0),
+        ),
+      ),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Flexible(
+            flex: 8,
+            child: TextField(
+              maxLines: 5,
+              textAlign: TextAlign.start,
+              keyboardType: TextInputType.text,
+              controller: controller,
+              style: const TextStyle(
+                fontSize: 14.0,
+                color: AppColors.text,
+                fontWeight: FontWeight.w400,
+              ),
+              decoration: InputDecoration(
+                hintText:
+                'Размер, цвет, кол-во, другие \n детали или Ваш вопрос',
+                hintTextDirection: TextDirection.ltr,
+                filled: true,
+                fillColor: Colors.grey.shade100,
+                hintStyle: const TextStyle(
+                  color: AppColors.noActive,
+                  fontSize: 14.0,
+                  fontWeight: FontWeight.w600,
+                ),
+                border: const OutlineInputBorder(
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(15.0),
+                    bottomLeft: Radius.circular(15.0),
+                  ),
+                  borderSide: BorderSide.none,
+                ),
+              ),
+            ),
+          ),
+          Flexible(
+            flex: 1,
+            child: Align(
+                alignment: Alignment.bottomRight,
+                child: SvgPicture.asset(AppIcons.additionalInformation)),
+          ),
+        ],
+      ),
+    );
+  }
+}
 class _Swish extends StatefulWidget {
   _Swish({Key? key, required this.isSwish}) : super(key: key);
   bool isSwish;
@@ -454,11 +543,21 @@ class _LinksDeliveryState extends State<_LinksDelivery>
     return Column(
       children: [
         TextFieldInputTextNumber(
-          onChanged: (data) => context.read<OrderDataBloc>().add(
-                OrderDataEvent(
-                  link: data,
-                ),
+          onChanged: (data) {
+            if(data != ''){
+              isSwish = false;
+              setState((){});
+            }else{
+              isSwish = true;
+              setState((){});
+            }
+            context.read<OrderDataBloc>().add(
+              OrderDataEvent(
+                link: data,
               ),
+            );
+          },
+
           controller: widget.trekNumberController,
           onEditingComplete: () {
             FocusScope.of(context).nextFocus();
@@ -629,8 +728,10 @@ class _InvoicesGoods extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    return BlocBuilder<GetImageCubit, GetImageState>(
+  builder: (context, state) {
     return Container(
-      height: 100.0,
+      height:  state.image != null ? 50.0 :100.0,
       width: double.infinity,
       decoration: BoxDecoration(
           borderRadius: const BorderRadius.all(
@@ -645,66 +746,75 @@ class _InvoicesGoods extends StatelessWidget {
           ]),
       child: Stack(
         children: [
-          Container(
-            height: 100.0,
-            width: double.infinity,
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: const BorderRadius.all(
-                Radius.circular(20.0),
-              ),
-              border: Border.all(
-                color: Colors.grey.shade200,
-              ),
-            ),
-            child: Row(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(25.0),
-                  child: SvgPicture.asset(
-                    AppIcons.invoice,
-                    width: 25.0,
-                    height: 25.0,
-                  ),
+          InkWell(
+            onTap: () => context.read<GetImageCubit>().getImage(),
+            child: Container(
+              height:  state.image != null ? 50.0 :100.0,
+              width: double.infinity,
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: const BorderRadius.all(
+                  Radius.circular(20.0),
                 ),
-                Container(
-                  height: 60.0,
-                  width: 1.0,
-                  color: AppColors.text,
+                border: Border.all(
+                  color: Colors.grey.shade200,
                 ),
-                const Padding(
-                  padding: EdgeInsets.only(
-                    left: 25.0,
-                  ),
-                  child: Text(
-                    'Загрузите инвойс покупки',
-                    style: TextStyle(
-                      fontWeight: FontWeight.w400,
-                      fontSize: 14.0,
+              ),
+              child: Row(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 25.0),
+                    child: SvgPicture.asset(
+                      state.image != null
+                          ? AppIcons.done
+                          :AppIcons.invoice,
+                      width: 25.0,
+                      height: 25.0,
                     ),
                   ),
-                )
-              ],
+                  Container(
+                    height:  state.image != null ? 30.0 : 60.0,
+                    width: 1.0,
+                    color: AppColors.text,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(
+                      left: 25.0,
+                    ),
+                    child: Text(
+                      state.image != null
+                      ? 'htyfdsev1234'
+                      :'Загрузите инвойс покупки',
+                      style: const TextStyle(
+                        fontWeight: FontWeight.w400,
+                        fontSize: 14.0,
+                      ),
+                    ),
+                  )
+                ],
+              ),
             ),
           ),
           Align(
             alignment: Alignment.topRight,
             child: Padding(
               padding: const EdgeInsets.all(15.0),
-              child: InkWell(
-                onTap: () {
-                  _showHint(context);
-                },
-                child: const Text('?',
-                style: TextStyle(
-                  fontSize: 25.0,
-                  color: AppColors.blue
-                ),),
-              ),
+              child: state.image != null  ?null :InkWell(
+    onTap: () {
+    _showHint(context);
+    },
+    child: const Text('?',
+    style: TextStyle(
+    fontSize: 25.0,
+    color: AppColors.blue
+    ),),
+    )  ,
             ),
           )
         ],
       ),
     );
+  },
+);
   }
 }

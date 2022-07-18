@@ -2,7 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:usa_in_ua/pages/order_page/order_pur_del_page/blocs/bloc_list/list_event_bloc.dart';
+import 'package:usa_in_ua/pages/order_page/bloc/bloc_list/list_event_bloc.dart';
 import 'package:usa_in_ua/widgets/button_enter.dart';
 
 import '../../../models/add_link_goods_model.dart';
@@ -25,7 +25,7 @@ class OrderPurDelPage extends StatelessWidget {
     return BlocProvider<ListEventBloc>(
       create: (context) => ListEventBloc()
         ..add(
-          LoadListEventEvent(),
+          LoadListEventEvent(order: true,),
         ),
       child: Scaffold(
         appBar: AppBar(
@@ -138,7 +138,7 @@ class _ListItem extends StatelessWidget {
                 final AddLinkGoodsModel list = state.list[index];
                 return DismissibleWidget(
                     item: list,
-                    onResize: () => AddLinkGoodsRepositories.instance.delete(
+                    onResize: () => AddLinkGoodsRepositories.instance.deleteLinkGoods(
                           list.id!,
                         ),
                     child: _LinkModel(

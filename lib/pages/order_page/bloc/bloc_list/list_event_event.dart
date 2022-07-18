@@ -4,10 +4,16 @@ part of 'list_event_bloc.dart';
 abstract class ListEventEvent extends Equatable {}
 
 class LoadListEventEvent extends ListEventEvent {
-  LoadListEventEvent();
+  LoadListEventEvent({
+    required this.order,
+});
+
+  final bool order;
   @override
   // TODO: implement props
-  List<Object?> get props => [];
+  List<Object?> get props => [
+    order
+  ];
 }
 
 class UpdateListEventEvent extends ListEventEvent {

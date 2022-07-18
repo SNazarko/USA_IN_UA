@@ -1,3 +1,5 @@
+import 'package:image_picker/image_picker.dart';
+
 class AddLinkGoodsModel {
   AddLinkGoodsModel({
     this.id,
@@ -8,6 +10,8 @@ class AddLinkGoodsModel {
     this.additionalServices,
     this.details,
     this.isSwish,
+    this.image,
+    this.track,
 
   });
 
@@ -22,7 +26,9 @@ class AddLinkGoodsModel {
       weight: json['weight'],
       additionalServices: json['additionalServices'],
       details: json['details'],
+      track: json['track'],
       isSwish: json['isSwish'],
+      image: json['image'],
 
     );
   }
@@ -33,7 +39,9 @@ class AddLinkGoodsModel {
   String? weight;
   String? additionalServices;
   String? details;
+  String? track;
   bool? isSwish;
+  String? image;
 
 
   Map<String, dynamic> toJson() => {
@@ -45,6 +53,8 @@ class AddLinkGoodsModel {
     'additionalServices': additionalServices,
     'details': details,
     'isSwish': isSwish,
+    'image': image,
+    'track': track
 
   };
 }

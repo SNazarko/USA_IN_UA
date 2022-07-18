@@ -4,12 +4,14 @@ class OrderDataEvent extends Equatable {
     this.price,
     this.additionalServices,
     this.link,
+    this.isSwish,
 
 
   });
   final String? price;
   final String? additionalServices;
   final String? link;
+  final bool? isSwish;
 
 
 
@@ -18,7 +20,8 @@ class OrderDataEvent extends Equatable {
   List<Object?> get props => [
     price,
     additionalServices,
-    link
+    link,
+    isSwish
 
   ];
 }

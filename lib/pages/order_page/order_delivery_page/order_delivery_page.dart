@@ -3,6 +3,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:usa_in_ua/pages/order_page/bloc/bloc_list/list_event_bloc.dart';
 
 import '../../../models/add_link_goods_model.dart';
 import '../../../repositories/add_link_goods_repositories.dart';
@@ -11,7 +13,6 @@ import '../../../resources/app_icons.dart';
 import '../../../widgets/button_enter.dart';
 import '../../../widgets/icon_link.dart';
 import '../../profile_pages/profile_bank_cards_pages/profile_bank_cards_page.dart';
-import '../order_pur_del_page/blocs/bloc_list/list_event_bloc.dart';
 import '../order_pur_del_page/order_add_pur_del_page/order_add_pur_del_page.dart';
 import 'order_add_delivery_page/order_add_delivery_page.dart';
 
@@ -24,7 +25,7 @@ class OrderDeliveryPage extends StatelessWidget {
     return BlocProvider<ListEventBloc>(
       create: (context) => ListEventBloc()
         ..add(
-          LoadListEventEvent(),
+          LoadListEventEvent(order: false,),
         ),
       child: Scaffold(
         appBar: AppBar(
@@ -137,18 +138,19 @@ class _ListItem extends StatelessWidget {
                 final AddLinkGoodsModel list = state.list[index];
                 return DismissibleWidget(
                     item: list,
-                    onResize: () => AddLinkGoodsRepositories.instance.delete(
+                    onResize: () => AddLinkGoodsRepositories.instance.deleteLinkDelivery(
                       list.id!,
                     ),
                     child: _LinkModel(
-                      quality: list.quality!,
-                      price: list.price!,
-                      isSwish: list.isSwish!,
-                      additionalServices: list.additionalServices!,
-                      weight: list.weight!,
-                      details: list.details!,
-                      link: list.link!,
-                    ));
+                        track: list.track ?? '',
+                        invite: list.image ?? '',
+                        quality: list.quality ?? '',
+                        price: list.price ?? '',
+                        weight: list.weight ?? '',
+                        additionalServices: list.additionalServices ?? '',
+                        details: list.details ?? '',
+                        isSwish: list.isSwish ?? true,
+                    ),);
               },
             ),
           );
@@ -173,7 +175,8 @@ class _ListItem extends StatelessWidget {
 class _LinkModel extends StatelessWidget {
   const _LinkModel({
     Key? key,
-    required this.link,
+    required this.track,
+    required this. invite,
     required this.quality,
     required this.price,
     required this.weight,
@@ -181,7 +184,8 @@ class _LinkModel extends StatelessWidget {
     required this.details,
     required this.isSwish,
   }) : super(key: key);
-  final String link;
+  final String invite;
+  final String track;
   final String quality;
   final String price;
   final String weight;
@@ -211,11 +215,12 @@ class _LinkModel extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              _Link(title: 'ссылка', data: link),
+              invite == ''
+                  ? _Link(title: 'Tрек-номер', data: track)
+              : const _Link(title: 'Инвайс покупки', data: 'Загружен'),
               _Link(
                   title: 'Доставка',
                   data: isSwish ? 'Авиадоставка' : 'Бысторое море'),
-              _Link(title: 'Количество', data: quality),
               _Link(title: 'Цена', data: price),
               _Link(title: 'Примерный вес', data: weight),
               _Link(title: 'Дополнительные услуги', data: additionalServices),

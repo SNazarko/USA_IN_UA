@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:usa_in_ua/pages/order_page/bloc/bloc_data/data_bloc.dart';
 import '../../../../blocs/bloc_anim/anim_bloc.dart';
 import '../../../../repositories/add_link_goods_repositories.dart';
 import '../../../../resources/app_colors.dart';
@@ -11,7 +12,7 @@ import '../../../../widgets/button_enter.dart';
 import '../../../../widgets/prise_dollar.dart';
 import '../../../../widgets/swish_link.dart';
 import '../../../../widgets/text_field_input_text_number.dart';
-import '../blocs/bloc_data/data_bloc.dart';
+
 
 class OrderAddPurDelPage extends StatelessWidget {
   OrderAddPurDelPage({Key? key}) : super(key: key);
@@ -99,7 +100,7 @@ class OrderAddPurDelPage extends StatelessWidget {
                       onPressed: () {
                         final bool isSave = lincController.text != '';
                         if (isSave) {
-                          AddLinkGoodsRepositories.instance.add(
+                          AddLinkGoodsRepositories.instance.addLinkGoods(
                             lincController.text,
                             qualityController.text,
                             priceController.text,

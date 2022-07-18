@@ -6,16 +6,19 @@ class OrderDataState extends Equatable {
     this.price,
     this.additionalServices,
     this.link,
+    this.isSwish,
 
   });
   final String? price;
   final String? additionalServices;
   final String? link;
+  final bool? isSwish;
 
   OrderDataState copyWith({
     String? price,
     String? additionalServices,
     String? link,
+    bool? isSwish,
 
 
 
@@ -25,6 +28,7 @@ class OrderDataState extends Equatable {
       price: price ?? this.price,
       additionalServices: additionalServices ?? this.additionalServices,
       link: link ?? this.link,
+      isSwish: isSwish ?? this.isSwish,
 
 
 
