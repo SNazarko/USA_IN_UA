@@ -154,7 +154,6 @@ class CustomBottomNavBar extends StatelessWidget {
                                       e.iconPath,
                                       i,
                                     ),
-                                    color: AppColors.text,
                                   ),
                                 ],
                               ),
