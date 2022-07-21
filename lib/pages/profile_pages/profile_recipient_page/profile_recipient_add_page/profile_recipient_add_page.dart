@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_multi_formatter/formatters/masked_input_formatter.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:usa_in_ua/blocs/address_list_form/list_form_bloc.dart';
 
 import '../../../../database/files_db.dart';
 import '../../../../models/recipient_model.dart';
@@ -21,7 +22,6 @@ import '../../profile_google_maps_page/profile_google_maps_page.dart';
 import '../blocs/bloc_city/city_bloc.dart';
 import '../blocs/bloc_data/profile_recipient_bloc.dart';
 import '../blocs/bloc_data/profile_recipient_event.dart';
-import '../blocs/bloc_list_form/list_form_bloc.dart';
 import '../blocs/bloc_new_post/new_post_bloc.dart';
 import '../blocs/bloc_region/region_bloc.dart';
 import '../blocs/bloc_street/bloc_street_bloc.dart';

@@ -3,6 +3,7 @@ enum ListFormStatus {
   initial,
   success,
   failed,
+  empty
 }
 
 @immutable

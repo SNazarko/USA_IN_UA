@@ -18,10 +18,10 @@ class ListFormBloc extends Bloc<ListFormEvent, ListFormState> {
         _audioSubscription?.cancel();
         _audioSubscription = RecipientRepositories.instance
             .read()
-            .listen((audioList) {
+            .listen((list) {
           add(
             UpdateListFormEvent(
-              list: audioList,
+              list: list,
             ),
           );
         });
@@ -35,12 +35,20 @@ class ListFormBloc extends Bloc<ListFormEvent, ListFormState> {
         UpdateListFormEvent event,
         Emitter<ListFormState> emit,
         ) {
-      emit(
-        state.copyWith(
-          status: ListFormStatus.success,
-          list: event.list,
-        ),
-      );
+      if(event.list.isEmpty){
+        emit(
+          state.copyWith(
+            status: ListFormStatus.empty,
+          ),
+        );
+      }else{
+        emit(
+          state.copyWith(
+            status: ListFormStatus.success,
+            list: event.list,
+          ),
+        );
+      }
     });
   }
   StreamSubscription? _audioSubscription;

@@ -30,5 +30,6 @@ class AppImages {
   static const String walletRafiki = '$_path/wallet_rafiki.png';
   static const String walletRafiki2 = '$_path/wallet_rafiki2.png';
   static const String rectangle = '$_path/rectangle.png';
+  static const String addressRafiki = '$_path/address_rafiki.png';
 
 }

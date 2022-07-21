@@ -1,8 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
+import 'package:usa_in_ua/pages/delivery_page/delivery_order_page/widgets/delivery_address.dart';
 
+import '../../../blocs/address_list_form/list_form_bloc.dart';
 import '../../../resources/app_colors.dart';
 import '../../../resources/app_icons.dart';
 import '../../../widgets/button_enter.dart';
@@ -13,65 +16,79 @@ class DeliveryOrderPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        elevation: 0.0,
-        centerTitle: true,
-        leading: InkWell(
-          onTap: () => Navigator.pop(context),
-          child: Padding(
-            padding: const EdgeInsets.all(15.0),
-            child: SvgPicture.asset(
-              AppIcons.arrowLeft,
-            ),
-          ),
+    return BlocProvider<ListFormBloc>(
+      create: (context) => ListFormBloc()
+        ..add(
+          LoadListFormEvent(),
         ),
-        title: const Text(
-          'Заказ №7356',
-          style: TextStyle(
-            color: AppColors.text,
-            fontSize: 20.0,
-            fontWeight: FontWeight.w600,
+      child: Scaffold(
+        appBar: AppBar(
+          backgroundColor: Colors.white,
+          elevation: 0.0,
+          centerTitle: true,
+          leading: InkWell(
+            onTap: () => Navigator.pop(context),
+            child: Padding(
+              padding: const EdgeInsets.all(15.0),
+              child: SvgPicture.asset(
+                AppIcons.arrowLeft,
+              ),
+            ),
           ),
+          title: const Text(
+            'Заказ №7356',
+            style: TextStyle(
+              color: AppColors.text,
+              fontSize: 20.0,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+          actions: [
+            Padding(
+              padding: const EdgeInsets.only(
+                right: 16.0,
+              ),
+              child: SvgPicture.asset(
+                AppIcons.menu,
+              ),
+            ),
+          ],
         ),
-        actions: [
-          Padding(
-            padding: const EdgeInsets.only(
-              right: 16.0,
-            ),
-            child: SvgPicture.asset(
-              AppIcons.menu,
-            ),
-          ),
-        ],
-      ),
-      body: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(
-              horizontal: 16.0,
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: const [
-                Text(
-                  'Только доставка',
-                  style: TextStyle(
-                    fontSize: 14.0,
-                    fontWeight: FontWeight.w400,
-                  ),
+        body: Column(
+          children: [
+            SizedBox(
+              width: double.infinity,
+              height: 95.0,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 16.0,
                 ),
-                ButtonEnter(
-                  text: 'Расчет стоимости',
-                  colorText: AppColors.text,
-                  color: AppColors.contour,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: const [
+                    Padding(
+                      padding: EdgeInsets.all(10.0),
+                      child: Text(
+                        'Только доставка',
+                        style: TextStyle(
+                          fontSize: 14.0,
+                          fontWeight: FontWeight.w400,
+                        ),
+                      ),
+                    ),
+                    ButtonEnter(
+                      text: 'Расчет стоимости',
+                      colorText: AppColors.text,
+                      color: AppColors.contour,
+                    ),
+                  ],
                 ),
-              ],
+              ),
             ),
-          ),
-          _LinkMenu(),
-        ],
+            _LinkMenu(),
+            Expanded(child: DeliveryAddress()),
+          ],
+        ),
       ),
     );
   }
@@ -85,26 +102,25 @@ class _LinkMenu extends StatefulWidget {
 }
 
 class _LinkMenuState extends State<_LinkMenu> {
-  final ScrollController _pageController = ScrollController(initialScrollOffset: 60.0);
+  final ScrollController _pageController =
+      ScrollController(initialScrollOffset: 60.0);
 
   int? _currentPage = 1;
 
-  static const List<ItemLinkMenu> _listItemMenu = [
-    ItemLinkMenu(
+  static const List<_ItemLinkMenuModel> _listItemMenu = [
+    _ItemLinkMenuModel(
       image: AppIcons.tracking,
       title: 'Отслеживание',
     ),
-    ItemLinkMenu(
+    _ItemLinkMenuModel(
       image: AppIcons.storageAddress,
       title: 'Адрес доставки',
     ),
-    ItemLinkMenu(
+    _ItemLinkMenuModel(
       image: AppIcons.buy,
       title: 'Товары',
     ),
   ];
-  
-
 
   @override
   Widget build(BuildContext context) {
@@ -132,13 +148,15 @@ class _LinkMenuState extends State<_LinkMenu> {
                         duration: const Duration(milliseconds: 200),
                         curve: Curves.easeIn,
                       );
-                    }  if (index == 1) {
+                    }
+                    if (index == 1) {
                       _pageController.animateTo(
                         60.0,
                         duration: const Duration(milliseconds: 200),
                         curve: Curves.easeIn,
                       );
-                    }  if (index == 2) {
+                    }
+                    if (index == 2) {
                       _pageController.animateTo(
                         98.0,
                         duration: const Duration(milliseconds: 200),
@@ -153,42 +171,44 @@ class _LinkMenuState extends State<_LinkMenu> {
             ),
           ),
           Flexible(
-              flex: 1,
-              child: Center(
-                child: SizedBox(
-                  width: 150.0,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: _listItemMenu.map((e) {
-                      final int i = _listItemMenu.indexOf(e);
+            flex: 1,
+            child: Center(
+              child: SizedBox(
+                width: 150.0,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: _listItemMenu.map((e) {
+                    final int i = _listItemMenu.indexOf(e);
 
-                      return Container(
-                        width: 25.0,
-                        height: 5,
-                        decoration: BoxDecoration(
-                          color: _currentPage == i
-                              ? AppColors.blue
-                              : AppColors.noActive,
-                          borderRadius: const BorderRadius.all(
-                            Radius.circular(10.0),
-                          ),
+                    return Container(
+                      width: 25.0,
+                      height: 5,
+                      decoration: BoxDecoration(
+                        color: _currentPage == i
+                            ? AppColors.blue
+                            : AppColors.noActive,
+                        borderRadius: const BorderRadius.all(
+                          Radius.circular(10.0),
                         ),
-                      );
-                    }).toList(),
-                  ),
+                      ),
+                    );
+                  }).toList(),
                 ),
-              ),)
+              ),
+            ),
+          )
         ],
       ),
     );
   }
 }
 
-class ItemLinkMenu {
-  const ItemLinkMenu({
+class _ItemLinkMenuModel {
+  const _ItemLinkMenuModel({
     required this.title,
     required this.image,
   });
+
   final String title;
   final String image;
 }
