@@ -4,6 +4,7 @@ import 'package:usa_in_ua/pages/profile_pages/profile_recipient_page/profile_rec
 
 import '../pages/authorisations_pages/authorisation_page/authorisations_page.dart';
 import '../pages/authorisations_pages/registration_page/registration_page.dart';
+import '../pages/delivery_page/delivery_order_page/delivery_order_page.dart';
 import '../pages/delivery_page/delivery_page.dart';
 import '../pages/home_pages/home_delivery_page/home_delivery_page.dart';
 import '../pages/home_pages/home_page.dart';
@@ -54,6 +55,14 @@ class AppRouter {
         break;
 
       // delivery_page
+      //delivery_page/delivery_order_page
+      case DeliveryOrderPage.routeName:
+        builder = (_) => DeliveryOrderPage();
+        break;
+
+
+
+
       case DeliveryPage.routeName:
         builder = (_) => DeliveryPage();
         break;

@@ -35,16 +35,6 @@ class ProfileFinancePage extends StatelessWidget {
             fontWeight: FontWeight.w600,
           ),
         ),
-        actions: [
-          Padding(
-            padding: const EdgeInsets.only(
-              right: 16.0,
-            ),
-            child: SvgPicture.asset(
-              AppIcons.menu,
-            ),
-          ),
-        ],
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(

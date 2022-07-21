@@ -8,6 +8,7 @@ import '../../resources/app_colors.dart';
 import '../../widgets/button_enter.dart';
 import '../../widgets/icon_link.dart';
 import '../../widgets/prise_dollar.dart';
+import 'delivery_order_page/delivery_order_page.dart';
 
 class DeliveryPage extends StatelessWidget {
   const DeliveryPage({Key? key}) : super(key: key);
@@ -132,7 +133,7 @@ class _LinkGoodsModel extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 10.0,),
       child: InkWell(
-        onTap: () => ,
+        onTap: () => Navigator.pushNamed(context, DeliveryOrderPage.routeName),
         child: Container(
           width: double.infinity,
           height: 150.0,

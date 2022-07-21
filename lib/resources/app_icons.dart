@@ -56,4 +56,5 @@ class AppIcons {
   static const String tickSquare = '$_path/tick_square.svg';
   static const String weight2 = '$_path/weight2.svg';
   static const String dollar2 = '$_path/dollar2.svg';
+  static const String tracking = '$_path/tracking.svg';
 }

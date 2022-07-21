@@ -33,6 +33,18 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
   Timer? _timerAmplitude;
   static final GlobalKey<NavigatorState> _navigatorKey =
   GlobalKey<NavigatorState>();
+
+
+
+
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    controller.dispose();
+  }
+
   void _animPlus() {
     controller = AnimationController(
       duration: const Duration(seconds: 1),
