@@ -1,27 +1,36 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:usa_in_ua/pages/delivery_page/delivery_order_page/widgets/delivery_address.dart';
+import 'package:usa_in_ua/pages/delivery_page/delivery_order_page/widgets/delivery_goods.dart';
 import 'package:usa_in_ua/pages/delivery_page/delivery_order_page/widgets/delivery_tracking.dart';
 
 import '../../../blocs/address_list_form/list_form_bloc.dart';
 import '../../../resources/app_colors.dart';
 import '../../../resources/app_icons.dart';
 import '../../../widgets/button_enter.dart';
+import '../bloc/widget_listener/widget_listener_bloc.dart';
 
 class DeliveryOrderPage extends StatelessWidget {
   const DeliveryOrderPage({Key? key}) : super(key: key);
   static const routeName = '/delivery_page/delivery_order_page';
 
+
   @override
   Widget build(BuildContext context) {
-    return BlocProvider<ListFormBloc>(
-      create: (context) => ListFormBloc()
-        ..add(
-          LoadListFormEvent(),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider<ListFormBloc>(
+          create: (context) =>
+          ListFormBloc()
+            ..add(
+              LoadListFormEvent(),
+            ),
         ),
+        BlocProvider<WidgetListenerBloc>(
+          create: (context) => WidgetListenerBloc(),
+        ),
+      ],
       child: Scaffold(
         appBar: AppBar(
           backgroundColor: Colors.white,
@@ -57,47 +66,67 @@ class DeliveryOrderPage extends StatelessWidget {
         ),
         body: Column(
           children: [
-            SizedBox(
-              width: double.infinity,
-              height: 95.0,
-              child: Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 16.0,
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: const [
-                    Padding(
-                      padding: EdgeInsets.all(10.0),
-                      child: Text(
-                        'Только доставка',
-                        style: TextStyle(
-                          fontSize: 14.0,
-                          fontWeight: FontWeight.w400,
-                        ),
-                      ),
-                    ),
-                    ButtonEnter(
-                      text: 'Расчет стоимости',
-                      colorText: AppColors.text,
-                      color: AppColors.contour,
-                    ),
-                  ],
-                ),
-              ),
+          SizedBox(
+          width: double.infinity,
+          height: 95.0,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(
+              horizontal: 16.0,
             ),
-            _LinkMenu(),
-            // Expanded(child: DeliveryAddress()),
-            Expanded(child: DeliveryTracking(),),
-          ],
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: const [
+                Padding(
+                  padding: EdgeInsets.all(10.0),
+                  child: Text(
+                    'Только доставка',
+                    style: TextStyle(
+                      fontSize: 14.0,
+                      fontWeight: FontWeight.w400,
+                    ),
+                  ),
+                ),
+                ButtonEnter(
+                  text: 'Расчет стоимости',
+                  colorText: AppColors.text,
+                  color: AppColors.contour,
+                ),
+              ],
+            ),
+          ),
         ),
-      ),
+        const _LinkMenu(),
+        _DataListsWidget(),
+      ],
+    ),)
+    ,
     );
   }
 }
 
+
+class _DataListsWidget extends StatelessWidget {
+  _DataListsWidget({Key? key}) : super(key: key);
+  final List<Widget> _list = [
+    const DeliveryTracking(),
+    const DeliveryAddress(),
+    const DeliveryGoods(),
+  ];
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<WidgetListenerBloc, WidgetListenerState>(
+      builder: (context, state) {
+        return Expanded(child: _list[state.index]);
+      },
+    );
+  }
+}
+
+
 class _LinkMenu extends StatefulWidget {
-  const _LinkMenu({Key? key}) : super(key: key);
+  const _LinkMenu({Key? key,}) : super(key: key);
+
 
   @override
   State<_LinkMenu> createState() => _LinkMenuState();
@@ -105,9 +134,7 @@ class _LinkMenu extends StatefulWidget {
 
 class _LinkMenuState extends State<_LinkMenu> {
   final ScrollController _pageController =
-      ScrollController(initialScrollOffset: 60.0);
-
-  int? _currentPage = 1;
+  ScrollController(initialScrollOffset: 60.0);
 
   static const List<_ItemLinkMenuModel> _listItemMenu = [
     _ItemLinkMenuModel(
@@ -165,8 +192,8 @@ class _LinkMenuState extends State<_LinkMenu> {
                         curve: Curves.easeIn,
                       );
                     }
-                    _currentPage = index;
-                    setState(() {});
+                    context.read<WidgetListenerBloc>().add(
+                      WidgetListenerEvent(index: index,),);
                   },
                 );
               },
@@ -174,29 +201,33 @@ class _LinkMenuState extends State<_LinkMenu> {
           ),
           Flexible(
             flex: 1,
-            child: Center(
-              child: SizedBox(
-                width: 150.0,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: _listItemMenu.map((e) {
-                    final int i = _listItemMenu.indexOf(e);
+            child: BlocBuilder<WidgetListenerBloc, WidgetListenerState>(
+              builder: (context, state) {
+                return Center(
+                  child: SizedBox(
+                    width: 150.0,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: _listItemMenu.map((e) {
+                        final int i = _listItemMenu.indexOf(e);
 
-                    return Container(
-                      width: 25.0,
-                      height: 5,
-                      decoration: BoxDecoration(
-                        color: _currentPage == i
-                            ? AppColors.blue
-                            : AppColors.noActive,
-                        borderRadius: const BorderRadius.all(
-                          Radius.circular(10.0),
-                        ),
-                      ),
-                    );
-                  }).toList(),
-                ),
-              ),
+                        return Container(
+                          width: 25.0,
+                          height: 5,
+                          decoration: BoxDecoration(
+                            color: state.index == i
+                                ? AppColors.blue
+                                : AppColors.noActive,
+                            borderRadius: const BorderRadius.all(
+                              Radius.circular(10.0),
+                            ),
+                          ),
+                        );
+                      }).toList(),
+                    ),
+                  ),
+                );
+              },
             ),
           )
         ],

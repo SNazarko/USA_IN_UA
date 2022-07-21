@@ -19,20 +19,12 @@ class OrderDataState extends Equatable {
     String? additionalServices,
     String? link,
     bool? isSwish,
-
-
-
-
   }) {
     return OrderDataState(
       price: price ?? this.price,
       additionalServices: additionalServices ?? this.additionalServices,
       link: link ?? this.link,
       isSwish: isSwish ?? this.isSwish,
-
-
-
-
     );
   }
 
