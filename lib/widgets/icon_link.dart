@@ -11,11 +11,13 @@ class IconLink extends StatelessWidget {
     this.fontWeight,
     this.fontSize,
     this.sizeIcon,
+    this.mainAxisAlignment,
   }) : super(key: key);
   final String text;
   final String icon;
   final Color color;
   final CrossAxisAlignment crossAxisAlignment;
+  final MainAxisAlignment? mainAxisAlignment;
   final FontWeight? fontWeight;
   final double? fontSize;
   final double? sizeIcon;
@@ -23,7 +25,7 @@ class IconLink extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
-      // mainAxisAlignment: MainAxisAlignment.start,
+      mainAxisAlignment: mainAxisAlignment ?? MainAxisAlignment.start,
       crossAxisAlignment: crossAxisAlignment,
       children: [
         Flexible(
