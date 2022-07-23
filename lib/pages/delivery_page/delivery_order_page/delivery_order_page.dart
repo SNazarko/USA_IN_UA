@@ -11,18 +11,31 @@ import '../../../resources/app_icons.dart';
 import '../../../widgets/button_enter.dart';
 import '../bloc/widget_listener/widget_listener_bloc.dart';
 
-class DeliveryOrderPage extends StatelessWidget {
-  const DeliveryOrderPage({Key? key}) : super(key: key);
-  static const routeName = '/delivery_page/delivery_order_page';
+class DeliveryOrderPageArguments {
+  DeliveryOrderPageArguments(
+    this.status,
+    this.isSwish,
+  );
+  final List status;
+  final bool isSwish;
+}
 
+class DeliveryOrderPage extends StatelessWidget {
+  const DeliveryOrderPage({
+    Key? key,
+    required this.status,
+    required this.isSwish,
+  }) : super(key: key);
+  static const routeName = '/delivery_page/delivery_order_page';
+  final List status;
+  final bool isSwish;
 
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
         BlocProvider<ListFormBloc>(
-          create: (context) =>
-          ListFormBloc()
+          create: (context) => ListFormBloc()
             ..add(
               LoadListFormEvent(),
             ),
@@ -66,67 +79,78 @@ class DeliveryOrderPage extends StatelessWidget {
         ),
         body: Column(
           children: [
-          SizedBox(
-          width: double.infinity,
-          height: 95.0,
-          child: Padding(
-            padding: const EdgeInsets.symmetric(
-              horizontal: 16.0,
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: const [
-                Padding(
-                  padding: EdgeInsets.all(10.0),
-                  child: Text(
-                    'Только доставка',
-                    style: TextStyle(
-                      fontSize: 14.0,
-                      fontWeight: FontWeight.w400,
+            SizedBox(
+              width: double.infinity,
+              height: 95.0,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 16.0,
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: const [
+                    Padding(
+                      padding: EdgeInsets.all(10.0),
+                      child: Text(
+                        'Только доставка',
+                        style: TextStyle(
+                          fontSize: 14.0,
+                          fontWeight: FontWeight.w400,
+                        ),
+                      ),
                     ),
-                  ),
+                    ButtonEnter(
+                      text: 'Расчет стоимости',
+                      colorText: AppColors.text,
+                      color: AppColors.contour,
+                    ),
+                  ],
                 ),
-                ButtonEnter(
-                  text: 'Расчет стоимости',
-                  colorText: AppColors.text,
-                  color: AppColors.contour,
-                ),
-              ],
+              ),
             ),
-          ),
+            const _LinkMenu(),
+            _DataListsWidget(
+              status: status,
+              isSwish: isSwish,
+            ),
+          ],
         ),
-        const _LinkMenu(),
-        _DataListsWidget(),
-      ],
-    ),)
-    ,
+      ),
     );
   }
 }
 
-
 class _DataListsWidget extends StatelessWidget {
-  _DataListsWidget({Key? key}) : super(key: key);
-  final List<Widget> _list = [
-    const DeliveryTracking(),
-    const DeliveryAddress(),
-    const DeliveryGoods(),
-  ];
+  const _DataListsWidget({
+    Key? key,
+    required this.status,
+    required this.isSwish,
+  }) : super(key: key);
+  final List status;
+  final bool isSwish;
 
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<WidgetListenerBloc, WidgetListenerState>(
       builder: (context, state) {
+        final List<Widget> _list = [
+          DeliveryTracking(
+            status: status,
+            isSwish: isSwish,
+          ),
+          const DeliveryAddress(),
+          const DeliveryGoods(),
+        ];
         return Expanded(child: _list[state.index]);
       },
     );
   }
 }
 
-
 class _LinkMenu extends StatefulWidget {
-  const _LinkMenu({Key? key,}) : super(key: key);
-
+  const _LinkMenu({
+    Key? key,
+  }) : super(key: key);
 
   @override
   State<_LinkMenu> createState() => _LinkMenuState();
@@ -134,7 +158,7 @@ class _LinkMenu extends StatefulWidget {
 
 class _LinkMenuState extends State<_LinkMenu> {
   final ScrollController _pageController =
-  ScrollController(initialScrollOffset: 60.0);
+      ScrollController(initialScrollOffset: 60.0);
 
   static const List<_ItemLinkMenuModel> _listItemMenu = [
     _ItemLinkMenuModel(
@@ -193,7 +217,10 @@ class _LinkMenuState extends State<_LinkMenu> {
                       );
                     }
                     context.read<WidgetListenerBloc>().add(
-                      WidgetListenerEvent(index: index,),);
+                          WidgetListenerEvent(
+                            index: index,
+                          ),
+                        );
                   },
                 );
               },

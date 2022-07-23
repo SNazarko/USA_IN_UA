@@ -1,4 +1,3 @@
-import 'package:image_picker/image_picker.dart';
 
 class AddLinkGoodsModel {
   AddLinkGoodsModel({
@@ -15,6 +14,7 @@ class AddLinkGoodsModel {
     this.status,
     this.imageGoods,
     this.statusItem,
+    this.statusGoods,
 
   });
 
@@ -35,6 +35,7 @@ class AddLinkGoodsModel {
       status: json['status'],
       imageGoods: json['imageGoods'],
       statusItem: json['statusItem'],
+      statusGoods: json['statusGoods'],
 
     );
   }
@@ -51,6 +52,7 @@ class AddLinkGoodsModel {
   String? imageGoods;
   String? status;
   List? statusItem;
+  List? statusGoods;
 
 
   Map<String, dynamic> toJson() => {
@@ -66,6 +68,7 @@ class AddLinkGoodsModel {
     'status': status,
     'imageGoods': imageGoods,
     'statusItem': statusItem,
+    'statusGoods': statusGoods,
     'track': track
 
   };

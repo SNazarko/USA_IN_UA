@@ -66,6 +66,7 @@ class AddLinkGoodsRepositories {
       quality: '1',
       status: 'Расчет стоимости заявки',
       statusItem: ['all'],
+      statusGoods: ['Расчет стоимости'],
     );
     final json = data.toJson();
     FirebaseFirestore.instance
@@ -116,6 +117,7 @@ class AddLinkGoodsRepositories {
       isSwish: isSwish,
       status: 'Готов к оплате',
         statusItem: ['all'],
+      statusGoods: ['Расчет стоимости'],
     );
     final json = data.toJson();
     FirebaseFirestore.instance

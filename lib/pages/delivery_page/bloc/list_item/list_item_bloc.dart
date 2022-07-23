@@ -21,6 +21,7 @@ class DeliveryListItemBloc extends Bloc<DeliveryListItemEvent, DeliveryListItemS
         Emitter<DeliveryListItemState> emit,
         ) async {
       List item = [];
+      item.clear();
       try {
         Stream<List<AddLinkGoodsModel>> _goodsSubscription = AddLinkGoodsRepositories.instance.readLinkGoods(event.sort!);
         Stream<List<AddLinkGoodsModel>> _deliverySubscription = AddLinkGoodsRepositories.instance.readLinkDelivery(event.sort!);

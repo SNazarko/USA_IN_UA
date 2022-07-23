@@ -57,7 +57,11 @@ class AppRouter {
       // delivery_page
       //delivery_page/delivery_order_page
       case DeliveryOrderPage.routeName:
-        builder = (_) => DeliveryOrderPage();
+        final DeliveryOrderPageArguments args =
+        arguments as DeliveryOrderPageArguments;
+        builder = (_) => DeliveryOrderPage(
+          isSwish: args.isSwish,
+          status: args.status,);
         break;
 
 

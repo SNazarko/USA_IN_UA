@@ -142,7 +142,6 @@ class _LinkMenu extends StatelessWidget {
   }
 }
 
-
 class _ListGoods extends StatelessWidget {
   const _ListGoods({Key? key}) : super(key: key);
 
@@ -163,6 +162,7 @@ class _ListGoods extends StatelessWidget {
                 weight: data.weight ?? '0.0',
                 status: data.status ?? '',
                 quality: data.quality ?? '',
+                statusGoods: data.statusGoods ?? [],
               );
             },
           );
@@ -193,7 +193,7 @@ class _LinkGoodsModel extends StatelessWidget {
     required this.price,
     required this.weight,
     required this.status,
-    required this.quality,
+    required this.quality, required this.statusGoods,
   }) : super(key: key);
   final String image;
   final String quality;
@@ -202,6 +202,7 @@ class _LinkGoodsModel extends StatelessWidget {
   final String weight;
   final String status;
   final bool isSwish;
+  final List statusGoods;
 
   String _numberGoods(String numberGoods) {
     final String number =
@@ -215,7 +216,7 @@ class _LinkGoodsModel extends StatelessWidget {
   }
 
   Widget _status(String status) {
-    if (status == 'Расчет стоимости заявки') {
+    if (status == 'Готов к оплате') {
       return const Expanded(
           child: ButtonEnter(
         text: 'ОПЛАТИТЬ',
@@ -223,7 +224,17 @@ class _LinkGoodsModel extends StatelessWidget {
         color: AppColors.green,
       ));
     }
-    if (status == 'Готов к оплате') {
+    if (status == 'Заказ в дороге') {
+      return const Text(
+        'Прослидить',
+        style: TextStyle(
+          fontSize: 14.0,
+          fontWeight: FontWeight.w400,
+          color: AppColors.text,
+        ),
+      );
+    }
+    if (status == 'Расчет стоимости заявки') {
       return const Text(
         'Продолжите',
         style: TextStyle(
@@ -253,7 +264,15 @@ class _LinkGoodsModel extends StatelessWidget {
         vertical: 10.0,
       ),
       child: InkWell(
-        onTap: () => Navigator.pushNamed(context, DeliveryOrderPage.routeName),
+        onTap: () => Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) {
+            return DeliveryOrderPage(
+              status: statusGoods,
+              isSwish: isSwish,
+            );
+          }),
+        ),
         child: Container(
           width: double.infinity,
           height: 150.0,
