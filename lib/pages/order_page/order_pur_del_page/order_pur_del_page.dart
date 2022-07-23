@@ -25,7 +25,7 @@ class OrderPurDelPage extends StatelessWidget {
     return BlocProvider<ListEventBloc>(
       create: (context) => ListEventBloc()
         ..add(
-          LoadListEventEvent(order: true,),
+          LoadListEventEvent(order: true,sort: 'All'),
         ),
       child: Scaffold(
         appBar: AppBar(

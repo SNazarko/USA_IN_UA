@@ -36,6 +36,7 @@ dependencies:
   rflutter_alert: ^2.0.4
   image_picker: ^0.8.4+4
   smooth_page_indicator: ^1.0.0+2
+  rxdart: ^0.27.5
 
 
 

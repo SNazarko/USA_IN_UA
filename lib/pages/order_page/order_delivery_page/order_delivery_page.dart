@@ -25,7 +25,7 @@ class OrderDeliveryPage extends StatelessWidget {
     return BlocProvider<ListEventBloc>(
       create: (context) => ListEventBloc()
         ..add(
-          LoadListEventEvent(order: false,),
+          LoadListEventEvent(order: false,sort: 'All'),
         ),
       child: Scaffold(
         appBar: AppBar(

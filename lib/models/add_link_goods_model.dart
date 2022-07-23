@@ -12,6 +12,9 @@ class AddLinkGoodsModel {
     this.isSwish,
     this.image,
     this.track,
+    this.status,
+    this.imageGoods,
+    this.statusItem,
 
   });
 
@@ -29,6 +32,9 @@ class AddLinkGoodsModel {
       track: json['track'],
       isSwish: json['isSwish'],
       image: json['image'],
+      status: json['status'],
+      imageGoods: json['imageGoods'],
+      statusItem: json['statusItem'],
 
     );
   }
@@ -42,6 +48,9 @@ class AddLinkGoodsModel {
   String? track;
   bool? isSwish;
   String? image;
+  String? imageGoods;
+  String? status;
+  List? statusItem;
 
 
   Map<String, dynamic> toJson() => {
@@ -54,6 +63,9 @@ class AddLinkGoodsModel {
     'details': details,
     'isSwish': isSwish,
     'image': image,
+    'status': status,
+    'imageGoods': imageGoods,
+    'statusItem': statusItem,
     'track': track
 
   };

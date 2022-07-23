@@ -230,7 +230,7 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
                           const Duration(milliseconds: 1), (_) async {
                         context.read<AnimBloc>().add(
                               AnimEvent(
-                                anim: animation.value,
+                                anim: animation.value ?? 0.0,
                               ),
                             );
                       });

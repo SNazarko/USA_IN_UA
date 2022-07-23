@@ -19,7 +19,7 @@ class ListEventBloc extends Bloc<ListEventEvent, ListEventState> {
         _audioSubscription?.cancel();
         if(event.order){
           _audioSubscription = AddLinkGoodsRepositories.instance
-              .readLinkGoods()
+              .readLinkGoods(event.sort!)
               .listen((list) {
             add(
               UpdateListEventEvent(
@@ -29,7 +29,7 @@ class ListEventBloc extends Bloc<ListEventEvent, ListEventState> {
           });
         }else{
           _audioSubscription = AddLinkGoodsRepositories.instance
-              .readLinkDelivery()
+              .readLinkDelivery(event.sort!)
               .listen((list) {
             add(
               UpdateListEventEvent(

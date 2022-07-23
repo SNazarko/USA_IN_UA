@@ -21,7 +21,6 @@ class ListItemState extends Equatable {
   ListItemState copyWith({
     ListItemStatus? status,
     List? list,
-    StreamSubscription<List>? streamList,
   }) {
     return ListItemState(
       status: status ?? this.status,
