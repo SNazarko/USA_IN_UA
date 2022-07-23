@@ -67,6 +67,7 @@ class AddLinkGoodsRepositories {
       status: 'Расчет стоимости заявки',
       statusItem: ['all'],
       statusGoods: ['Расчет стоимости'],
+      purDel: false,
     );
     final json = data.toJson();
     FirebaseFirestore.instance
@@ -118,6 +119,7 @@ class AddLinkGoodsRepositories {
       status: 'Готов к оплате',
         statusItem: ['all'],
       statusGoods: ['Расчет стоимости'],
+      purDel: true,
     );
     final json = data.toJson();
     FirebaseFirestore.instance

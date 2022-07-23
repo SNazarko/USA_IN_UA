@@ -6,7 +6,19 @@ import 'package:usa_in_ua/resources/app_colors.dart';
 import '../../../../resources/app_icons.dart';
 
 class DeliveryGoods extends StatelessWidget {
-  const DeliveryGoods({Key? key}) : super(key: key);
+  const DeliveryGoods({
+    Key? key,
+    required this.link,
+    required this.statusGoods,
+    required this.quality,
+    required this.additionalServices,
+    required this.details,
+  }) : super(key: key);
+  final String link;
+  final List statusGoods;
+  final String quality;
+  final String additionalServices;
+  final String details;
 
   @override
   Widget build(BuildContext context) {
@@ -59,21 +71,21 @@ class DeliveryGoods extends StatelessWidget {
                             ),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
-                              children: const [
+                              children:  [
                                 Text(
-                                  'Заказ доставлен 16.12.20',
+                                  statusGoods.last,
                                   maxLines: 1,
                                   overflow: TextOverflow.ellipsis,
-                                  style: TextStyle(
+                                  style: const TextStyle(
                                     fontSize: 16.0,
                                     fontWeight: FontWeight.w600,
                                   ),
                                 ),
                                 Text(
-                                  'https://www.macys.com/sssssss/ssss/sssss/ssss',
+                                  link,
                                   maxLines: 1,
                                   overflow: TextOverflow.ellipsis,
-                                  style: TextStyle(
+                                  style: const TextStyle(
                                     fontSize: 14.0,
                                     fontWeight: FontWeight.w400,
                                   ),
@@ -84,25 +96,33 @@ class DeliveryGoods extends StatelessWidget {
                         ),
                       ],
                     ),
-                    const _Link(
+                     _Link(
                       title: 'Количество:',
-                      value: '9 шт',
+                      value: '$quality шт',
                     ),
-                    const _Link(
+                     _Link(
                       title: 'Доп. услуги:',
                       value:
-                          'Фото товару, додаткове пакування, перевірка на увімк/вимк',
+                         additionalServices,
                     ),
                     const _Link(
                       title: 'Трек номер:',
                       value: '9400116901639555951023',
                       color: AppColors.blue,
                     ),
-                    const Text(
-                      'Комментарий к товару',
-                      style: TextStyle(
-                        fontSize: 14.0,
-                        fontWeight: FontWeight.w400,
+                    const Align(
+                      alignment: Alignment.centerLeft,
+                      child: Padding(
+                        padding: EdgeInsets.only(
+                          left: 15.0,
+                        ),
+                        child: Text(
+                          'Комментарий к товару',
+                          style: TextStyle(
+                            fontSize: 14.0,
+                            fontWeight: FontWeight.w400,
+                          ),
+                        ),
                       ),
                     ),
                     Container(
@@ -112,11 +132,17 @@ class DeliveryGoods extends StatelessWidget {
                           Radius.circular(15.0),
                         ),
                       ),
-                      child: const Padding(
-                        padding: EdgeInsets.all(10.0),
+                      child:  Padding(
+                        padding: const EdgeInsets.all(10.0),
                         child: Text(
-                          'Qty:  1 	Color:  Navy 	Size:    M',
-                          style: TextStyle(),
+                          details,
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                          style: const TextStyle(
+                            fontSize: 14.0,
+                            fontWeight: FontWeight.w400,
+                            color: AppColors.text,
+                          ),
                         ),
                       ),
                     )
@@ -151,7 +177,7 @@ class _Link extends StatelessWidget {
       child: Row(
         children: [
           Flexible(
-            flex: 1,
+            flex: 2,
             child: Text(
               title,
               style: const TextStyle(
@@ -164,7 +190,7 @@ class _Link extends StatelessWidget {
             width: 15.0,
           ),
           Flexible(
-            flex: 3,
+            flex: 5,
             child: Text(
               value,
               overflow: TextOverflow.ellipsis,

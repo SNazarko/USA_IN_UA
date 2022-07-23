@@ -15,6 +15,7 @@ class AddLinkGoodsModel {
     this.imageGoods,
     this.statusItem,
     this.statusGoods,
+    this.purDel,
 
   });
 
@@ -36,6 +37,7 @@ class AddLinkGoodsModel {
       imageGoods: json['imageGoods'],
       statusItem: json['statusItem'],
       statusGoods: json['statusGoods'],
+      purDel: json['purDel'],
 
     );
   }
@@ -53,6 +55,7 @@ class AddLinkGoodsModel {
   String? status;
   List? statusItem;
   List? statusGoods;
+  bool? purDel;
 
 
   Map<String, dynamic> toJson() => {
@@ -69,6 +72,7 @@ class AddLinkGoodsModel {
     'imageGoods': imageGoods,
     'statusItem': statusItem,
     'statusGoods': statusGoods,
+    'purDel': purDel,
     'track': track
 
   };

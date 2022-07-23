@@ -61,7 +61,13 @@ class AppRouter {
         arguments as DeliveryOrderPageArguments;
         builder = (_) => DeliveryOrderPage(
           isSwish: args.isSwish,
-          status: args.status,);
+          status: args.status,
+          details: args.details,
+          link: args.link,
+          quality: args.quality,
+          additionalServices: args.additionalServices,
+          purDel: args.purDel,
+        id: args.id,);
         break;
 
 

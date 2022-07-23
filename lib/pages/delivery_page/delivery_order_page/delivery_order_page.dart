@@ -15,9 +15,22 @@ class DeliveryOrderPageArguments {
   DeliveryOrderPageArguments(
     this.status,
     this.isSwish,
+    this.link,
+    this.quality,
+    this.additionalServices,
+    this.details,
+    this.purDel,
+    this.id,
+
   );
   final List status;
   final bool isSwish;
+  final String link;
+  final String quality;
+  final String additionalServices;
+  final String details;
+  final bool purDel;
+  final String id;
 }
 
 class DeliveryOrderPage extends StatelessWidget {
@@ -25,10 +38,28 @@ class DeliveryOrderPage extends StatelessWidget {
     Key? key,
     required this.status,
     required this.isSwish,
+    required this.link,
+    required this.quality,
+    required this.additionalServices,
+    required this.details,
+    required this.purDel,
+    required this.id,
   }) : super(key: key);
   static const routeName = '/delivery_page/delivery_order_page';
   final List status;
   final bool isSwish;
+  final String link;
+  final String id;
+  final String quality;
+  final String additionalServices;
+  final String details;
+  final bool purDel;
+
+
+  bool _status(List status, String element) {
+    final bool statusList = status.contains(element);
+    return statusList;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -58,24 +89,14 @@ class DeliveryOrderPage extends StatelessWidget {
               ),
             ),
           ),
-          title: const Text(
-            'Заказ №7356',
-            style: TextStyle(
+          title: Text(
+            'Заказ №$id',
+            style: const TextStyle(
               color: AppColors.text,
               fontSize: 20.0,
               fontWeight: FontWeight.w600,
             ),
           ),
-          actions: [
-            Padding(
-              padding: const EdgeInsets.only(
-                right: 16.0,
-              ),
-              child: SvgPicture.asset(
-                AppIcons.menu,
-              ),
-            ),
-          ],
         ),
         body: Column(
           children: [
@@ -88,18 +109,27 @@ class DeliveryOrderPage extends StatelessWidget {
                 ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
-                  children: const [
+                  children:  [
                     Padding(
-                      padding: EdgeInsets.all(10.0),
+                      padding: const EdgeInsets.all(10.0),
                       child: Text(
-                        'Только доставка',
-                        style: TextStyle(
+                        purDel
+                        ? 'Покупка и доставка'
+                       : 'Только доставка',
+                        style: const TextStyle(
                           fontSize: 14.0,
                           fontWeight: FontWeight.w400,
                         ),
                       ),
                     ),
-                    ButtonEnter(
+                    _status(status, 'Готов к оплате')
+
+                    ? const ButtonEnter(
+                      text: 'Готов к оплате',
+                      colorText: AppColors.text,
+                      color: AppColors.contour,
+                    )
+                        : const ButtonEnter(
                       text: 'Расчет стоимости',
                       colorText: AppColors.text,
                       color: AppColors.contour,
@@ -112,6 +142,10 @@ class DeliveryOrderPage extends StatelessWidget {
             _DataListsWidget(
               status: status,
               isSwish: isSwish,
+              details: details,
+              link: link,
+              additionalServices: additionalServices,
+              quality: quality,
             ),
           ],
         ),
@@ -124,10 +158,14 @@ class _DataListsWidget extends StatelessWidget {
   const _DataListsWidget({
     Key? key,
     required this.status,
-    required this.isSwish,
+    required this.isSwish, required this.link, required this.quality, required this.additionalServices, required this.details,
   }) : super(key: key);
   final List status;
   final bool isSwish;
+  final String link;
+  final String quality;
+  final String additionalServices;
+  final String details;
 
   @override
   Widget build(BuildContext context) {
@@ -139,7 +177,13 @@ class _DataListsWidget extends StatelessWidget {
             isSwish: isSwish,
           ),
           const DeliveryAddress(),
-          const DeliveryGoods(),
+           DeliveryGoods(
+             quality: quality,
+             additionalServices: additionalServices,
+             details: details,
+             link: link,
+             statusGoods: status,
+           ),
         ];
         return Expanded(child: _list[state.index]);
       },

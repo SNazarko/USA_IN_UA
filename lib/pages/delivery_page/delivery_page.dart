@@ -163,6 +163,10 @@ class _ListGoods extends StatelessWidget {
                 status: data.status ?? '',
                 quality: data.quality ?? '',
                 statusGoods: data.statusGoods ?? [],
+                additionalServices: data.additionalServices ?? '',
+                details: data.details ?? '',
+                link: data.link ?? '',
+                purDel: data.purDel ?? true,
               );
             },
           );
@@ -193,16 +197,24 @@ class _LinkGoodsModel extends StatelessWidget {
     required this.price,
     required this.weight,
     required this.status,
-    required this.quality, required this.statusGoods,
+    required this.quality,
+    required this.statusGoods,
+    required this.additionalServices,
+    required this.details,
+    required this.link, required this.purDel,
   }) : super(key: key);
   final String image;
+  final String link;
   final String quality;
   final String numberGoods;
   final String price;
   final String weight;
   final String status;
+  final String details;
   final bool isSwish;
   final List statusGoods;
+  final String additionalServices;
+  final bool purDel;
 
   String _numberGoods(String numberGoods) {
     final String number =
@@ -270,6 +282,12 @@ class _LinkGoodsModel extends StatelessWidget {
             return DeliveryOrderPage(
               status: statusGoods,
               isSwish: isSwish,
+              quality: quality,
+              additionalServices: additionalServices,
+              details: details,
+              link: link,
+              id: _numberGoods(numberGoods),
+              purDel: purDel,
             );
           }),
         ),
