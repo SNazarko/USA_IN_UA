@@ -433,7 +433,7 @@ class _LinkGoodsModel extends StatelessWidget {
                       )),
                       Expanded(
                         child: Padding(
-                          padding: EdgeInsets.only(
+                          padding: const EdgeInsets.only(
                             left: 10.0,
                           ),
                           child: IconLink(

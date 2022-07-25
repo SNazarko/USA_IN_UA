@@ -4,6 +4,7 @@ import 'package:usa_in_ua/pages/profile_pages/profile_recipient_page/profile_rec
 
 import '../pages/authorisations_pages/authorisation_page/authorisations_page.dart';
 import '../pages/authorisations_pages/registration_page/registration_page.dart';
+import '../pages/delivery_page/delivery_calculation_page/delivery_calculation_page.dart';
 import '../pages/delivery_page/delivery_order_page/delivery_order_page.dart';
 import '../pages/delivery_page/delivery_page.dart';
 import '../pages/home_pages/home_delivery_page/home_delivery_page.dart';
@@ -55,7 +56,26 @@ class AppRouter {
         break;
 
       // delivery_page
-      //delivery_page/delivery_order_page
+
+    // delivery_page/delivery_order_page/delivery_calculation_page
+      case DeliveryCalculationPage.routeName:
+        final DeliveryCalculationPageArguments args =
+        arguments as DeliveryCalculationPageArguments;
+        builder = (_) => DeliveryCalculationPage(
+          isSwish: args.isSwish,
+          status: args.status,
+          details: args.details,
+          link: args.link,
+          quality: args.quality,
+          additionalServices: args.additionalServices,
+          purDel: args.purDel,
+          id: args.id,
+        );
+        break;
+
+
+
+    //delivery_page/delivery_order_page
       case DeliveryOrderPage.routeName:
         final DeliveryOrderPageArguments args =
         arguments as DeliveryOrderPageArguments;
@@ -67,7 +87,8 @@ class AppRouter {
           quality: args.quality,
           additionalServices: args.additionalServices,
           purDel: args.purDel,
-        id: args.id,);
+        id: args.id,
+        );
         break;
 
 

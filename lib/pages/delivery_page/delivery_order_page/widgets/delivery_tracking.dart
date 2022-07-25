@@ -49,6 +49,7 @@ class DeliveryTracking extends StatelessWidget {
                         : AppColors.white,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     text: 'Расчет стоимости',
+                    colorText: _status(status, 'Расчет стоимости') ? AppColors.text : AppColors.noActive,
                   ),
                   IconLink(
                     icon: AppIcons.arrowRight,
@@ -58,6 +59,7 @@ class DeliveryTracking extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisAlignment: MainAxisAlignment.center,
                     text: 'Готов к оплате',
+                    colorText: _status(status, 'Готов к оплате') ? AppColors.text : AppColors.noActive,
                   ),
                   IconLink(
                     icon: AppIcons.arrowRight,
@@ -67,6 +69,7 @@ class DeliveryTracking extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisAlignment: MainAxisAlignment.center,
                     text: 'Оплачено, в обработке',
+                    colorText: _status(status, 'Оплачено, в обработке') ? AppColors.text : AppColors.noActive,
                   ),
                   IconLink(
                     icon: AppIcons.arrowRight,
@@ -76,6 +79,7 @@ class DeliveryTracking extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisAlignment: MainAxisAlignment.center,
                     text: 'Ожидаем доставку на склад США',
+                    colorText: _status(status, 'Ожидаем доставку на склад США') ? AppColors.text : AppColors.noActive,
                   ),
                   IconLink(
                     icon: AppIcons.arrowRight,
@@ -85,6 +89,7 @@ class DeliveryTracking extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisAlignment: MainAxisAlignment.center,
                     text: 'Доставлено на склад США / Европы',
+                    colorText: _status(status, 'Доставлено на склад США / Европы') ? AppColors.text : AppColors.noActive,
                   ),
                   IconLink(
                     icon: AppIcons.arrowRight,
@@ -94,6 +99,7 @@ class DeliveryTracking extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisAlignment: MainAxisAlignment.center,
                     text: 'Отправлено в Украине',
+                    colorText: _status(status, 'Отправлено в Украине') ? AppColors.text : AppColors.noActive,
                   ),
                   IconLink(
                     icon: AppIcons.arrowRight,
@@ -103,6 +109,7 @@ class DeliveryTracking extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisAlignment: MainAxisAlignment.center,
                     text: 'Поступило в Украину',
+                    colorText: _status(status, 'Поступило в Украину') ? AppColors.text : AppColors.noActive,
                   ),
                   IconLink(
                     icon: AppIcons.arrowRight,
@@ -113,6 +120,7 @@ class DeliveryTracking extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisAlignment: MainAxisAlignment.center,
                     text: 'Отправлено по Украине / готово к самовывозу',
+                    colorText: _status(status, 'Отправлено по Украине / готово к самовывозу') ? AppColors.text : AppColors.noActive,
                   ),
                   IconLink(
                     icon: AppIcons.arrowRight,
@@ -122,6 +130,7 @@ class DeliveryTracking extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisAlignment: MainAxisAlignment.center,
                     text: 'Заказ доставлен',
+                    colorText: _status(status, 'Заказ доставлен') ? AppColors.text : AppColors.noActive,
                   ),
                 ],
               ),

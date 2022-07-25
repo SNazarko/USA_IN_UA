@@ -10,6 +10,14 @@ import '../../../resources/app_colors.dart';
 import '../../../resources/app_icons.dart';
 import '../../../widgets/button_enter.dart';
 import '../bloc/widget_listener/widget_listener_bloc.dart';
+import '../delivery_calculation_page/delivery_calculation_page.dart';
+
+enum StatusButton {
+  calculation,
+  goPlay,
+  pay,
+
+}
 
 class DeliveryOrderPageArguments {
   DeliveryOrderPageArguments(
@@ -56,11 +64,53 @@ class DeliveryOrderPage extends StatelessWidget {
   final bool purDel;
 
 
-  bool _status(List status, String element) {
-    final bool statusList = status.contains(element);
-    return statusList;
-  }
+  Widget _status(BuildContext context, List status,) {
 
+    Widget customButtonEnter(String element,Color color) {
+     return ButtonEnter(
+        onPressed: () =>
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) {
+                return DeliveryCalculationPage(
+                  status: status,
+                  isSwish: isSwish,
+                  quality: quality,
+                  additionalServices: additionalServices,
+                  details: details,
+                  link: link,
+                  id: id,
+                  purDel: purDel,
+                );
+              }),
+            ),
+        text: element,
+        colorText: color == AppColors.green ? AppColors.brown :AppColors.text,
+        color: color,
+      );
+    }
+
+
+    if ( status.contains('Расчет стоимости') &&
+        status.contains('Готов к оплате') == false &&
+        status.contains('Оплачено, в обработке') == false) {
+      return customButtonEnter('Расчет стоимости',AppColors.contour);
+    }
+    if (
+    status.contains('Готов к оплате') &&
+        status.contains('Расчет стоимости') &&
+        status.contains('Оплачено, в обработке') == false
+    ) {
+     return customButtonEnter('Готов к оплате',AppColors.green);
+    }   if (status.contains('Оплачено, в обработке')
+    ) {
+      return customButtonEnter('Оплачено',AppColors.green);
+    }
+
+
+
+    return const SizedBox();
+  }
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
@@ -122,18 +172,7 @@ class DeliveryOrderPage extends StatelessWidget {
                         ),
                       ),
                     ),
-                    _status(status, 'Готов к оплате')
-
-                    ? const ButtonEnter(
-                      text: 'Готов к оплате',
-                      colorText: AppColors.text,
-                      color: AppColors.contour,
-                    )
-                        : const ButtonEnter(
-                      text: 'Расчет стоимости',
-                      colorText: AppColors.text,
-                      color: AppColors.contour,
-                    ),
+                    _status(context, status,),
                   ],
                 ),
               ),
@@ -153,6 +192,9 @@ class DeliveryOrderPage extends StatelessWidget {
     );
   }
 }
+
+
+
 
 class _DataListsWidget extends StatelessWidget {
   const _DataListsWidget({

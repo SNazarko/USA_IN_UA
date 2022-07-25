@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_svg/svg.dart';
 
+import '../resources/app_colors.dart';
+
 class IconLink extends StatelessWidget {
   const IconLink({
     Key? key,
@@ -11,11 +13,12 @@ class IconLink extends StatelessWidget {
     this.fontWeight,
     this.fontSize,
     this.sizeIcon,
-    this.mainAxisAlignment,
+    this.mainAxisAlignment, this.colorText,
   }) : super(key: key);
   final String text;
   final String icon;
   final Color color;
+  final Color? colorText;
   final CrossAxisAlignment crossAxisAlignment;
   final MainAxisAlignment? mainAxisAlignment;
   final FontWeight? fontWeight;
@@ -45,6 +48,7 @@ class IconLink extends StatelessWidget {
           child: Text(
             text,
             style: TextStyle(
+              color: colorText ?? AppColors.text,
               fontSize: fontSize,
               fontWeight: fontWeight ?? FontWeight.w400,
             ),
